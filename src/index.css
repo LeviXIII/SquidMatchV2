@@ -27,6 +27,21 @@
   }
 }
 
+.displayIcon {
+  margin-top: 2vh;
+}
+
+.divBorder {
+  border: 1px solid gainsboro;
+  border-radius: 10px;
+  margin-bottom: 10%;
+}
+
+.formSettings {
+  margin-top: 10vh;
+  background-color: white;
+}
+
 .mainBackground {
   top: 0px;
   left: 0px;
