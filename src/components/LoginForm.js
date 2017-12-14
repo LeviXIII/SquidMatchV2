@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Input, Button } from 'react-materialize';
-
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
@@ -8,18 +8,6 @@ import squidIcon from '../images/squidIcon.png';
 import passwordIcon from '../images/passwordIcon.png';
 
 class LoginForm extends Component {
-  
-  getUsername = (e) => {
-    this.props.getUsername(e.target.value.replace(/ /g, ""));
-  }
-
-  getPassword = (e) => {
-    this.props.getPassword(e.target.value.replace(/ /g, ""));
-  }
-
-  getVerifyPassword = (e) => {
-    this.props.getVerifyPassword(e.target.value.replace(/ /g, ""));
-  }
 
   showCreateButton = (e) => {
     e.preventDefault();
@@ -32,9 +20,21 @@ class LoginForm extends Component {
 
   setupAccount = (e) => {
     e.preventDefault();
+    if (this.props.password === this.props.verifyPassword &&
+      this.props.password.length >= 8) {
+      this.props.getMatchingPassword(true);
+    }
+    else {
+      this.props.setVerifyMessage("Your password doesn't match or is too short.")
+    }
   }
 
   render() {
+
+    //If passwords match for creating account, go to next page.
+    if (this.props.matchingPassword) {
+     return <Redirect to="/account-info" />
+    }
 
     let showLoginButton = <Button style={loginButton} waves='light'>Login</Button>;
     let showSignupButton = <Button style={signupButton} waves='light'
@@ -51,31 +51,42 @@ class LoginForm extends Component {
         <h1 className="siteTitle">Squid Match</h1>
         <h4 style={subTitle}>Login to find active players to play with</h4>
           <div className="row">
-
             <img className="col s2 m1 l1 offset-s1 offset-m1 offset-l1 responsive-img displayIcon"
                   alt="username-icon" src={squidIcon}/>
-	          <Input s={8} m={9} l={9} label="Username" validate
-                    value={this.props.username}
-                    onChange={e => this.getUsername(e)}>
+	          <Input s={8} m={9} l={9} label="username" validate
+                    name="username" value={this.props.username}
+                    onChange={e => this.props.getLoginInput({
+                      name: e.target.name, value: e.target.value.replace(/ /g, "")
+                    })}>
             </Input>
       
             <img className="col s2 m1 l1 offset-s1 offset-m1 offset-l1 responsive-img displayIcon"
                   alt="password-icon" src={passwordIcon}/>
             <Input s={8} m={9} l={9} type="password" label="Password" validate
-                    value={this.props.password}
-                    onChange={e => this.getPassword(e)}>
+                    name="password" value={this.props.password}
+                    onChange={e => this.props.getLoginInput({
+                      name: e.target.name, value: e.target.value.replace(/ /g, "")
+                    })}>
             </Input>
 
             {this.props.createButton &&
             <div>
               <img className="col s2 m1 l1 offset-s1 offset-m1 offset-l1 responsive-img displayIcon"
                     alt="password-icon" src={passwordIcon}/>
-              <Input s={8} m={9} l={9} type="password" label="Password" validate
-                      value={this.props.verifyPassword}
-                      onChange={e => this.getVerifyPassword(e)}>
+              <Input style={passwordField} s={8} m={9} l={9} type="password" label="Password" validate
+                      name="verifyPassword" value={this.props.verifyPassword}
+                      onChange={e => this.props.getLoginInput({
+                        name: e.target.name, value: e.target.value.replace(/ /g, "")
+                      })}>
               </Input>
             </div>
             }
+
+          </div>
+          <div>
+            <section className="center-align">
+              <p style={messageStyle}>{this.props.verifyMessage}</p>
+            </section>
 
             <section className="center-align">
               {this.props.createButton ? showCreateAccount : showLoginButton}
@@ -86,8 +97,9 @@ class LoginForm extends Component {
             <section className="center-align">
             {this.props.createButton ? showLoginButton : showSignupButton}
             </section>
-
+            <br />
           </div>
+          
       </form>
     )
   }
@@ -98,19 +110,24 @@ class LoginForm extends Component {
 //Styles//
 //////////
 
-const secondOption = {
+const messageStyle = {
   fontFamily: 'overpass',
+  fontSize: '1.2rem',
+  textAlign: 'center',
+  color: 'red',
+  marginTop: '1%',
+  marginBottom: '2%',
 }
 
 const signupButton = {
-  width: '185px',
+  width: '190px',
   backgroundColor: '#ff43b7',
   fontFamily: 'paintball',
   color: 'black',
 }
 
 const loginButton = {
-  width: '185px',
+  width: '190px',
   backgroundColor: '#7aff42',
   fontFamily: 'paintball',
   color: 'black',
@@ -120,16 +137,23 @@ const subTitle =  {
   fontFamily: 'overpass',
   textAlign: 'center',
   color: '#948f8f',
-  marginTop: '1%'
+  marginTop: '1%',
+  marginBottom: '1%',
 }
 
-const mapStateToPrps = (state) => {
+const passwordField = {
+  marginBottom: '0%',
+}
+
+const mapStateToProps = (state) => {
   return {
     username: state.loginReducer.username,
     password: state.loginReducer.password,
     verifyPassword: state.loginReducer.verifyPassword,
+    verifyMessage: state.loginReducer.verifyMessage,
     createButton: state.loginReducer.createButton,
+    matchingPassword: state.loginReducer.matchingPassword,
   }
 }
 
-export default connect(mapStateToPrps, actions)(LoginForm);
+export default connect(mapStateToProps, actions)(LoginForm);
