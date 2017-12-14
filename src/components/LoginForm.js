@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Input, Button } from 'react-materialize';
 
 import { connect } from 'react-redux';
-import { getUsername } from '../actions';
+import * as actions from '../actions';
 
 import squidIcon from '../images/squidIcon.png';
 import passwordIcon from '../images/passwordIcon.png';
@@ -10,12 +10,42 @@ import passwordIcon from '../images/passwordIcon.png';
 class LoginForm extends Component {
   
   getUsername = (e) => {
-    this.props.getUsername(e.target.value);
+    this.props.getUsername(e.target.value.replace(/ /g, ""));
   }
 
+  getPassword = (e) => {
+    this.props.getPassword(e.target.value.replace(/ /g, ""));
+  }
 
+  getVerifyPassword = (e) => {
+    this.props.getVerifyPassword(e.target.value.replace(/ /g, ""));
+  }
+
+  showCreateButton = (e) => {
+    e.preventDefault();
+    this.props.showCreateButton(true);
+  }
+
+  userLogin = (e) => {
+    e.preventDefault();
+  }
+
+  setupAccount = (e) => {
+    e.preventDefault();
+  }
 
   render() {
+
+    let showLoginButton = <Button style={loginButton} waves='light'>Login</Button>;
+    let showSignupButton = <Button style={signupButton} waves='light'
+                              onClick={e => this.showCreateButton(e)}>
+                              Sign Up
+                            </Button>
+    let showCreateAccount = <Button style={signupButton} waves='light'
+                              onClick={e => this.setupAccount(e)}>
+                              Create Account
+                            </Button>
+
     return (
       <form className="col s12 container divBorder formSettings">
         <h1 className="siteTitle">Squid Match</h1>
@@ -31,14 +61,31 @@ class LoginForm extends Component {
       
             <img className="col s2 m1 l1 offset-s1 offset-m1 offset-l1 responsive-img displayIcon"
                   alt="password-icon" src={passwordIcon}/>
-            <Input s={8} m={9} l={9} type="password" label="Password" validate>
+            <Input s={8} m={9} l={9} type="password" label="Password" validate
+                    value={this.props.password}
+                    onChange={e => this.getPassword(e)}>
             </Input>
 
+            {this.props.createButton &&
+            <div>
+              <img className="col s2 m1 l1 offset-s1 offset-m1 offset-l1 responsive-img displayIcon"
+                    alt="password-icon" src={passwordIcon}/>
+              <Input s={8} m={9} l={9} type="password" label="Password" validate
+                      value={this.props.verifyPassword}
+                      onChange={e => this.getVerifyPassword(e)}>
+              </Input>
+            </div>
+            }
+
             <section className="center-align">
-              <Button style={loginButton} waves='light'>Login</Button>
+              {this.props.createButton ? showCreateAccount : showLoginButton}
+              <br />
+              <br />
             </section>
 
-            <p className="center-align" style={secondOption}><a>Create Account</a></p>
+            <section className="center-align">
+            {this.props.createButton ? showLoginButton : showSignupButton}
+            </section>
 
           </div>
       </form>
@@ -56,14 +103,14 @@ const secondOption = {
 }
 
 const signupButton = {
-  width: '150px',
+  width: '185px',
   backgroundColor: '#ff43b7',
   fontFamily: 'paintball',
   color: 'black',
 }
 
 const loginButton = {
-  width: '150px',
+  width: '185px',
   backgroundColor: '#7aff42',
   fontFamily: 'paintball',
   color: 'black',
@@ -78,8 +125,11 @@ const subTitle =  {
 
 const mapStateToPrps = (state) => {
   return {
-    username: state.loginReducer.username
+    username: state.loginReducer.username,
+    password: state.loginReducer.password,
+    verifyPassword: state.loginReducer.verifyPassword,
+    createButton: state.loginReducer.createButton,
   }
 }
 
-export default connect(mapStateToPrps, { getUsername })(LoginForm);
+export default connect(mapStateToPrps, actions)(LoginForm);
