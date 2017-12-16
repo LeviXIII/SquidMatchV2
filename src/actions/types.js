@@ -1,3 +1,4 @@
+export const GET_ACCOUNT_INPUT = 'get_account_input';
 export const GET_LOGIN_INPUT = 'get_login_input';
 export const GET_MATCHING_PASSWORD = 'get_matching_password';
 export const SET_VERIFY_MESSAGE = 'set_verify_message';

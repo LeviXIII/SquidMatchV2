@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Button } from 'react-materialize';
+import { TextField, Grid, Button } from 'material-ui';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
@@ -20,12 +20,17 @@ class LoginForm extends Component {
 
   setupAccount = (e) => {
     e.preventDefault();
-    if (this.props.password === this.props.verifyPassword &&
-      this.props.password.length >= 8) {
-      this.props.getMatchingPassword(true);
+    if (this.props.username !== '') {
+      if (this.props.password === this.props.verifyPassword &&
+        this.props.password.length >= 8) {
+        this.props.getMatchingPassword(true);
+      }
+      else {
+        this.props.setVerifyMessage("Your password doesn't match or is too short.");
+      }
     }
     else {
-      this.props.setVerifyMessage("Your password doesn't match or is too short.")
+      this.props.setVerifyMessage("Please enter a username.") 
     }
   }
 
@@ -36,67 +41,86 @@ class LoginForm extends Component {
      return <Redirect to="/account-info" />
     }
 
-    let showLoginButton = <Button style={loginButton} waves='light'>Login</Button>;
-    let showSignupButton = <Button style={signupButton} waves='light'
+    let showLoginButton = <Button raised style={loginButton}>Login</Button>;
+    let showSignupButton = <Button raised style={signupButton}
                               onClick={e => this.showCreateButton(e)}>
                               Sign Up
                             </Button>
-    let showCreateAccount = <Button style={signupButton} waves='light'
+    let showCreateAccount = <Button raised style={signupButton}
                               onClick={e => this.setupAccount(e)}>
                               Create Account
                             </Button>
 
     return (
-      <form className="col s12 container divBorder formSettings">
+      <form className="container divBorder formSettings">
         <h1 className="siteTitle">Squid Match</h1>
         <h4 style={subTitle}>Login to find active players to play with</h4>
-          <div className="row">
-            <img className="col s2 m1 l1 offset-s1 offset-m1 offset-l1 responsive-img displayIcon"
-                  alt="username-icon" src={squidIcon}/>
-	          <Input s={8} m={9} l={9} label="username" validate
-                    name="username" value={this.props.username}
-                    onChange={e => this.props.getLoginInput({
-                      name: e.target.name, value: e.target.value.replace(/ /g, "")
-                    })}>
-            </Input>
-      
-            <img className="col s2 m1 l1 offset-s1 offset-m1 offset-l1 responsive-img displayIcon"
-                  alt="password-icon" src={passwordIcon}/>
-            <Input s={8} m={9} l={9} type="password" label="Password" validate
-                    name="password" value={this.props.password}
-                    onChange={e => this.props.getLoginInput({
-                      name: e.target.name, value: e.target.value.replace(/ /g, "")
-                    })}>
-            </Input>
-
-            {this.props.createButton &&
-            <div>
-              <img className="col s2 m1 l1 offset-s1 offset-m1 offset-l1 responsive-img displayIcon"
-                    alt="password-icon" src={passwordIcon}/>
-              <Input style={passwordField} s={8} m={9} l={9} type="password" label="Password" validate
-                      name="verifyPassword" value={this.props.verifyPassword}
+          <Grid justify="center" container spacing={16}>
+            <Grid item xs={2} sm={1} md={1} lg={1}>
+              <img className="displayIcon" alt="username-icon" src={squidIcon}/>
+            </Grid>
+	          <Grid item xs={9}>
+              <TextField xs={9} sm={9} md={9} lg={9} fullWidth label="Username" validate
+                      name="username" value={this.props.username}
                       onChange={e => this.props.getLoginInput({
                         name: e.target.name, value: e.target.value.replace(/ /g, "")
                       })}>
-              </Input>
-            </div>
-            }
+              </TextField>
+            </Grid>
+          </Grid>
+        
+          <Grid justify="center" container spacing={16}>
+            <Grid item xs={2} sm={1} md={1} lg={1}>
+              <img className="displayIcon" alt="password-icon" src={passwordIcon}/>
+            </Grid>
+            <Grid item xs={9}>
+            <TextField xs={9} sm={9} md={9} lg={9} fullWidth type="password" label="Password"
+                    validate name="password" value={this.props.password}
+                    onChange={e => this.props.getLoginInput({
+                      name: e.target.name, value: e.target.value.replace(/ /g, "")
+                    })}>
+            </TextField>
+            </Grid>
+          </Grid>
 
-          </div>
+            {this.props.createButton &&
+            <section>
+              <Grid justify="center" container spacing={16}>
+                <Grid item xs={2} sm={1} md={1} lg={1}>
+                  <img className="displayIcon" alt="password-icon" src={passwordIcon}/>
+                </Grid>
+                <Grid item xs={9}>
+                  <TextField xs={9} sm={9} md={9} lg={9} fullWidth type="password" label="Verify Password"
+                          validate name="verifyPassword" value={this.props.verifyPassword}
+                          onChange={e => this.props.getLoginInput({
+                            name: e.target.name, value: e.target.value.replace(/ /g, "")
+                          })}>
+                  </TextField>
+                </Grid>
+              </Grid>
+            </section>
+            }
           <div>
+            <br />
             <section className="center-align">
               <p style={messageStyle}>{this.props.verifyMessage}</p>
             </section>
+            <br />
 
             <section className="center-align">
-              {this.props.createButton ? showCreateAccount : showLoginButton}
+              <Grid justify="center" container spacing={16}>
+                {this.props.createButton ? showCreateAccount : showLoginButton}
+              </Grid>
               <br />
               <br />
             </section>
 
             <section className="center-align">
-            {this.props.createButton ? showLoginButton : showSignupButton}
+            <Grid justify="center" container spacing={16}>
+              {this.props.createButton ? showLoginButton : showSignupButton}
+            </Grid>
             </section>
+            <br />
             <br />
           </div>
           
@@ -135,6 +159,7 @@ const loginButton = {
 
 const subTitle =  {
   fontFamily: 'overpass',
+  fontSize: '1.5rem',
   textAlign: 'center',
   color: '#948f8f',
   marginTop: '1%',
