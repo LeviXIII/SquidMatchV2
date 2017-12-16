@@ -1,6 +1,6 @@
 import {
   GET_LOGIN_INPUT,
-  GET_MATCHING_PASSWORD,
+  SET_MATCHING_PASSWORD,
   SET_VERIFY_MESSAGE,
   SHOW_CREATE_BUTTON
 } from './types';
@@ -12,9 +12,9 @@ export const getLoginInput = ({ name, value }) => {
   }
 }
 
-export const getMatchingPassword = (matchingPassword) => {
+export const setMatchingPassword = (matchingPassword) => {
   return {
-    type: GET_MATCHING_PASSWORD,
+    type: SET_MATCHING_PASSWORD,
     payload: matchingPassword
   }
 }

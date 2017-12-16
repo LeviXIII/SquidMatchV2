@@ -8,10 +8,10 @@ class App extends Component {
   render() {
     return (
       <div className="mainBackground">
-      <Switch>
+      {/* <Switch> */}
         <Route path="/" exact render={() => <LoginForm />} />
         <Route path="/account-info" exact render={() => <AccountInfo />} />
-      </Switch>
+      {/* </Switch> */}
       </div>
     );
   }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { TextField, Grid, Button } from 'material-ui';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
@@ -23,7 +23,7 @@ class LoginForm extends Component {
     if (this.props.username !== '') {
       if (this.props.password === this.props.verifyPassword &&
         this.props.password.length >= 8) {
-        this.props.getMatchingPassword(true);
+        this.props.setMatchingPassword(true);
       }
       else {
         this.props.setVerifyMessage("Your password doesn't match or is too short.");
@@ -38,7 +38,7 @@ class LoginForm extends Component {
 
     //If passwords match for creating account, go to next page.
     if (this.props.matchingPassword) {
-     return <Redirect to="/account-info" />
+      return <Redirect to="/account-info" />
     }
 
     let showLoginButton = <Button raised style={loginButton}>Login</Button>;
@@ -60,7 +60,7 @@ class LoginForm extends Component {
               <img className="displayIcon" alt="username-icon" src={squidIcon}/>
             </Grid>
 	          <Grid item xs={9}>
-              <TextField xs={9} sm={9} md={9} lg={9} fullWidth label="Username" validate
+              <TextField xs={9} sm={9} md={9} lg={9} fullWidth label="Username"
                       name="username" value={this.props.username}
                       onChange={e => this.props.getLoginInput({
                         name: e.target.name, value: e.target.value.replace(/ /g, "")
@@ -74,8 +74,8 @@ class LoginForm extends Component {
               <img className="displayIcon" alt="password-icon" src={passwordIcon}/>
             </Grid>
             <Grid item xs={9}>
-            <TextField xs={9} sm={9} md={9} lg={9} fullWidth type="password" label="Password"
-                    validate name="password" value={this.props.password}
+            <TextField xs={9} sm={9} md={9} lg={9} fullWidth type="password" 
+                    label="Password" name="password" value={this.props.password}
                     onChange={e => this.props.getLoginInput({
                       name: e.target.name, value: e.target.value.replace(/ /g, "")
                     })}>
@@ -90,8 +90,8 @@ class LoginForm extends Component {
                   <img className="displayIcon" alt="password-icon" src={passwordIcon}/>
                 </Grid>
                 <Grid item xs={9}>
-                  <TextField xs={9} sm={9} md={9} lg={9} fullWidth type="password" label="Verify Password"
-                          validate name="verifyPassword" value={this.props.verifyPassword}
+                  <TextField xs={9} sm={9} md={9} lg={9} fullWidth type="password"
+                          label="Verify Password" name="verifyPassword" value={this.props.verifyPassword}
                           onChange={e => this.props.getLoginInput({
                             name: e.target.name, value: e.target.value.replace(/ /g, "")
                           })}>
@@ -174,7 +174,7 @@ const subTitle =  {
   textAlign: 'center',
   color: '#464547',
   marginTop: '1%',
-  marginBottom: '1%',
+  marginBottom: '3%',
 }
 
 export default connect(mapStateToProps, actions)(LoginForm);
