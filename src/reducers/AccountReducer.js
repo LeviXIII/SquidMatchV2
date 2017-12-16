@@ -4,7 +4,7 @@ import {
 
 const initialState = {
   email: '',
-  userNSID: '',
+  NSID: '',
   age: '',
   location: '',
   rank: '',

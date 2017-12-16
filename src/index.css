@@ -10,20 +10,51 @@
 }
 
 /* Small screen display */
-@media only screen and (min-width: 200px) and (max-width: 1024px) {
+@media only screen and (min-width: 200px) and (max-width: 480px) {
   .mainBackground {
     background-image: url("./images/paintBackground.png");
     background-color: rgba(255, 255, 255, 0.2);
     background-blend-mode: lighten;
   }
+
+  .formSettings {
+    margin-top: 5vh;
+    margin-left: 3vh;
+    margin-right: 3vh;
+    background-color: white;
+  }
 }
 
-/* Medium to large display */
-@media only screen and (min-width: 1025px) and (max-width: 1440px) {
+/* Small to Medium display (Change the width of the form) */
+@media only screen and (min-width: 481px) and (max-width: 920px) {
+  .mainBackground {
+    background-image: url("./images/paintBackground.png");
+    background-color: rgba(255, 255, 255, 0.2);
+    background-blend-mode: lighten;
+  }
+
+  .formSettings {
+    margin-top: 5vh;
+    margin-left: 15vh;
+    margin-right: 15vh;
+    background-color: white;
+  }
+
+}
+
+/* Medium to Large display */
+@media only screen and (min-width: 921px) and (max-width: 1440px) {
   .mainBackground {
     background-image: url("./images/bodyBackground.png");
     background-color: rgba(255, 255, 255, 0.7);
     background-blend-mode: lighten;
+  }
+
+  .formSettings {
+    margin-top: 5vh;
+    margin-left: 30vh;
+    margin-right: 30vh;
+    background-color: white;
   }
 }
 
@@ -36,13 +67,6 @@
   border: 1px solid gainsboro;
   border-radius: 10px;
   margin-bottom: 10%;
-}
-
-.formSettings {
-  margin-top: 5vh;
-  margin-left: 3vh;
-  margin-right: 3vh;
-  background-color: white;
 }
 
 .mainBackground {
@@ -61,8 +85,6 @@
   font-family: 'paintball';
   font-size: 3em;
   display: block;
-  /* width: 100%;
-  margin: 0%, auto; */
   margin-top: 1%;
   margin-bottom: 1%;
   text-align: center;

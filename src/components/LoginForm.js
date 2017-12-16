@@ -130,6 +130,17 @@ class LoginForm extends Component {
 
 }
 
+const mapStateToProps = (state) => {
+  return {
+    username: state.loginReducer.username,
+    password: state.loginReducer.password,
+    verifyPassword: state.loginReducer.verifyPassword,
+    verifyMessage: state.loginReducer.verifyMessage,
+    createButton: state.loginReducer.createButton,
+    matchingPassword: state.loginReducer.matchingPassword,
+  }
+}
+
 //////////
 //Styles//
 //////////
@@ -161,24 +172,9 @@ const subTitle =  {
   fontFamily: 'overpass',
   fontSize: '1.5rem',
   textAlign: 'center',
-  color: '#948f8f',
+  color: '#464547',
   marginTop: '1%',
   marginBottom: '1%',
-}
-
-const passwordField = {
-  marginBottom: '0%',
-}
-
-const mapStateToProps = (state) => {
-  return {
-    username: state.loginReducer.username,
-    password: state.loginReducer.password,
-    verifyPassword: state.loginReducer.verifyPassword,
-    verifyMessage: state.loginReducer.verifyMessage,
-    createButton: state.loginReducer.createButton,
-    matchingPassword: state.loginReducer.matchingPassword,
-  }
 }
 
 export default connect(mapStateToProps, actions)(LoginForm);
