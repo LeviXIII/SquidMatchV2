@@ -11,41 +11,47 @@ class AccountInfo extends Component {
   createAccount = (e) => {
     e.preventDefault();
 
-    axios.post('/register', {
-      username: this.props.username,
-      password: this.props.password,
-      email: this.props.email,
-      NSID: this.props.NSID,
-      age: this.props.age,
-      location: this.props.location,
-      rank: this.props.rank,
-      mode: this.props.mode,
-      weapon: this.props.weapon,
-      status: "Available",
-    })
-    .then(result => {
-      console.log(result);
-      this.props.setLoggedIn(true);
+    //Check email and NSID for validity
+    if (/^\d{4}-\d{4}-\d{4}$/g.test(this.props.NSID) && /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.props.email))
+    {
+      axios.post('/register', {
+        username: this.props.username,
+        password: this.props.password,
+        email: this.props.email,
+        NSID: this.props.NSID,
+        age: this.props.age,
+        location: this.props.location,
+        rank: this.props.rank,
+        mode: this.props.mode,
+        weapon: this.props.weapon,
+        status: "Available",
+      })
+      .then(result => {
+        console.log(result.data);
+        this.props.setLoggedIn(true);
 
-    })
-    .catch(error => {
-      console.log(error);
-    })
+      })
+      .catch(error => {
+        console.log(error);
+      })
+    }
+    else {
+      this.props.setVerifyMessage('Please enter a correct email or NSID.');
+    }
   }
 
   render() {
-
     if (this.props.isLoggedIn) {
-      <Redirect to='/choose-criteria' />
+      return <Redirect to='/choose-criteria' />
     }
 
     return (
-      <section className="container divBorder formSettings">
+      <section className="container divBorder loginFormSettings">
         <h1 style={subTitle}>Create Account</h1>
         <section className="grid">
           <TextField floatingLabelText="Email" floatingLabelFixed style={fieldWidth}
                     name="email" type="email" value={this.props.email}
-                    errorText={!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.props.email) && "Please enter a valid email address."}
+                    errorText={!(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).test(this.props.email) && "Please enter a valid email address."}
                     placeholder="email@mail.com"
                     onChange={e => this.props.getAccountInput({
                       name: e.target.name, value: e.target.value.replace(/ /g, "")
@@ -131,12 +137,12 @@ class AccountInfo extends Component {
         <br />
 
         <section className="gridSelector">
-        <RaisedButton href="/" overlayStyle={signupButton}>Cancel</RaisedButton>
+          <RaisedButton href="/" overlayStyle={signupButton}>Cancel</RaisedButton>
 
-        <RaisedButton overlayStyle={loginButton}
-                onClick={e => this.createAccount(e)}>
-                Create
-        </RaisedButton>
+          <RaisedButton overlayStyle={loginButton}
+                  onClick={e => this.createAccount(e)}>
+                  Create
+          </RaisedButton>
         </section>
         <br />
 
@@ -156,6 +162,7 @@ const mapStateToProps = (state) => {
     weapon: state.accountReducer.weapon,
 
     isLoggedIn: state.generalReducer.isLoggedIn,
+    verifyMessage: state.generalReducer.verifyMessage,
 
     username: state.loginReducer.username,
     password: state.loginReducer.password,

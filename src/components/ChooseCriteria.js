@@ -11,7 +11,8 @@ class ChooseCriteria extends Component {
   render() {
 
     if (!this.props.isLoggedIn) {
-      //return <Redirect to='/' />
+      //this.props.history.push('/choose-criteria');
+      return <Redirect to='/' />
     }
     console.log(this.props.isLoggedIn);
     return (

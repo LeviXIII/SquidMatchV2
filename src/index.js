@@ -11,13 +11,14 @@ import reducers from './reducers';
 import registerServiceWorker from './registerServiceWorker';
 
 ReactDOM.render(
-  <Router>
-    <Provider store={createStore(reducers)}>
-      <MuiThemeProvider>
+  <Provider store={createStore(reducers)}>
+    <MuiThemeProvider>
+      <Router>
         <App />
-      </MuiThemeProvider>
-    </Provider>
-  </Router>, 
+      </Router>
+    </MuiThemeProvider>
+  </Provider>
+  , 
   document.getElementById('root')
 );
 registerServiceWorker();

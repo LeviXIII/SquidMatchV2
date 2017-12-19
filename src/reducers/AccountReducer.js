@@ -1,6 +1,5 @@
 import {
   GET_ACCOUNT_INPUT,
-  SET_WINDOW_SIZE
 } from '../actions/types';
 
 const initialState = {

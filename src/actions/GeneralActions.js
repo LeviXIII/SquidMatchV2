@@ -1,12 +1,20 @@
 import {
   SET_LOGGED_IN,
+  SET_VERIFY_MESSAGE,
   SET_WINDOW_SIZE,
 } from './types'
 
 export const setLoggedIn = (loggedIn) => {
   return {
-    type: SET_WINDOW_SIZE,
+    type: SET_LOGGED_IN,
     payload: loggedIn
+  }
+}
+
+export const setVerifyMessage = (verifyMessage) => {
+  return {
+    type: SET_VERIFY_MESSAGE,
+    payload: verifyMessage
   }
 }
 

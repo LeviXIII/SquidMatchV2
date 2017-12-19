@@ -35,9 +35,9 @@ class LoginForm extends Component {
   }
 
   render() {
-
-    //If passwords match for creating account, go to next page.
+    //If passwords match for creating account, clear the verify message and go to next page.
     if (this.props.matchingPassword) {
+      this.props.setVerifyMessage("");
       return <Redirect to="/account-info" />
     }
 
@@ -52,7 +52,7 @@ class LoginForm extends Component {
                             </RaisedButton>
 
     return (
-      <section className="container divBorder formSettings">
+      <section className="container divBorder loginFormSettings">
         <h1 className="siteTitle">Squid Match</h1>
         <h4 style={subTitle}>Login to find active players to play with</h4>
             <section className="grid">
@@ -118,9 +118,10 @@ const mapStateToProps = (state) => {
     username: state.loginReducer.username,
     password: state.loginReducer.password,
     verifyPassword: state.loginReducer.verifyPassword,
-    verifyMessage: state.loginReducer.verifyMessage,
     createButton: state.loginReducer.createButton,
     matchingPassword: state.loginReducer.matchingPassword,
+
+    verifyMessage: state.generalReducer.verifyMessage,
   }
 }
 

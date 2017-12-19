@@ -1,7 +1,6 @@
 import {
   GET_LOGIN_INPUT,  
   SET_MATCHING_PASSWORD,
-  SET_VERIFY_MESSAGE,
   SHOW_CREATE_BUTTON,
 } from '../actions/types';
 
@@ -9,7 +8,6 @@ const initialState = {
   username: '',
   password: '',
   verifyPassword: '',
-  verifyMessage: '',
   createButton: false,
   matchingPassword: false,
 };
@@ -20,8 +18,6 @@ export default (state = initialState, action) => {
       return { ...state, [action.payload.name]: action.payload.value }
     case SET_MATCHING_PASSWORD:
       return { ...state, matchingPassword: action.payload };
-    case SET_VERIFY_MESSAGE:
-      return { ...state, verifyMessage: action.payload };
     case SHOW_CREATE_BUTTON:
       return { ...state, createButton: action.payload };
     default:

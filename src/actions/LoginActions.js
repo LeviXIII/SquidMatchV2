@@ -1,7 +1,6 @@
 import {
   GET_LOGIN_INPUT,
   SET_MATCHING_PASSWORD,
-  SET_VERIFY_MESSAGE,
   SHOW_CREATE_BUTTON
 } from './types';
 
@@ -16,13 +15,6 @@ export const setMatchingPassword = (matchingPassword) => {
   return {
     type: SET_MATCHING_PASSWORD,
     payload: matchingPassword
-  }
-}
-
-export const setVerifyMessage = (verifyMessage) => {
-  return {
-    type: SET_VERIFY_MESSAGE,
-    payload: verifyMessage
   }
 }
 
