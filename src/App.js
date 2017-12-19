@@ -1,22 +1,31 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import LoginForm from './components/LoginForm';
 import AccountInfo from './components/AccountInfo';
 import SiteHeader from './components/SiteHeader';
+import ChooseCriteria from './components/ChooseCriteria';
 
 class App extends Component {
   render() {
     return (
       <div className="mainBackground">
+      {this.props.isLoggedIn && <SiteHeader />}
       <Switch>
         <Route path="/" exact render={() => <LoginForm />} />
         <Route path="/account-info" exact render={() => <AccountInfo />} />
-        <Route path="/siteheader" exact render={() => <SiteHeader />} />
+        <Route path="/choose-criteria" exact render={() => <ChooseCriteria />} />
       </Switch>
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    isLoggedIn: state.generalReducer.isLoggedIn
+  }
+}
+
+export default connect(mapStateToProps)(App);

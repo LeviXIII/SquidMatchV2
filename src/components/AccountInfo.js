@@ -1,17 +1,43 @@
 import React, { Component } from 'react';
-import { TextField, RaisedButton, SelectField, MenuItem,
-        } from 'material-ui';
+import { TextField, RaisedButton, SelectField, 
+        MenuItem } from 'material-ui';
+import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
 class AccountInfo extends Component {
   
-  showCreateButton = (e) => {
+  createAccount = (e) => {
     e.preventDefault();
+
+    axios.post('/register', {
+      username: this.props.username,
+      password: this.props.password,
+      email: this.props.email,
+      NSID: this.props.NSID,
+      age: this.props.age,
+      location: this.props.location,
+      rank: this.props.rank,
+      mode: this.props.mode,
+      weapon: this.props.weapon,
+      status: "Available",
+    })
+    .then(result => {
+      console.log(result);
+      this.props.setLoggedIn(true);
+
+    })
+    .catch(error => {
+      console.log(error);
+    })
   }
 
   render() {
+
+    if (this.props.isLoggedIn) {
+      <Redirect to='/choose-criteria' />
+    }
 
     return (
       <section className="container divBorder formSettings">
@@ -108,7 +134,7 @@ class AccountInfo extends Component {
         <RaisedButton href="/" overlayStyle={signupButton}>Cancel</RaisedButton>
 
         <RaisedButton overlayStyle={loginButton}
-                onClick={e => this.showCreateButton(e)}>
+                onClick={e => this.createAccount(e)}>
                 Create
         </RaisedButton>
         </section>
@@ -128,6 +154,8 @@ const mapStateToProps = (state) => {
     rank: state.accountReducer.rank,
     mode: state.accountReducer.mode,
     weapon: state.accountReducer.weapon,
+
+    isLoggedIn: state.generalReducer.isLoggedIn,
 
     username: state.loginReducer.username,
     password: state.loginReducer.password,
@@ -174,7 +202,7 @@ const subTitle =  {
   fontSize: '1.5rem',
   textAlign: 'center',
   color: '#464547',
-  marginTop: '1%',
+  marginTop: '3%',
   marginBottom: '1%',
 }
 

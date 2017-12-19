@@ -1,24 +1,18 @@
 import {
-  GET_ACCOUNT_INPUT,
-  SET_WINDOW_SIZE
+  SET_SEARCH_INPUT,
 } from '../actions/types';
 
 const initialState = {
-  email: '',
-  NSID: '',
-  age: '< 19',
-  location: 'Canada',
-  rank: 'C',
-  mode: 'Turf War',
-  weapon: 'Shooters',
-  status: 'Available',
-  note: false,
-  from: '',
+  searchAge: 'Any',
+  searchLocation: 'Any',
+  searchRank: 'Any',
+  searchMode: 'Any',
+  searchWeapon: 'Any',
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case GET_ACCOUNT_INPUT:
+    case SET_SEARCH_INPUT:
       return { ...state, [action.payload.name]: action.payload.value }
     default:
       return state;

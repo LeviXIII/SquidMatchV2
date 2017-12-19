@@ -106,7 +106,7 @@ const style = Object.assign({}, miniMenu);
 const mapStateToProps = (state) => {
   return { 
     status: state.accountReducer.status,
-    windowSize: state.accountReducer.windowSize
+    windowSize: state.generalReducer.windowSize
   }
 }
 
