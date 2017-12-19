@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { TextField, Grid, Button, Input,
-          InputLabel, Select, MenuItem,
-          FormControl,
+import { TextField, RaisedButton, SelectField, MenuItem,
         } from 'material-ui';
-import { Redirect, Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
@@ -16,143 +14,107 @@ class AccountInfo extends Component {
   render() {
 
     return (
-      <form className="container divBorder formSettings">
+      <section className="container divBorder formSettings">
         <h1 style={subTitle}>Create Account</h1>
-        <Grid justify="center" container spacing={16}>
-          <Grid item xs={10} sm={10} md={10} lg={10}>
-            <TextField fullWidth label="Email"
+        <section className="grid">
+          <TextField floatingLabelText="Email" floatingLabelFixed style={fieldWidth}
                     name="email" type="email" value={this.props.email}
+                    errorText={!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.props.email) && "Please enter a valid email address."}
                     placeholder="email@mail.com"
                     onChange={e => this.props.getAccountInput({
                       name: e.target.name, value: e.target.value.replace(/ /g, "")
-                    })}
-              >
-            </TextField>
-          </Grid>
-        </Grid>
+                    })} />
+        </section>
       
-        <Grid justify="center" container spacing={16}>
-          <Grid item xs={10} sm={10} md={10} lg={10}>
-          <TextField fullWidth type="text" label="NSID"
-                  name="NSID" value={this.props.NSID}
-                  placeholder="1234-5678-9012" helperText="Please include the dashes ( - )"
+        <section className="grid">
+          <TextField type="text" floatingLabelText="NSID" floatingLabelFixed style={fieldWidth}
+                  name="NSID" value={this.props.NSID} placeholder="1234-5678-9012"
+                  errorText={!/^\d{4}-\d{4}-\d{4}$/g.test(this.props.NSID) && "Please include -'s."}
                   onChange={e => this.props.getAccountInput({
-                    name: e.target.name, value: e.target.value.replace(/ /g, "")
-                  })}
-          >
-          </TextField>
-          </Grid>
-        </Grid>
-
-        <Grid justify="center" container spacing={16}>
-          <Grid item xs={10} sm={10} md={10} lg={10}>
-            <FormControl>
-              <InputLabel htmlFor="age">Age</InputLabel>
-              <Select
-                name="age" value={this.props.age}
-                onChange={e => this.props.getAccountInput({name: e.target.name, value: e.target.value })}
-                input={<Input id="age" />}
-                style={customWidth}
-              >
-                <MenuItem value="< 19">{'< '}19</MenuItem>
-                <MenuItem value="19-25">19-25</MenuItem>
-                <MenuItem value="26-30">26-30</MenuItem>
-                <MenuItem value="> 30">{"> "}30</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-        </Grid>
+                    name: e.target.name, value: e.target.value
+                  })} />
+        </section>
         
-        <Grid justify="center" container spacing={16}>
-          <Grid item xs={10} sm={10} md={10} lg={10}>
-            <FormControl>
-              <InputLabel htmlFor="location">Location</InputLabel>
-              <Select
-                name="location" value={this.props.location}
-                onChange={e => this.props.getAccountInput({ name: e.target.name, value: e.target.value })}
-                input={<Input id="location" />}
-                style={customWidth}
-              >
-                <MenuItem value="Canada">Canada</MenuItem>
-                <MenuItem value="USA">USA</MenuItem>
-                <MenuItem value="Europe">Europe</MenuItem>
-                <MenuItem value="Japan">Japan</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-        </Grid>
+        <section className="gridSelector">
+          <SelectField
+            value={this.props.age} style={customWidth}
+            onChange={(e, index, value) => this.props.getAccountInput({ name: "age", value: value })}
+            floatingLabelFixed floatingLabelText="Age"
+          >
+            <MenuItem value="< 19" primaryText="< 19" />
+            <MenuItem value="19-25" primaryText="19-25" />
+            <MenuItem value="26-30" primaryText="26-30" />
+            <MenuItem value="> 30" primaryText="> 30" />
+          </SelectField>
+        
+          <SelectField
+            name="location" value={this.props.location}
+            onChange={(e, index, value) => this.props.getAccountInput({ name: "location", value: value })}
+            floatingLabelFixed floatingLabelText="Location"
+            style={customWidth}
+          >
+            <MenuItem value="Canada" primaryText="Canada"/>
+            <MenuItem value="USA" primaryText="USA" />
+            <MenuItem value="Europe" primaryText="Europe" />
+            <MenuItem value="Japan" primaryText="Japan" />
+          </SelectField>
+        </section>
 
-        <Grid justify="center" container spacing={16}>
-          <Grid item xs={10} sm={10} md={10} lg={10}>
-            <FormControl>
-              <InputLabel htmlFor="rank">Rank</InputLabel>
-              <Select
-                name="rank" value={this.props.rank}
-                onChange={e => this.props.getAccountInput({ name: e.target.name, value: e.target.value })}
-                input={<Input id="rank" />}
-                style={customWidth}
-              >
-                <MenuItem value="C">C</MenuItem>
-                <MenuItem value="B">B</MenuItem>
-                <MenuItem value="A">A</MenuItem>
-                <MenuItem value="S">S</MenuItem>
-                <MenuItem value="S+">S+</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-        </Grid>
+        <section className="gridSelector">
+          <SelectField
+            name="rank" value={this.props.rank}
+            onChange={(e, index, value) => this.props.getAccountInput({ name: "rank", value: value })}
+            floatingLabelFixed floatingLabelText="Rank"
+            style={customWidth}
+          >
+            <MenuItem value="C" primaryText="C"/>
+            <MenuItem value="B" primaryText="B"/>
+            <MenuItem value="A" primaryText="A"/>
+            <MenuItem value="S" primaryText="S"/>
+            <MenuItem value="S+" primaryText="S+"/>
+          </SelectField>
 
-        <Grid justify="center" container spacing={16}>
-          <Grid item xs={10} sm={10} md={10} lg={10}>
-            <FormControl>
-              <InputLabel htmlFor="mode">Mode</InputLabel>
-              <Select
-                name="mode" value={this.props.mode}
-                onChange={e => this.props.getAccountInput({ name: e.target.name, value: e.target.value })}
-                input={<Input id="mode" />}
-                style={customWidth}
-              >
-                <MenuItem value="Turf War">Turf War</MenuItem>
-                <MenuItem value="League">League</MenuItem>
-                <MenuItem value="Salmon Run">Salmon Run</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-        </Grid>
+          <SelectField
+            name="mode" value={this.props.mode}
+            onChange={(e, index, value) => this.props.getAccountInput({ name: "mode", value: value })}
+            floatingLabelFixed floatingLabelText="Mode"
+            style={customWidth}
+          >
+            <MenuItem value="Turf War" primaryText="Turf War"/>
+            <MenuItem value="League" primaryText="League"/>
+            <MenuItem value="Salmon Run" primaryText="Salmon Run"/>
+          </SelectField>
+        </section>
+        
+        <section className="gridSelector">
+          <SelectField
+            name="weapon" value={this.props.weapon}
+            onChange={(e, index, value) => this.props.getAccountInput({ name: "weapon", value: value })}
+            floatingLabelFixed floatingLabelText="Weapon"
+            style={customWidth}
+          >
+            <MenuItem value="Shooters" primaryText="Shooters"/>
+            <MenuItem value="Rollers" primaryText="Rollers"/>
+            <MenuItem value="Chargers" primaryText="Chargers"/>
+            <MenuItem value="Sloshers" primaryText="Sloshers"/>
+            <MenuItem value="Splatlings" primaryText="Splatlings"/>
+            <MenuItem value="Dualies" primaryText="Dualies"/>
+            <MenuItem value="Brellas" primaryText="Brellas"/>
+          </SelectField>
+        </section>
+        <br />
 
-        <Grid justify="center" container spacing={16}>
-          <Grid item xs={10} sm={10} md={10} lg={10}>
-            <FormControl>
-              <InputLabel htmlFor="weapon">Weapon</InputLabel>
-              <Select
-                name="weapon" value={this.props.weapon}
-                onChange={e => this.props.getAccountInput({ name: e.target.name, value: e.target.value })}
-                input={<Input id="weapon" />}
-                style={customWidth}
-              >
-                <MenuItem value="Shooters">Shooters</MenuItem>
-                <MenuItem value="Rollers">Rollers</MenuItem>
-                <MenuItem value="Chargers">Chargers</MenuItem>
-                <MenuItem value="Sloshers">Sloshers</MenuItem>
-                <MenuItem value="Splatlings">Splatlings</MenuItem>
-                <MenuItem value="Dualies">Dualies</MenuItem>
-                <MenuItem value="Brellas">Brellas</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-        </Grid>
+        <section className="gridSelector">
+        <RaisedButton href="/" overlayStyle={signupButton}>Cancel</RaisedButton>
 
-        <Grid justify="center" container spacing={16}>
-          <Button href="/" raised style={signupButton}>
-                  Cancel
-          </Button>
+        <RaisedButton overlayStyle={loginButton}
+                onClick={e => this.showCreateButton(e)}>
+                Create
+        </RaisedButton>
+        </section>
+        <br />
 
-          <Button raised style={loginButton}
-                  onClick={e => this.showCreateButton(e)}>
-                  Create
-          </Button>
-        </Grid>
-      </form>
+      </section>
     );
   }
 }
@@ -160,7 +122,7 @@ class AccountInfo extends Component {
 const mapStateToProps = (state) => {
   return {
     email: state.accountReducer.email,
-    NSID: state.accountReducer.userNSID,
+    NSID: state.accountReducer.NSID,
     age: state.accountReducer.age,
     location: state.accountReducer.location,
     rank: state.accountReducer.rank,
@@ -176,8 +138,12 @@ const mapStateToProps = (state) => {
 //Styles//
 //////////
 
+const fieldWidth = {
+  width: '80%'
+}
+
 const customWidth = {
-  width: 200,
+  width: 125,
 }
 
 const messageStyle = {
@@ -194,9 +160,6 @@ const signupButton = {
   backgroundColor: '#ff43b7',
   fontFamily: 'paintball',
   color: 'black',
-  marginTop: '5%',
-  marginBottom: '5%',
-  marginRight: '5%'
 }
 
 const loginButton = {
@@ -204,8 +167,6 @@ const loginButton = {
   backgroundColor: '#7aff42',
   fontFamily: 'paintball',
   color: 'black',
-  marginTop: '5%',
-  marginBottom: '5%',
 }
 
 const subTitle =  {

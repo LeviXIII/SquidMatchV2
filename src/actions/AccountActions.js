@@ -1,5 +1,5 @@
 import {
-  GET_ACCOUNT_INPUT,
+  GET_ACCOUNT_INPUT, SET_WINDOW_SIZE,
 } from './types';
 
 export const getAccountInput = ({ name, value }) => {
@@ -9,9 +9,9 @@ export const getAccountInput = ({ name, value }) => {
   }
 }
 
-// export const getMatchingPassword = (matchingPassword) => {
-//   return {
-//     type: GET_MATCHING_PASSWORD,
-//     payload: matchingPassword
-//   }
-// }
+export const setWindowSize = (window) => {
+  return {
+    type: SET_WINDOW_SIZE,
+    payload: window
+  }
+}

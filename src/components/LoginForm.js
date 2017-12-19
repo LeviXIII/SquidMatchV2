@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { TextField, Grid, Button } from 'material-ui';
-import { Redirect, Link } from 'react-router-dom';
+import { TextField, RaisedButton } from 'material-ui';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
@@ -41,90 +41,73 @@ class LoginForm extends Component {
       return <Redirect to="/account-info" />
     }
 
-    let showLoginButton = <Button raised style={loginButton}>Login</Button>;
-    let showSignupButton = <Button raised style={signupButton}
+    let showLoginButton = <RaisedButton overlayStyle={loginButton}>Login</RaisedButton>;
+    let showSignupButton = <RaisedButton overlayStyle={signupButton}
                               onClick={e => this.showCreateButton(e)}>
                               Sign Up
-                            </Button>
-    let showCreateAccount = <Button raised style={signupButton}
+                            </RaisedButton>
+    let showCreateAccount = <RaisedButton overlayStyle={signupButton}
                               onClick={e => this.setupAccount(e)}>
                               Create Account
-                            </Button>
+                            </RaisedButton>
 
     return (
-      <form className="container divBorder formSettings">
+      <section className="container divBorder formSettings">
         <h1 className="siteTitle">Squid Match</h1>
         <h4 style={subTitle}>Login to find active players to play with</h4>
-          <Grid justify="center" container spacing={16}>
-            <Grid item xs={2} sm={1} md={1} lg={1}>
-              <img className="displayIcon" alt="username-icon" src={squidIcon}/>
-            </Grid>
-	          <Grid item xs={9}>
-              <TextField xs={9} sm={9} md={9} lg={9} fullWidth label="Username"
+            <section className="grid">
+              <section className="imgContainer">
+                <img className="displayIcon" alt="username-icon" src={squidIcon}/>
+              </section>
+              <TextField style={fieldWidth} floatingLabelText="Username" floatingLabelFixed
                       name="username" value={this.props.username}
                       onChange={e => this.props.getLoginInput({
                         name: e.target.name, value: e.target.value.replace(/ /g, "")
                       })}>
               </TextField>
-            </Grid>
-          </Grid>
+            </section>
         
-          <Grid justify="center" container spacing={16}>
-            <Grid item xs={2} sm={1} md={1} lg={1}>
-              <img className="displayIcon" alt="password-icon" src={passwordIcon}/>
-            </Grid>
-            <Grid item xs={9}>
-            <TextField xs={9} sm={9} md={9} lg={9} fullWidth type="password" 
-                    label="Password" name="password" value={this.props.password}
-                    onChange={e => this.props.getLoginInput({
-                      name: e.target.name, value: e.target.value.replace(/ /g, "")
-                    })}>
-            </TextField>
-            </Grid>
-          </Grid>
+            <section className="grid">
+              <section className="imgContainer">
+                <img className="displayIcon" alt="password-icon" src={passwordIcon}/>
+              </section>
+              <TextField style={fieldWidth} type="password" floatingLabelText="Password"
+                      floatingLabelFixed name="password" value={this.props.password}
+                      onChange={e => this.props.getLoginInput({
+                        name: e.target.name, value: e.target.value.replace(/ /g, "")
+                      })}>
+              </TextField>
+            </section>
 
             {this.props.createButton &&
-            <section>
-              <Grid justify="center" container spacing={16}>
-                <Grid item xs={2} sm={1} md={1} lg={1}>
-                  <img className="displayIcon" alt="password-icon" src={passwordIcon}/>
-                </Grid>
-                <Grid item xs={9}>
-                  <TextField xs={9} sm={9} md={9} lg={9} fullWidth type="password"
-                          label="Verify Password" name="verifyPassword" value={this.props.verifyPassword}
-                          onChange={e => this.props.getLoginInput({
-                            name: e.target.name, value: e.target.value.replace(/ /g, "")
-                          })}>
-                  </TextField>
-                </Grid>
-              </Grid>
+            <section className="grid">
+              <section className="imgContainer">
+                <img className="displayIcon" alt="password-icon" src={passwordIcon}/>
+              </section>  
+              <TextField style={fieldWidth} type="password" floatingLabelText="Verify Password"
+                      floatingLabelFixed name="verifyPassword" value={this.props.verifyPassword}
+                      onChange={e => this.props.getLoginInput({
+                        name: e.target.name, value: e.target.value.replace(/ /g, "")
+                      })}>
+              </TextField>
             </section>
             }
-          <div>
-            <br />
-            <section className="center-align">
+
+            <section className="grid">
               <p style={messageStyle}>{this.props.verifyMessage}</p>
             </section>
-            <br />
 
-            <section className="center-align">
-              <Grid justify="center" container spacing={16}>
+            <section className="grid">
                 {this.props.createButton ? showCreateAccount : showLoginButton}
-              </Grid>
-              <br />
-              <br />
             </section>
+            <br />
 
-            <section className="center-align">
-            <Grid justify="center" container spacing={16}>
+            <section className="grid">
               {this.props.createButton ? showLoginButton : showSignupButton}
-            </Grid>
             </section>
             <br />
-            <br />
-          </div>
           
-      </form>
+      </section>
     )
   }
 
@@ -144,6 +127,10 @@ const mapStateToProps = (state) => {
 //////////
 //Styles//
 //////////
+
+const fieldWidth = {
+  width: '75%'
+}
 
 const messageStyle = {
   fontFamily: 'overpass',
@@ -174,7 +161,7 @@ const subTitle =  {
   textAlign: 'center',
   color: '#464547',
   marginTop: '1%',
-  marginBottom: '3%',
+  marginBottom: '1%',
 }
 
 export default connect(mapStateToProps, actions)(LoginForm);

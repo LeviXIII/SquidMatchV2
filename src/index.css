@@ -18,7 +18,7 @@
   }
 
   .formSettings {
-    margin-top: 5vh;
+    margin-top: 7vh;
     margin-left: 3vh;
     margin-right: 3vh;
     background-color: white;
@@ -34,7 +34,7 @@
   }
 
   .formSettings {
-    margin-top: 5vh;
+    margin-top: 10vh;
     margin-left: 15vh;
     margin-right: 15vh;
     background-color: white;
@@ -51,15 +51,43 @@
   }
 
   .formSettings {
-    margin-top: 5vh;
-    margin-left: 30vh;
-    margin-right: 30vh;
+    margin-top: 10vh;
+    margin-left: 40vh;
+    margin-right: 40vh;
     background-color: white;
   }
 }
 
-.displayIcon {
+.grid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gridSelector {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.header {
+  margin-bottom: 0rem;
+  background-image: url("../src/images/headerBackground.png");
+  background-size: cover;
+  background-attachment: fixed;
   width: 100%;
+  height: auto;
+}
+
+.imgContainer {
+  width: 45px;
+  height: auto;
+  margin-top: 10px;
+  margin-right: 10px;
+}
+
+.displayIcon {
+  max-width: 100%;
   height: auto;
 }
 
@@ -85,7 +113,7 @@
   font-family: 'paintball';
   font-size: 3em;
   display: block;
-  margin-top: 1%;
+  margin-top: 0%;
   margin-bottom: 1%;
   text-align: center;
   background: linear-gradient(to bottom, #ff43b7, #7aff42);
