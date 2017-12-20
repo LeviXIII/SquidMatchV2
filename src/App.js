@@ -6,6 +6,7 @@ import LoginForm from './components/LoginForm';
 import AccountInfo from './components/AccountInfo';
 import SiteHeader from './components/SiteHeader';
 import ChooseCriteria from './components/ChooseCriteria';
+import Results from './components/Results';
 
 class App extends Component {
   render() {
@@ -16,6 +17,7 @@ class App extends Component {
         <Route path="/" exact render={() => <LoginForm />} />
         <Route path="/account-info" exact render={() => <AccountInfo />} />
         <Route path="/choose-criteria" exact render={() => <ChooseCriteria />} />
+        <Route path="/results" exact render={() => <Results />} />
       </Switch>
       </div>
     );

@@ -2,15 +2,14 @@ import React, { Component } from 'react';
 import { TextField, RaisedButton, SelectField, 
         MenuItem } from 'material-ui';
 import axios from 'axios';
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
 class ChooseCriteria extends Component {
 
-  searchUsers = (e) => {
-    e.preventDefault();
-
+  searchUsers = () => {
+    
     axios.post('/search-criteria', {
       username: this.props.username,
       searchAge: this.props.searchAge,
@@ -25,6 +24,7 @@ class ChooseCriteria extends Component {
     .catch(error => {
       console.log(error);
     })
+
   }
 
   render() {
@@ -117,9 +117,11 @@ class ChooseCriteria extends Component {
         <br />
 
         <section className="grid">
-          <RaisedButton overlayStyle={loginButton} onClick={e => this.searchUsers(e)}>
-            Search
-          </RaisedButton>
+          <Link to="/results">
+            <RaisedButton overlayStyle={loginButton} onClick={this.searchUsers()}>
+              Search
+            </RaisedButton>
+          </Link>
         </section>
 
       </section>
