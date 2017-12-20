@@ -1,5 +1,6 @@
 import {
   SET_SEARCH_INPUT,
+  SET_SEARCH_RESULTS,
   SET_INITIAL_SEARCH_STATE,
 } from '../actions/types';
 
@@ -9,12 +10,15 @@ const initialState = {
   searchRank: 'Any',
   searchMode: 'Any',
   searchWeapon: 'Any',
+  searchResults: [],
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_SEARCH_INPUT:
       return { ...state, [action.payload.name]: action.payload.value }
+    case SET_SEARCH_RESULTS:
+      return { ...state, searchResults: action.payload }
     case SET_INITIAL_SEARCH_STATE:
       return initialState;
     default:

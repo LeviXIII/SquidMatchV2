@@ -10,7 +10,7 @@ import * as actions from '../actions';
 
 class SiteHeader extends Component {
   
-  componentDidMount() {
+  componentWillMount() {
     window.addEventListener("resize", () => this.props.setWindowSize(window.innerWidth));
   }
 
@@ -46,7 +46,7 @@ class SiteHeader extends Component {
             </section>
           ) : (
           <ToolbarGroup style={toolbarStyle}>
-            <Link to="/"><FlatButton style={menuItems} label="Find Squad" /></Link>
+            <Link to="/choose-criteria"><FlatButton style={menuItems} label="Find Squad" /></Link>
             <Link to="#"><FlatButton style={menuItems} label="News" /></Link>
             <Link to="#"><FlatButton style={menuItems} label="Friend List" /></Link>
             <Link to="#"><FlatButton style={menuItems} label="Help" /></Link>

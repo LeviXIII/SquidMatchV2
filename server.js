@@ -159,8 +159,73 @@ app.post('/register', (req, res) => {
       })
     })
   })
-}) //end app.post
 
+})
 
+app.post('/search-criteria', (req, res) => {
 
+  //Build the query object in order to search dynamically.
+  let searchQuery = {}
+  searchQuery['$and'] = []; //Start an $and query
+  searchQuery["$and"].push({ status: "Available" }); //Always check for status.
+  searchQuery["$and"].push({ "notification.notify": false });
+  searchQuery["$and"].push({ username: { $ne: req.body.username }})
+
+  /* Magic!
+    Check to see which elements in the array match the fields required to search.
+    If they do, add the field to the query.
+    If a value is "any", find all values in the field.
+  */
+  
+  //Age
+  if (req.body.searchAge === "Any") {
+    searchQuery["$and"].push({ age: {$regex: /^.*$/ } }); //regex searches from start to end for anything.
+  }
+  else {
+    searchQuery["$and"].push({ age: req.body.searchAge });
+  }
+  
+  //Location
+  if (req.body.searchLocation === "Any") {
+    searchQuery["$and"].push({ location: {$regex: /^.*$/ } });
+  }
+  else {
+    searchQuery["$and"].push({ location: req.body.searchLocation });
+  }
+  
+  //Rank
+  if (req.body.searchRank === "Any") {
+    searchQuery["$and"].push({ rank: {$regex: /^.*$/ } });
+  }
+  else {
+    searchQuery["$and"].push({ rank: req.body.searchRank });
+  }
+  
+  //Mode
+  if (req.body.searchMode === "Any") {
+    searchQuery["$and"].push({ mode: {$regex: /^.*$/ } });
+  }
+  else {
+    searchQuery["$and"].push({ mode: req.body.searchMode });
+  }
+  
+  //Weapon
+  if (req.body.searchWeapon === "Any") {
+    searchQuery["$and"].push({ weapon: {$regex: /^.*$/ } });
+  }
+  else {
+    searchQuery["$and"].push({ weapon: req.body.searchWeapon });
+  }
+
+  //Find the users that match the given criteria by time in the queue.
+  User.find(searchQuery).sort({ time: 1 })
+  .then(result => {
+    res.json({result: result});
+  })
+  .catch(error => {
+    console.log("Couldn't get the users you searched for." + error);
+    res.status(500);
+  })
+
+});
 /******************************************************************/

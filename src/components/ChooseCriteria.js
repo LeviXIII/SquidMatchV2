@@ -8,6 +8,25 @@ import * as actions from '../actions';
 
 class ChooseCriteria extends Component {
 
+  searchUsers = (e) => {
+    e.preventDefault();
+
+    axios.post('/search-criteria', {
+      username: this.props.username,
+      searchAge: this.props.searchAge,
+      searchLocation: this.props.searchLocation,
+      searchRank: this.props.searchRank,
+      searchMode: this.props.searchMode,
+      searchWeapon: this.props.searchWeapon,
+    })
+    .then(result => {
+      this.props.setSearchResults(result.data.result);
+    })
+    .catch(error => {
+      console.log(error);
+    })
+  }
+
   render() {
 
     if (!this.props.isLoggedIn) {
@@ -98,9 +117,9 @@ class ChooseCriteria extends Component {
         <br />
 
         <section className="grid">
-        <RaisedButton overlayStyle={loginButton}>
-          Search
-        </RaisedButton>
+          <RaisedButton overlayStyle={loginButton} onClick={e => this.searchUsers(e)}>
+            Search
+          </RaisedButton>
         </section>
 
       </section>
@@ -117,6 +136,8 @@ const mapStateToProps = (state) => {
     searchWeapon: state.searchReducer.searchWeapon,
 
     isLoggedIn: state.generalReducer.isLoggedIn,
+
+    username: state.loginReducer.username,
   }
 }
 
