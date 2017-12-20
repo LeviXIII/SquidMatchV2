@@ -13,6 +13,7 @@ class LoginForm extends Component {
   showCreateButton = (e) => {
     e.preventDefault();
     this.props.showCreateButton(true);
+    this.props.setVerifyMessage("");
   }
 
   userLogin = (e) => {
@@ -48,6 +49,7 @@ class LoginForm extends Component {
       if (this.props.password === this.props.verifyPassword &&
         this.props.password.length >= 8) {
         this.props.setMatchingPassword(true);
+        this.props.getLoginInput({name: 'verified', value: true})
       }
       else {
         this.props.setVerifyMessage("Your password doesn't match or is too short.");
@@ -59,9 +61,11 @@ class LoginForm extends Component {
   }
 
   render() {
-    //If passwords match for creating account, clear the verify message and go to next page.
-    if (this.props.matchingPassword) {
+    //If passwords match for creating account, clear the verify message,
+    //setup account state, and allow access to next page.
+    if (this.props.matchingPassword && this.props.verified) {
       this.props.setVerifyMessage("");
+      this.props.setInitialAccountState();
       return <Redirect to="/account-info" />
     }
 
@@ -154,17 +158,7 @@ const mapStateToProps = (state) => {
     verifyPassword: state.loginReducer.verifyPassword,
     createButton: state.loginReducer.createButton,
     matchingPassword: state.loginReducer.matchingPassword,
-
-    // email: state.accountReducer.email,
-    // NSID: state.accountReducer.NSID,
-    // age: state.accountReducer.age,
-    // location: state.accountReducer.location,
-    // rank: state.accountReducer.rank,
-    // mode: state.accountReducer.mode,
-    // weapon: state.accountReducer.weapon,
-    // status: state.accountReducer.status,
-    // notify: state.accountReducer.notify,
-    // from: state.accountReducer.from,
+    verified: state.loginReducer.verified,
 
     isLoggedIn: state.generalReducer.isLoggedIn,
     verifyMessage: state.generalReducer.verifyMessage,

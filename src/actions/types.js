@@ -6,3 +6,7 @@ export const SET_VERIFY_MESSAGE = 'set_verify_message';
 export const SET_LOGGED_IN = 'set_logged_in';
 export const SET_WINDOW_SIZE = 'set_window_size';
 export const SHOW_CREATE_BUTTON = 'show_create_button';
+export const SET_INITIAL_ACCOUNT_STATE = 'set_initial_account_state';
+export const SET_INITIAL_GENERAL_STATE = 'set_initial_general_state';
+export const SET_INITIAL_LOGIN_STATE = 'set_initial_login_state';
+export const SET_INITIAL_SEARCH_STATE = 'set_initial_search_state';

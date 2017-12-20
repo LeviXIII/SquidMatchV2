@@ -60,6 +60,13 @@ app.post('/login', (req, res) => {
 
           let token = jwt.sign(payload, secretKey);
           
+          //Update the user's login time for search results.
+          User.findOneAndUpdate(
+            { username: req.body.username },
+            { time: Date.now() },
+            {}
+          ).then(result => {}).catch(error => {})
+
           return res.json({
             token: token,
             NSID: result.NSID,
@@ -140,7 +147,7 @@ app.post('/register', (req, res) => {
 
         res.status(200).json({
           token: token,
-          id: result._id
+          //id: result._id
         });
       })
       .catch(error => {

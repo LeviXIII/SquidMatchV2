@@ -14,6 +14,15 @@ class SiteHeader extends Component {
     window.addEventListener("resize", () => this.props.setWindowSize(window.innerWidth));
   }
 
+  logout = (e) => {
+    this.props.setInitialAccountState();
+    this.props.setInitialLoginState();
+    this.props.setInitialSearchState();
+    this.props.setInitialGeneralState();
+    this.props.setLoggedIn(false);
+    localStorage.removeItem('token');
+  }
+
   render() {
     return (
       <section className="header">
@@ -27,7 +36,9 @@ class SiteHeader extends Component {
                 anchorOrigin={{horizontal: 'left', vertical: 'top'}}
                 targetOrigin={{horizontal: 'left', vertical: 'top'}}
               >
-                <Link style={miniMenu} to="/"><MenuItem primaryText="Find Squad" /></Link>
+                <Link style={miniMenu} to="/choose-criteria">
+                  <MenuItem primaryText="Find Squad" />
+                </Link>
                 <MenuItem primaryText="News" />
                 <MenuItem primaryText="Friend List" />
                 <MenuItem primaryText="Help" />
@@ -53,7 +64,7 @@ class SiteHeader extends Component {
                 <MenuItem primaryText="Busy" />
                 <Divider />
                 <MenuItem primaryText="Update Account" />
-                <MenuItem primaryText="Logout" />
+                <MenuItem primaryText="Logout" onClick={e => this.logout(e)}/>
               </IconMenu>
           </ToolbarGroup>
           

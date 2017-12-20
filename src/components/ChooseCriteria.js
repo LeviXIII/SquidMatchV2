@@ -14,7 +14,7 @@ class ChooseCriteria extends Component {
       //this.props.history.push('/choose-criteria');
       return <Redirect to='/' />
     }
-    console.log(this.props.isLoggedIn);
+
     return (
       <section className="container divBorder formSettings">
         <h1 style={subTitle}>Choose Your Criteria</h1>
@@ -102,7 +102,6 @@ class ChooseCriteria extends Component {
           Search
         </RaisedButton>
         </section>
-        <br />
 
       </section>
     );

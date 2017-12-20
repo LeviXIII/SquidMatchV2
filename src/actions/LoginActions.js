@@ -1,7 +1,8 @@
 import {
   GET_LOGIN_INPUT,
   SET_MATCHING_PASSWORD,
-  SHOW_CREATE_BUTTON
+  SHOW_CREATE_BUTTON,
+  SET_INITIAL_LOGIN_STATE,
 } from './types';
 
 export const getLoginInput = ({ name, value }) => {
@@ -22,5 +23,11 @@ export const showCreateButton = (createButton) => {
   return {
     type: SHOW_CREATE_BUTTON,
     payload: createButton
+  }
+}
+
+export const setInitialLoginState = () => {
+  return {
+    type: SET_INITIAL_LOGIN_STATE,
   }
 }

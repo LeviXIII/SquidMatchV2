@@ -27,7 +27,7 @@ class AccountInfo extends Component {
         status: "Available",
       })
       .then(result => {
-        console.log(result.data);
+        localStorage.setItem('token', result.data.token);
         this.props.setLoggedIn(true);
 
       })
@@ -41,7 +41,13 @@ class AccountInfo extends Component {
   }
 
   render() {
+
+    if (!this.props.verified) {
+      return <Redirect to='/' />
+    }
+
     if (this.props.isLoggedIn) {
+      this.props.getLoginInput({name: 'verified', value: false})
       return <Redirect to='/choose-criteria' />
     }
 
@@ -169,6 +175,7 @@ const mapStateToProps = (state) => {
 
     username: state.loginReducer.username,
     password: state.loginReducer.password,
+    verified: state.loginReducer.verified,
   }
 }
 
