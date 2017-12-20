@@ -11,7 +11,7 @@ const initialState = {
   mode: 'Turf War',
   weapon: 'Shooters',
   status: 'Available',
-  note: false,
+  notify: false,
   from: '',
 };
 

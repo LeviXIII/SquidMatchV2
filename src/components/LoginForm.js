@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { TextField, RaisedButton } from 'material-ui';
 import { Redirect } from 'react-router-dom';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
@@ -16,6 +17,29 @@ class LoginForm extends Component {
 
   userLogin = (e) => {
     e.preventDefault();
+
+    axios.post('/login', {
+      username: this.props.username,
+      password: this.props.password
+    })
+    .then(result => {
+      localStorage.setItem('token', result.data.token);
+      this.props.getAccountInput({ name: "NSID", value: result.data.NSID });
+      this.props.getAccountInput({ name: "age", value: result.data.age });
+      this.props.getAccountInput({ name: "location", value: result.data.location });
+      this.props.getAccountInput({ name: "rank", value: result.data.rank });
+      this.props.getAccountInput({ name: "mode", value: result.data.mode });
+      this.props.getAccountInput({ name: "weapon", value: result.data.weapon });
+      this.props.getAccountInput({ name: "status", value: result.data.status });
+      this.props.getAccountInput({ name: "notify", value: result.data.notify });
+      this.props.getAccountInput({ name: "from", value: result.data.from });
+      this.props.setVerifyMessage(result.data.message);
+      this.props.setLoggedIn(result.data.setLogin);
+    })
+    .catch(error => {
+      console.log(error);
+    })
+
   }
 
   setupAccount = (e) => {
@@ -41,7 +65,14 @@ class LoginForm extends Component {
       return <Redirect to="/account-info" />
     }
 
-    let showLoginButton = <RaisedButton overlayStyle={loginButton}>Login</RaisedButton>;
+    if (this.props.isLoggedIn) {
+      return <Redirect to="choose-criteria" />
+    }
+
+    let showLoginButton = <RaisedButton overlayStyle={loginButton}
+                              onClick={e => this.userLogin(e)}>
+                              Login
+                          </RaisedButton>;
     let showSignupButton = <RaisedButton overlayStyle={signupButton}
                               onClick={e => this.showCreateButton(e)}>
                               Sign Up
@@ -86,12 +117,15 @@ class LoginForm extends Component {
               </section>  
               <TextField style={fieldWidth} type="password" floatingLabelText="Verify Password"
                       floatingLabelFixed name="verifyPassword" value={this.props.verifyPassword}
+                      errorText={this.props.verifyPassword.length < 8 &&
+                                "Passwords need to be 8 characters or longer"}
                       onChange={e => this.props.getLoginInput({
                         name: e.target.name, value: e.target.value.replace(/ /g, "")
                       })}>
               </TextField>
             </section>
             }
+            <br />
 
             <section className="grid">
               <p style={messageStyle}>{this.props.verifyMessage}</p>
@@ -121,6 +155,18 @@ const mapStateToProps = (state) => {
     createButton: state.loginReducer.createButton,
     matchingPassword: state.loginReducer.matchingPassword,
 
+    // email: state.accountReducer.email,
+    // NSID: state.accountReducer.NSID,
+    // age: state.accountReducer.age,
+    // location: state.accountReducer.location,
+    // rank: state.accountReducer.rank,
+    // mode: state.accountReducer.mode,
+    // weapon: state.accountReducer.weapon,
+    // status: state.accountReducer.status,
+    // notify: state.accountReducer.notify,
+    // from: state.accountReducer.from,
+
+    isLoggedIn: state.generalReducer.isLoggedIn,
     verifyMessage: state.generalReducer.verifyMessage,
   }
 }

@@ -134,8 +134,11 @@ class AccountInfo extends Component {
             <MenuItem value="Brellas" primaryText="Brellas"/>
           </SelectField>
         </section>
-        <br />
 
+        <section className="grid">
+          <p style={messageStyle}>{this.props.verifyMessage}</p>
+        </section>
+        
         <section className="gridSelector">
           <RaisedButton href="/" overlayStyle={signupButton}>Cancel</RaisedButton>
 
@@ -178,7 +181,7 @@ const fieldWidth = {
 }
 
 const customWidth = {
-  width: 125,
+  width: 130,
 }
 
 const messageStyle = {
