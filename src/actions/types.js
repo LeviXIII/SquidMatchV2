@@ -7,6 +7,7 @@ export const SET_LOGGED_IN = 'set_logged_in';
 export const SET_WINDOW_SIZE = 'set_window_size';
 export const SHOW_CREATE_BUTTON = 'show_create_button';
 export const SET_SQUAD = 'set_squad';
+export const SET_SHOW_MODAL = 'set_show_modal';
 export const SET_SEARCH_RESULTS = 'set_search_results';
 export const SET_INITIAL_ACCOUNT_STATE = 'set_initial_account_state';
 export const SET_INITIAL_GENERAL_STATE = 'set_initial_general_state';

@@ -9,29 +9,44 @@ import * as actions from '../actions';
 
 import background from '../images/cardPaintBackground.jpg'
 
-let squad = [];
+let squad;
 
 class Results extends Component {
+
+  componentWillMount() {
+    squad = [];
+  }
+
+  closeModal = () => {
+    this.props.setShowModal(false);
+  }
 
   addToSquad = (isChecked, user) => {
     if (isChecked) {
       squad.push(user);
+      this.props.setShowModal(squad.length >= 3 ? true : false);
     }
     else {
+      //If the user is clicked on again, remove from list.
       let newSquad = squad.filter((value, i) => {
         return value.username !== user.username;
       })
       squad = Array.from(newSquad);
+      
     }
     this.props.setSquad(Array.from(squad));
     
     console.log(squad);
+    
   }
 
   render() {
 
+    if (!this.props.isLoggedIn) {
+      return <Redirect to='/' />
+    }
+
     let disableButton = (squad.length > 0 && squad.length <= 3) ? false : true;
-    let openModal = squad.length > 3 ? true : false;
 
     let results = this.props.searchResults.map((value, index) => {
       return (
@@ -60,14 +75,27 @@ class Results extends Component {
       );
     })
 
-    if (!this.props.isLoggedIn) {
-      return <Redirect to='/' />
-    }
+    const actionButtons = [
+      <RaisedButton buttonStyle={cancelButton}
+                    backgroundColor='#ff43b7'
+                    onClick={this.closeModal}>
+        Cancel
+      </RaisedButton>,
+      <RaisedButton buttonStyle={chatButton}
+                    backgroundColor='#7aff42'
+                    disabledBackgroundColor='#bcbcbc'
+                    disabled={disableButton}
+      >
+        Chat
+      </RaisedButton>
+    ]
 
     return (
       <section className="container divBorder formSettings">
         <h1 style={subTitle}>Results</h1>
-        <br />
+        {this.props.searchResults !== 0 &&
+          <p style={resultsSubText}>Choose up to 3 members</p>
+        }
         <section className="grid">
           <RaisedButton buttonStyle={chatButton}
                         backgroundColor='#7aff42'
@@ -83,10 +111,11 @@ class Results extends Component {
           title="Member Limit Reached"
           titleStyle={subTitle}
           bodyStyle={dialogContent}
-          //actions={actions}
+          actions={actionButtons}
+          actionsContainerStyle={actionButtonStyle}
           modal={false}
-          open={openModal}
-          //onRequestClose={this.handleClose}
+          open={this.props.showModal}
+          onRequestClose={this.closeModal}
         >
           You can only have up to 3 members in your group.
         </Dialog>
@@ -94,11 +123,24 @@ class Results extends Component {
     )
   }
 
+  componentWillUnmount() {
+    squad = [];
+  }
+
 }
 
 //////////
 //Styles//
 //////////
+
+const actionButtonStyle = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  paddingLeft: '30px',
+  paddingRight: '30px',
+  paddingBottom: '20px'
+}
 
 const checkboxStyle = {
   fill: 'black',
@@ -128,8 +170,14 @@ const cardText = {
   marginTop: '0px',
 }
 
+const cancelButton = {
+  width: '100px',
+  fontFamily: 'paintball',
+  color: 'black',
+}
+
 const chatButton = {
-  width: '190px',
+  width: '100px',
   fontFamily: 'paintball',
   color: 'black',
 }
@@ -139,6 +187,15 @@ const dialogContent = {
   fontSize: '1.3rem',
   textAlign: 'center',
   color: 'red',
+}
+
+const resultsSubText =  {
+  fontFamily: 'overpass',
+  fontSize: '1.0rem',
+  textAlign: 'center',
+  color: '#464547',
+  marginTop: '1%',
+  marginBottom: '1%',
 }
 
 const subTitle =  {
@@ -154,6 +211,7 @@ const mapStateToProps = (state) => {
   return {
     searchResults: state.searchReducer.searchResults,
     squad: state.searchReducer.squad,
+    showModal: state.searchReducer.showModal,
 
     isLoggedIn: state.generalReducer.isLoggedIn,
   };
