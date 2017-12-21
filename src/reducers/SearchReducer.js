@@ -1,5 +1,6 @@
 import {
   SET_SEARCH_INPUT,
+  SET_SQUAD,
   SET_SEARCH_RESULTS,
   SET_INITIAL_SEARCH_STATE,
 } from '../actions/types';
@@ -11,6 +12,7 @@ const initialState = {
   searchMode: 'Any',
   searchWeapon: 'Any',
   searchResults: [],
+  squad: [],
 };
 
 export default (state = initialState, action) => {
@@ -19,6 +21,8 @@ export default (state = initialState, action) => {
       return { ...state, [action.payload.name]: action.payload.value }
     case SET_SEARCH_RESULTS:
       return { ...state, searchResults: action.payload }
+    case SET_SQUAD:
+      return { ...state, squad: Array.from(action.payload) }
     case SET_INITIAL_SEARCH_STATE:
       return initialState;
     default:

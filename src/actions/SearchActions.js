@@ -1,5 +1,6 @@
 import {
   SET_SEARCH_INPUT,
+  SET_SQUAD,
   SET_SEARCH_RESULTS,
   SET_INITIAL_SEARCH_STATE,
 } from './types'
@@ -15,6 +16,13 @@ export const setSearchResults = (results) => {
   return {
     type: SET_SEARCH_RESULTS,
     payload: results
+  }
+}
+
+export const setSquad = (squad) => {
+  return {
+    type: SET_SQUAD,
+    payload: squad
   }
 }
 
