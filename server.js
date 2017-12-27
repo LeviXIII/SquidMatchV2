@@ -228,4 +228,21 @@ app.post('/search-criteria', (req, res) => {
   })
 
 });
+
+app.put('/send-invites', (req, res) => {
+  //Allows for the database to update each field in the array of
+  //group members and then return one promise afterwards.
+  Promise.all(req.body.members.map((value, i) => {
+    return (
+      User.findOneAndUpdate(
+        { username: value.username },
+        { notification: { notify: req.body.notify, from: req.body.from }},
+        {}
+      )
+    )
+  }))
+  .then(oldData => {
+    res.json({ result: oldData });
+  })
+})
 /******************************************************************/

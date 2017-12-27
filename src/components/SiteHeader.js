@@ -56,7 +56,11 @@ class SiteHeader extends Component {
           <ToolbarGroup>
             <ToolbarTitle style={statusStyle} text={this.props.status} />
             <IconMenu
-                iconButtonElement={<Avatar>L</Avatar>}
+                iconButtonElement={
+                  <Avatar style={avatarLetter}>
+                    {this.props.username[0].toUpperCase()}
+                  </Avatar>
+                }
                 anchorOrigin={{horizontal: 'right', vertical: 'top'}}
                 targetOrigin={{horizontal: 'right', vertical: 'top'}}
               >
@@ -77,6 +81,10 @@ class SiteHeader extends Component {
     window.removeEventListener("resize", () => this.props.setWindowSize(window.innerWidth)); 
   }
 
+}
+
+const avatarLetter = {
+  fontFamily: 'overpass',
 }
 
 const miniMenu = {
@@ -116,7 +124,10 @@ const style = Object.assign({}, miniMenu);
 
 const mapStateToProps = (state) => {
   return { 
+    username: state.loginReducer.username,
+
     status: state.accountReducer.status,
+
     windowSize: state.generalReducer.windowSize
   }
 }

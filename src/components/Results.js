@@ -21,6 +21,22 @@ class Results extends Component {
     this.props.setShowModal(false);
   }
 
+  notifyMembers = () => {
+    this.props.setShowModal(false);
+
+    axios.put('/send-invites', {
+      from: this.props.username,
+      notify: true,
+      members: squad,
+    })
+    .then(results => {
+  
+    })
+    .catch(error => {
+      console.log(error);
+    })
+  }
+
   addToSquad = (isChecked, user) => {
     if (isChecked) {
       squad.push(user);
@@ -35,9 +51,6 @@ class Results extends Component {
       
     }
     this.props.setSquad(Array.from(squad));
-    
-    console.log(squad);
-    
   }
 
   render() {
@@ -46,11 +59,13 @@ class Results extends Component {
       return <Redirect to='/' />
     }
 
+    /* Creating the list of available users. */
+
     let disableButton = (squad.length > 0 && squad.length <= 3) ? false : true;
 
     let results = this.props.searchResults.map((value, index) => {
       return (
-        <section>
+        <section key={index}>
         <Card style={cardBackground}>
           <CardHeader
             style={cardStyle}
@@ -81,29 +96,40 @@ class Results extends Component {
                     onClick={this.closeModal}>
         Cancel
       </RaisedButton>,
-      <RaisedButton buttonStyle={chatButton}
+      <Link to="/chat">
+        <RaisedButton buttonStyle={chatButton}
                     backgroundColor='#7aff42'
                     disabledBackgroundColor='#bcbcbc'
                     disabled={disableButton}
-      >
-        Chat
-      </RaisedButton>
+                    onClick={this.notifyMembers}
+        >
+          Chat
+        </RaisedButton>
+      </Link>
     ]
 
+    //Rendering
     return (
       <section className="container divBorder formSettings">
         <h1 style={subTitle}>Results</h1>
-        {this.props.searchResults !== 0 &&
+        {this.props.searchResults.length !== 0 ? 
+        (
           <p style={resultsSubText}>Choose up to 3 members</p>
+        ) : (
+          <p style={resultsSubText}>Sorry, there were no results.</p>
+        )
         }
         <section className="grid">
-          <RaisedButton buttonStyle={chatButton}
+          <Link to="/chat">
+            <RaisedButton buttonStyle={chatButton}
                         backgroundColor='#7aff42'
                         disabledBackgroundColor='#bcbcbc'
                         disabled={disableButton}
-          >
-            Chat
-          </RaisedButton>
+                        onClick={this.notifyMembers}
+            >
+              Chat
+            </RaisedButton>
+          </Link>
         </section>
         <br />
         {results}
@@ -212,6 +238,9 @@ const mapStateToProps = (state) => {
     searchResults: state.searchReducer.searchResults,
     squad: state.searchReducer.squad,
     showModal: state.searchReducer.showModal,
+
+    username: state.loginReducer.username,
+    notify: state.accountReducer.notify,
 
     isLoggedIn: state.generalReducer.isLoggedIn,
   };

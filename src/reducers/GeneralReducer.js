@@ -7,6 +7,7 @@ import {
 
 const initialState = {
   verifyMessage: '',
+  inviteModal: false,
   isLoggedIn: false,
   windowSize: window.innerWidth,
 };
@@ -14,11 +15,11 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_LOGGED_IN:
-      return { ...state, isLoggedIn: action.payload }
+      return { ...state, isLoggedIn: action.payload };
     case SET_VERIFY_MESSAGE:
       return { ...state, verifyMessage: action.payload };
     case SET_WINDOW_SIZE:
-      return { ...state, windowSize: action.payload }
+      return { ...state, windowSize: action.payload };
     case SET_INITIAL_GENERAL_STATE:
       return initialState;
     default:
