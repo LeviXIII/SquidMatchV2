@@ -17,11 +17,8 @@ class Results extends Component {
     squad = [];
   }
 
-  closeModal = () => {
-    this.props.setShowModal(false);
-  }
-
   notifyMembers = () => {
+
     this.props.setShowModal(false);
 
     axios.put('/send-invites', {
@@ -30,11 +27,18 @@ class Results extends Component {
       members: squad,
     })
     .then(results => {
-  
+      this.props.getAccountInput({ name: 'from', value: this.props.username });
+      this.props.getAccountInput({ name: 'notify', value: true });
+      this.props.socket.emit('check-invites'); //Triggers event to tell others of invite.
     })
     .catch(error => {
       console.log(error);
     })
+
+  }
+
+  closeModal = () => {
+    this.props.setShowModal(false);
   }
 
   addToSquad = (isChecked, user) => {
@@ -240,6 +244,7 @@ const mapStateToProps = (state) => {
     showModal: state.searchReducer.showModal,
 
     username: state.loginReducer.username,
+    
     notify: state.accountReducer.notify,
 
     isLoggedIn: state.generalReducer.isLoggedIn,

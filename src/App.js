@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { RaisedButton, Checkbox, Card,
           CardHeader, CardText, Avatar,
           Dialog, } from 'material-ui';
+import axios from 'axios';
+import io from 'socket.io-client';
 import * as actions from './actions'
 
 import LoginForm from './components/LoginForm';
@@ -13,12 +15,28 @@ import ChooseCriteria from './components/ChooseCriteria';
 import Results from './components/Results';
 import Chat from './components/Chat';
 
+const socket = io('http://localhost:8080');
+
 class App extends Component {
   
+  componentDidMount() {
+    
+    socket.connect();
+    
+    socket.on('connect', () => {
+      this.props.setSocket(socket);
+    })
+
+    socket.on('invited', () => {
+      this.props.setInviteModal(true);
+    })
+
+  }; //end componentDidMount
+
   closeModal = () => {
-    this.props.getAccountInput({ notify: false });
+    this.props.setInviteModal(false);
   }
-  
+
   render() {
 
     //Buttons for Modal
@@ -44,7 +62,7 @@ class App extends Component {
         <Route path="/" exact render={() => <LoginForm />} />
         <Route path="/account-info" exact render={() => <AccountInfo />} />
         <Route path="/choose-criteria" exact render={() => <ChooseCriteria />} />
-        <Route path="/results" exact render={() => <Results />} />
+        <Route path="/results" exact render={() => <Results socket={socket}/>} />
         <Route path="/chat" exact render={() => <Chat />} />
       </Switch>
 
@@ -55,7 +73,7 @@ class App extends Component {
           actions={actionButtons}
           actionsContainerStyle={actionButtonStyle}
           modal={false}
-          open={this.props.notify}
+          open={this.props.inviteModal}
           onRequestClose={this.closeModal}
       >
       </Dialog>
@@ -110,7 +128,10 @@ const mapStateToProps = (state) => {
     from: state.accountReducer.from,
     notify: state.accountReducer.notify,
 
-    isLoggedIn: state.generalReducer.isLoggedIn
+    isLoggedIn: state.generalReducer.isLoggedIn,
+    inviteModal: state.generalReducer.inviteModal,
+
+    username: state.loginReducer.username,
   }
 }
 

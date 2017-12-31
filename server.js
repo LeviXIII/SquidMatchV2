@@ -27,8 +27,36 @@ const secretKey = config.token_secretKey;
 connection.on('open', () => {
   console.log('Now connected to Mongo ^_^');
   
-  app.listen(PORT, () => {
+  const server = app.listen(PORT, () => {
     console.log(`Server now listening on port: ${PORT} =D`);
+  })
+
+  //Import and setup socket to listen to set server above.
+  const io = require('socket.io').listen(server);
+
+  io.sockets.on('connection', socket => {
+
+    //Used to cause an update which will send invites out to all group members.
+    socket.on('check-invites', () => {
+      io.emit('invited');
+    })
+
+  })
+
+})
+
+/******************************************************************/
+
+app.get('/get-invite-note/:username', (req, res) => {
+  User.findOne({ username: req.params.username })
+  .then(result => {
+    res.json({
+      notify: result.notification.notify,
+      from: result.notification.from
+    });
+  })
+  .catch(err => {
+    console.log(error);
   })
 })
 

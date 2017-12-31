@@ -1,14 +1,29 @@
 import {
+  SET_SOCKET,
   SET_LOGGED_IN,
+  SET_INVITE_MODAL,
   SET_VERIFY_MESSAGE,
   SET_WINDOW_SIZE,
   SET_INITIAL_GENERAL_STATE,
 } from './types'
 
+export const setSocket = (socket) => {
+  return {
+    type: SET_SOCKET,
+    payload: socket
+  }
+}
 export const setLoggedIn = (loggedIn) => {
   return {
     type: SET_LOGGED_IN,
     payload: loggedIn
+  }
+}
+
+export const setInviteModal = (invite) => {
+  return {
+    type: SET_INVITE_MODAL,
+    payload: invite
   }
 }
 

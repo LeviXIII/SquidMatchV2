@@ -25,6 +25,8 @@ class LoginForm extends Component {
     })
     .then(result => {
       localStorage.setItem('token', result.data.token);
+      this.props.getLoginInput({ name: "username", value: this.props.username});
+      this.props.getLoginInput({ name: "password", value: this.props.password});
       this.props.getAccountInput({ name: "NSID", value: result.data.NSID });
       this.props.getAccountInput({ name: "age", value: result.data.age });
       this.props.getAccountInput({ name: "location", value: result.data.location });
