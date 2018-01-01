@@ -19,6 +19,7 @@ mongoose.connect(MONGO_CONNECTION_STRING);
 
 const connection = mongoose.connection;
 const secretKey = config.token_secretKey;
+const rooms = [];
 
 /******************************************************************/
 
@@ -38,7 +39,15 @@ connection.on('open', () => {
 
     //Used to cause an update which will send invites out to all group members.
     socket.on('check-invites', () => {
-      io.emit('invited');
+      socket.broadcast.emit('invited');
+    })
+
+    socket.on('create-room', (data) => {
+      //Create the initial room and enter.
+      rooms.push(data.username);    //Add room to rooms array.
+      socket.join(data.username);   //Join room.
+      socket.room = data.username;  //Name room by username.
+
     })
 
   })
@@ -47,7 +56,7 @@ connection.on('open', () => {
 
 /******************************************************************/
 
-app.get('/get-invite-note/:username', (req, res) => {
+app.get('/get-invite/:username', (req, res) => {
   User.findOne({ username: req.params.username })
   .then(result => {
     res.json({
@@ -271,6 +280,20 @@ app.put('/send-invites', (req, res) => {
   }))
   .then(oldData => {
     res.json({ result: oldData });
+  })
+})
+
+app.put('/decline-invite', (req, res) => {
+  User.findOneAndUpdate(
+    { username: req.body.username },
+    { notification: { notify: req.body.notify, from: req.body.from}},
+    {}
+  )
+  .then(oldData => {
+    res.status(200);
+  })
+  .catch(error => {
+    console.log(error);
   })
 })
 /******************************************************************/

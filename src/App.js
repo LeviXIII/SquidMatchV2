@@ -28,13 +28,41 @@ class App extends Component {
     })
 
     socket.on('invited', () => {
-      this.props.setInviteModal(true);
-    })
 
+      axios.get('/get-invite/' + this.props.username)
+      .then(result => {
+        this.props.getAccountInput({ name: 'from', value: result.data.from });
+        this.props.getAccountInput({ name: 'notify', value: result.data.notify });
+
+        //Modal pops for those receiving invites.
+        if (this.props.notify) {
+          this.props.setInviteModal(true);
+        };
+
+      })
+      .catch(error => {
+        console.log(error);
+      })
+
+    })
+    
   }; //end componentDidMount
 
-  closeModal = () => {
+  declineRequest = () => {
     this.props.setInviteModal(false);
+
+    axios.put('/decline-invite', {
+      username: this.props.username,
+      from: '',
+      notify: false,
+    })
+    .then(results => {
+      this.props.getAccountInput({ name: 'from', value: '' });
+      this.props.getAccountInput({ name: 'notify', value: false });
+    })
+    .catch(error => {
+      console.log(error);
+    })
   }
 
   render() {
@@ -43,14 +71,14 @@ class App extends Component {
     const actionButtons = [
       <RaisedButton buttonStyle={cancelButton}
                     backgroundColor='#ff43b7'
-                    onClick={this.closeModal}>
-        Cancel
+                    onClick={this.declineRequest}>
+        Decline
       </RaisedButton>,
       // <Link to="/chat">
         <RaisedButton buttonStyle={chatButton}
                     backgroundColor='#7aff42'
         >
-          Chat
+          Booyah!
         </RaisedButton>
       // </Link>
     ]
@@ -74,7 +102,7 @@ class App extends Component {
           actionsContainerStyle={actionButtonStyle}
           modal={false}
           open={this.props.inviteModal}
-          onRequestClose={this.closeModal}
+          onRequestClose={this.declineRequest}
       >
       </Dialog>
       </div>
