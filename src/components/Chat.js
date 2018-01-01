@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom'
+import { TextField, RaisedButton } from 'material-ui';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
 let chat;
+let message = '';
 
 class Chat extends Component {
   
+  getMessage = (e) => {
+    console.log(this.myMessage.input.value);
+  }
+
   render() {
 
     if (!this.props.isLoggedIn) {
@@ -30,6 +36,19 @@ class Chat extends Component {
       <section className="container divBorder chatFormSettings">
         <h1 style={subTitle}>Chat</h1>
         {chat}
+        <span>
+        <TextField placeholder="Type here"
+                    name="message"
+                    ref={input => this.myMessage = input}
+        >
+        </TextField>
+        <RaisedButton overlayStyle={sendButton}
+                      onClick={e => this.getMessage(e)}>
+          Send
+        </RaisedButton>
+        </span>
+        
+
       </section>
     )
   }
@@ -39,6 +58,13 @@ class Chat extends Component {
 //////////
 //Styles//
 //////////
+
+const sendButton = {
+  width: '190px',
+  backgroundColor: '#7aff42',
+  fontFamily: 'paintball',
+  color: 'black',
+}
 
 const senderStyle = {
   fontFamily: 'paintball'
