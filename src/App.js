@@ -38,11 +38,21 @@ class App extends Component {
         if (this.props.notify) {
           this.props.setInviteModal(true);
         };
-
+        
       })
       .catch(error => {
         console.log(error);
       })
+
+    })
+
+    socket.on('room-created', (data) => {
+      
+      //Set initial chat message.
+      let chat = Array.from(this.props.messages);
+
+      chat.push({ sender: data.sender, message: data.message })
+      this.props.setMessages(Array.from(chat));
 
     })
     
@@ -158,6 +168,7 @@ const mapStateToProps = (state) => {
 
     isLoggedIn: state.generalReducer.isLoggedIn,
     inviteModal: state.generalReducer.inviteModal,
+    messages: state.generalReducer.messages,
 
     username: state.loginReducer.username,
   }

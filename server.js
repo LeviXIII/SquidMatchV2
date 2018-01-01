@@ -48,6 +48,10 @@ connection.on('open', () => {
       socket.join(data.username);   //Join room.
       socket.room = data.username;  //Name room by username.
 
+      socket.emit('room-created', {
+        sender: 'Judd',
+        message: 'Welcome to Squid Chat!'
+      })
     })
 
   })

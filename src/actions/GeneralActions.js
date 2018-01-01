@@ -1,5 +1,6 @@
 import {
   SET_SOCKET,
+  SET_MESSAGES,
   SET_LOGGED_IN,
   SET_INVITE_MODAL,
   SET_VERIFY_MESSAGE,
@@ -13,6 +14,14 @@ export const setSocket = (socket) => {
     payload: socket
   }
 }
+
+export const setMessages = (message) => {
+  return {
+    type: SET_MESSAGES,
+    payload: message
+  }
+}
+
 export const setLoggedIn = (loggedIn) => {
   return {
     type: SET_LOGGED_IN,

@@ -1,5 +1,6 @@
 import {
   SET_SOCKET,
+  SET_MESSAGES,
   SET_LOGGED_IN,
   SET_INVITE_MODAL,
   SET_VERIFY_MESSAGE,
@@ -8,6 +9,7 @@ import {
 } from '../actions/types';
 
 const initialState = {
+  messages: [],
   socket: {},
   verifyMessage: '',
   inviteModal: false,
@@ -21,6 +23,8 @@ export default (state = initialState, action) => {
       return { ...state, socket: action.payload };
     case SET_LOGGED_IN:
       return { ...state, isLoggedIn: action.payload };
+    case SET_MESSAGES:
+      return { ...state, messages: Array.from(action.payload) };
     case SET_INVITE_MODAL:
       return { ...state, inviteModal: action.payload };
     case SET_VERIFY_MESSAGE:

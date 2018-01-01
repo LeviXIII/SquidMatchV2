@@ -27,8 +27,11 @@ class Results extends Component {
       members: squad,
     })
     .then(results => {
-      this.props.socket.emit('check-invites'); //Triggers event to tell others of invite.
-      //this.props.socket.emit('create-room'); //Opens a room for the user.
+      //Send out invites to each group member.
+      this.props.socket.emit('check-invites');
+
+      //Open room for the user.
+      this.props.socket.emit('create-room', { username: this.props.username });
     })
     .catch(error => {
       console.log(error);

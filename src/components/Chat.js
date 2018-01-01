@@ -3,6 +3,8 @@ import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
+let chat;
+
 class Chat extends Component {
   
   render() {
@@ -11,20 +13,40 @@ class Chat extends Component {
       return <Redirect to='/' />
     }
 
+    let chat = this.props.messages.map((value, i) => {
+      return (
+        <section key={i}>
+          <h3>
+            <span style={senderStyle}>{value.sender}: </span>
+            <span style={messageStyle}>{value.message}</span>
+          </h3>
+          <br />
+        </section>
+      );
+    })    
+
     return (
-      
+
       <section className="container divBorder chatFormSettings">
         <h1 style={subTitle}>Chat</h1>
-
-        <h3>Hello!</h3>
+        {chat}
       </section>
     )
   }
+
 }
 
 //////////
 //Styles//
 //////////
+
+const senderStyle = {
+  fontFamily: 'paintball'
+}
+
+const messageStyle = {
+  fontFamily: 'overpass'
+}
 
 const subTitle =  {
   fontFamily: 'paintball',
@@ -38,6 +60,7 @@ const subTitle =  {
 const mapStateToProps = (state) => {
   return {
     isLoggedIn: state.generalReducer.isLoggedIn,
+    messages: state.generalReducer.messages,
   };
 }
 
