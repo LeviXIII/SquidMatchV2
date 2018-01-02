@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Toolbar, ToolbarGroup, FlatButton, 
-          Avatar, IconMenu, MenuItem,
+          Avatar, IconMenu, MenuItem, Checkbox,
           IconButton, ToolbarTitle, Divider } from 'material-ui';
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
+
+import axios from 'axios';
 
 import { connect } from 'react-redux';
 import * as actions from '../actions';
@@ -12,6 +14,34 @@ class SiteHeader extends Component {
   
   componentWillMount() {
     window.addEventListener("resize", () => this.props.setWindowSize(window.innerWidth));
+
+    // axios.get('/check-status/' + this.props.username)
+    // .then(result => {
+    //   this.props.getAccountInput({ name: 'status', value: result.data.status });
+    // })
+    // .catch(error => {
+    //   console.log("Check Status Error: " + error);
+    // })
+  }
+
+  updateStatus = (status) => {
+    axios.put('/update-status', { 
+      username: this.props.username,
+      status: status,// available: availableCheck,
+      // busy: busyCheck
+    })
+    .then(result => {
+      this.props.getAccountInput({ name: 'status', value: result.data.status });
+
+      // if (result.data.status === 'Available') {
+      //   availableCheck = true;
+      //   busyCheck = false;
+      // }
+      // else {
+      //   availableCheck = false;
+      //   busyCheck = true;
+      // }
+    })
   }
 
   logout = (e) => {
@@ -64,10 +94,10 @@ class SiteHeader extends Component {
               anchorOrigin={{horizontal: 'right', vertical: 'top'}}
               targetOrigin={{horizontal: 'right', vertical: 'top'}}
             >
-              <Link style={miniMenu} to="/">
-                <MenuItem primaryText="Available" />
-              </Link>
-              <MenuItem primaryText="Busy" />
+              <MenuItem primaryText="Available" 
+                onClick={(status) => this.updateStatus('Available')}/>
+              <MenuItem primaryText="Busy" 
+                onClick={(status) => this.updateStatus('Busy')}/>
               <Divider />
               <Link style={miniMenu} to="/update-info">
                 <MenuItem primaryText="Update Profile" />
@@ -82,7 +112,7 @@ class SiteHeader extends Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListener("resize", () => this.props.setWindowSize(window.innerWidth)); 
+    window.removeEventListener("resize", () => this.props.setWindowSize(window.innerWidth));
   }
 
 }

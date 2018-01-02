@@ -126,6 +126,18 @@ app.get('/current-profile/:username', (req, res) => {
   })
 })
 
+app.get('/check-status/:username', (req, res) => {
+  User.findOne({ username: req.params.username })
+  .then(result => {
+    res.json({
+      status: result.status
+    })
+  })
+  .catch(error => {
+    console.log("Check Status Error: " + error);
+  })
+})
+
 app.post('/login', (req, res) => {
   //Find the password that matches the user.
   User.findOne({ username: req.body.username })
@@ -355,7 +367,43 @@ app.put('/update-profile', (req, res) => {
   })
   .catch(error => {
     console.log("Update error " + error);
+    res.status(500);
   })
+})
+
+app.put('/update-status', (req, res) => {
+  if (req.body.status === 'Busy') {
+    User.findOneAndUpdate(
+      { username: req.body.username },
+      { status: 'Busy' },
+      {}
+    )
+    .then(oldData => {
+      res.json({
+        status: 'Busy'
+      });
+    })
+    .catch(error => {
+      console.log("Update Status Error: " + error);
+      res.status(500);
+    }) 
+  }
+  else {
+    User.findOneAndUpdate(
+      { username: req.body.username },
+      { status: 'Available', time: Date.now() },
+      {}
+    )
+    .then(oldData => {
+      res.json({
+        status: 'Available'
+      })
+    })
+    .catch(error => {
+      console.log("Update Status Error: " + error);
+      res.status(500);
+    }) 
+  }
 })
 
 app.put('/send-invites', (req, res) => {
