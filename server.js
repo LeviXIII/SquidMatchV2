@@ -23,7 +23,7 @@ const rooms = [];
 
 /******************************************************************/
 
-/*************************CONNECTIONS******************************/
+/*********************CONNECTIONS & SOCKETS************************/
 
 connection.on('open', () => {
   console.log('Now connected to Mongo ^_^');
@@ -63,11 +63,13 @@ connection.on('open', () => {
         }
       }
 
+      //Message displayed to current user only.
       socket.emit('joined-room', {
         sender: 'Judd (Admin)',
         message: `Welcome to ${data.from}'s chat!`,
       })
 
+      //Message displayed to rest of room.
       socket.to(socket.room).emit('update-chat', {
         sender: 'Judd (Admin)',
         message: `${data.username} joined the chat!`,
@@ -92,6 +94,8 @@ connection.on('open', () => {
 
 /******************************************************************/
 
+/**************************END POINTS******************************/
+
 app.get('/get-invite/:username', (req, res) => {
   User.findOne({ username: req.params.username })
   .then(result => {
@@ -105,8 +109,24 @@ app.get('/get-invite/:username', (req, res) => {
   })
 })
 
+app.get('/current-profile/:username', (req, res) => {
+  User.findOne({ username: req.params.username })
+  .then(result => {
+    res.json({
+      NSID: result.NSID,
+      age: result.age,
+      location: result.location,
+      rank: result.rank,
+      mode: result.mode,
+      weapon: result.weapon,
+    });
+  })
+  .catch(err => {
+    console.log("Current Profile Error: " + error);
+  })
+})
+
 app.post('/login', (req, res) => {
-  
   //Find the password that matches the user.
   User.findOne({ username: req.body.username })
   .then(result => {
@@ -171,8 +191,8 @@ app.post('/login', (req, res) => {
       message: "We couldn't find your account. Please register or try again.",
       setLogin: false,
     });
-  })
-})
+  });
+});
 
 
 app.post('/register', (req, res) => {
@@ -317,6 +337,26 @@ app.post('/search-criteria', (req, res) => {
   })
 
 });
+
+app.put('/update-profile', (req, res) => {
+  User.findOneAndUpdate(
+    { username: req.body.username },
+    { NSID: req.body.NSID,
+      age: req.body.age,
+      location: req.body.location,
+      rank: req.body.rank,
+      mode: req.body.mode,
+      weapon: req.body.weapon,
+    },
+    {}
+  )
+  .then(result => {
+    res.sendStatus(200);
+  })
+  .catch(error => {
+    console.log("Update error " + error);
+  })
+})
 
 app.put('/send-invites', (req, res) => {
   //Allows for the database to update each field in the array of

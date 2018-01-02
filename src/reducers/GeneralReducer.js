@@ -2,6 +2,7 @@ import {
   SET_SOCKET,
   SET_MESSAGES,
   SET_LOGGED_IN,
+  SET_UPDATE_MODAL,
   SET_INVITE_MODAL,
   SET_VERIFY_MESSAGE,
   SET_WINDOW_SIZE,
@@ -12,6 +13,7 @@ const initialState = {
   messages: [],
   socket: {},
   verifyMessage: '',
+  updateModal: false,
   inviteModal: false,
   isLoggedIn: false,
   windowSize: window.innerWidth,
@@ -25,6 +27,8 @@ export default (state = initialState, action) => {
       return { ...state, isLoggedIn: action.payload };
     case SET_MESSAGES:
       return { ...state, messages: Array.from(action.payload) };
+    case SET_UPDATE_MODAL:
+      return { ...state, updateModal: action.payload };
     case SET_INVITE_MODAL:
       return { ...state, inviteModal: action.payload };
     case SET_VERIFY_MESSAGE:

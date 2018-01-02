@@ -11,6 +11,7 @@ import * as actions from './actions'
 
 import LoginForm from './components/LoginForm';
 import AccountInfo from './components/AccountInfo';
+import UpdateInfo from './components/UpdateInfo';
 import SiteHeader from './components/SiteHeader';
 import ChooseCriteria from './components/ChooseCriteria';
 import Results from './components/Results';
@@ -154,6 +155,8 @@ class App extends Component {
           <LoginForm />} />
         <Route path="/account-info" exact render={() => 
           <AccountInfo />} />
+        <Route path="/update-info" exact render={() => 
+          <UpdateInfo verifyToken={this.verifyToken}/>} />
         <Route path="/choose-criteria" exact render={() => 
           <ChooseCriteria verifyToken={this.verifyToken}/>} />
         <Route path="/results" exact render={() => 
