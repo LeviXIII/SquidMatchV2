@@ -49,9 +49,41 @@ connection.on('open', () => {
       socket.room = data.username;  //Name room by username.
 
       socket.emit('room-created', {
-        sender: 'Judd',
+        sender: 'Judd (Admin)',
         message: 'Welcome to Squid Chat!'
       })
+    })
+
+    socket.on('add-member', (data) => {
+      for (let i=0; i < rooms.length; i++) {
+        if (rooms[i] === data.from) {
+          socket.room = rooms[i];
+          socket.join(rooms[i]);
+          break;
+        }
+      }
+
+      socket.emit('joined-room', {
+        sender: 'Judd (Admin)',
+        message: `Welcome to ${data.from}'s chat!`,
+      })
+
+      socket.to(socket.room).emit('update-chat', {
+        sender: 'Judd (Admin)',
+        message: `${data.username} joined the chat!`,
+      })
+    })
+
+    socket.on('send-chat', (data) => {
+      for (let i=0; i < rooms.length; i++) {
+        if ((rooms[i] === data.from) || (rooms[i] === data.sender)) {
+          socket.room = rooms[i];
+          socket.join(rooms[i]);
+          break;
+        }
+      }
+
+      io.sockets.in(socket.room).emit('update-chat', data);
     })
 
   })
@@ -203,6 +235,22 @@ app.post('/register', (req, res) => {
 
 })
 
+app.post('/verify-token', (req, res) => {
+  jwt.verify(req.body.currentToken, secretKey, (err, token) => {
+    if (err) {
+      res.json({
+        token: false,
+        message: err
+      })
+    }
+    else {
+      res.json({
+        token: true,
+      });
+    }
+  });
+})
+
 app.post('/search-criteria', (req, res) => {
 
   //Build the query object in order to search dynamically.
@@ -285,9 +333,12 @@ app.put('/send-invites', (req, res) => {
   .then(oldData => {
     res.json({ result: oldData });
   })
+  .catch(error => {
+    console.log(error);
+  })
 })
 
-app.put('/decline-invite', (req, res) => {
+app.put('/clear-invite', (req, res) => {
   User.findOneAndUpdate(
     { username: req.body.username },
     { notification: { notify: req.body.notify, from: req.body.from}},

@@ -29,8 +29,9 @@ class ChooseCriteria extends Component {
 
   render() {
 
+    this.props.verifyToken();
+
     if (!this.props.isLoggedIn) {
-      //this.props.history.push('/choose-criteria');
       return <Redirect to='/' />
     }
 

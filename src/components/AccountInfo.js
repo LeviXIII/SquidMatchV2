@@ -47,13 +47,13 @@ class AccountInfo extends Component {
     }
 
     if (this.props.isLoggedIn) {
-      this.props.getLoginInput({name: 'verified', value: false})
+      this.props.getLoginInput({ name: 'verified', value: false });
       return <Redirect to='/choose-criteria' />
     }
 
     return (
       <section className="container divBorder loginFormSettings">
-        <h1 style={subTitle}>Create Account</h1>
+        <h1 style={subTitle}>Create Profile</h1>
         <section className="grid">
           <TextField floatingLabelText="Email" floatingLabelFixed style={fieldWidth}
                     name="email" type="email" value={this.props.email}

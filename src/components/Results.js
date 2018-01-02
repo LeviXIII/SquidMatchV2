@@ -61,6 +61,8 @@ class Results extends Component {
 
   render() {
 
+    this.props.verifyToken();
+
     if (!this.props.isLoggedIn) {
       return <Redirect to='/' />
     }

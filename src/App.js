@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Route, Switch, withRouter } from 'react-router-dom';
+import { Route, Switch, Link, 
+        withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { RaisedButton, Checkbox, Card,
           CardHeader, CardText, Avatar,
@@ -47,21 +48,40 @@ class App extends Component {
     })
 
     socket.on('room-created', (data) => {
-      
       //Set initial chat message.
       let chat = Array.from(this.props.messages);
 
       chat.push({ sender: data.sender, message: data.message })
       this.props.setMessages(Array.from(chat));
+    })
 
+    socket.on('joined-room', (data) => {
+      //Set initial chat message.
+      let chat = Array.from(this.props.messages);
+
+      chat.push({ sender: data.sender, message: data.message })
+      this.props.setMessages(Array.from(chat));
+    })
+
+    socket.on('update-chat', (data) => {
+      //Update chat for everyone to see.
+      let chat = Array.from(this.props.messages);
+
+      chat.push({ sender: data.sender, message: data.message })
+      this.props.setMessages(Array.from(chat));
     })
     
   }; //end componentDidMount
 
-  declineRequest = () => {
+  acceptRequest = () => {
     this.props.setInviteModal(false);
+    socket.emit('add-member', {
+      username: this.props.username,
+      from: this.props.from
+    })
 
-    axios.put('/decline-invite', {
+    //Clear out the invite once inside the room.
+    axios.put('/clear-invite', {
       username: this.props.username,
       from: '',
       notify: false,
@@ -75,33 +95,73 @@ class App extends Component {
     })
   }
 
+  declineRequest = (clicked) => {
+    this.props.setInviteModal(false);
+
+    if (clicked) {
+      axios.put('/clear-invite', {
+        username: this.props.username,
+        from: '',
+        notify: false,
+      })
+      .then(results => {
+        this.props.getAccountInput({ name: 'from', value: '' });
+        this.props.getAccountInput({ name: 'notify', value: false });
+      })
+      .catch(error => {
+        console.log(error);
+      })
+    }
+  }
+
+  //Check if the token is still valid.
+  verifyToken = () => {
+    axios.post('/verify-token', {
+      currentToken: localStorage.getItem('token')
+    })
+    .then(result => {
+      if (result.data.token === false) {
+        this.props.setLoggedIn(false);
+      }
+    });
+  }
+
   render() {
 
     //Buttons for Modal
     const actionButtons = [
       <RaisedButton buttonStyle={cancelButton}
                     backgroundColor='#ff43b7'
-                    onClick={this.declineRequest}>
+                    onClick={this.declineRequest}
+      >
         Decline
       </RaisedButton>,
-      // <Link to="/chat">
+      <Link to="/chat">
         <RaisedButton buttonStyle={chatButton}
                     backgroundColor='#7aff42'
+                    onClick={this.acceptRequest}
         >
           Booyah!
         </RaisedButton>
-      // </Link>
+      </Link>
     ]
 
     return (
       <div className="mainBackground">
       {this.props.isLoggedIn && <SiteHeader />}
       <Switch>
-        <Route path="/" exact render={() => <LoginForm />} />
-        <Route path="/account-info" exact render={() => <AccountInfo />} />
-        <Route path="/choose-criteria" exact render={() => <ChooseCriteria />} />
-        <Route path="/results" exact render={() => <Results socket={socket}/>} />
-        <Route path="/chat" exact render={() => <Chat />} />
+        <Route path="/" exact render={() => 
+          <LoginForm />} />
+        <Route path="/account-info" exact render={() => 
+          <AccountInfo />} />
+        <Route path="/choose-criteria" exact render={() => 
+          <ChooseCriteria verifyToken={this.verifyToken}/>} />
+        <Route path="/results" exact render={() => 
+          <Results  socket={socket}
+                    verifyToken={this.verifyToken}/>} />
+        <Route path="/chat" exact render={() => 
+          <Chat socket={socket}
+                verifyToken={this.verifyToken}/>} />
       </Switch>
 
       <Dialog
@@ -112,7 +172,7 @@ class App extends Component {
           actionsContainerStyle={actionButtonStyle}
           modal={false}
           open={this.props.inviteModal}
-          onRequestClose={this.declineRequest}
+          onRequestClose={(buttonClicked) => this.declineRequest(buttonClicked)}
       >
       </Dialog>
       </div>

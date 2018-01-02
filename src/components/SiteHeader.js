@@ -56,20 +56,24 @@ class SiteHeader extends Component {
           <ToolbarGroup>
             <ToolbarTitle style={statusStyle} text={this.props.status} />
             <IconMenu
-                iconButtonElement={
-                  <Avatar style={avatarLetter}>
-                    {this.props.username[0].toUpperCase()}
-                  </Avatar>
-                }
-                anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-                targetOrigin={{horizontal: 'right', vertical: 'top'}}
-              >
-                <Link style={miniMenu} to="/"><MenuItem primaryText="Available" /></Link>
-                <MenuItem primaryText="Busy" />
-                <Divider />
-                <MenuItem primaryText="Update Account" />
-                <MenuItem primaryText="Logout" onClick={e => this.logout(e)}/>
-              </IconMenu>
+              iconButtonElement={
+                <Avatar style={avatarLetter}>
+                  {this.props.username[0].toUpperCase()}
+                </Avatar>
+              }
+              anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+              targetOrigin={{horizontal: 'right', vertical: 'top'}}
+            >
+              <Link style={miniMenu} to="/">
+                <MenuItem primaryText="Available" />
+              </Link>
+              <MenuItem primaryText="Busy" />
+              <Divider />
+              <Link style={miniMenu} to="/update-info">
+                <MenuItem primaryText="Update Profile" />
+              </Link>
+              <MenuItem primaryText="Logout" onClick={e => this.logout(e)}/>
+            </IconMenu>
           </ToolbarGroup>
           
         </Toolbar>

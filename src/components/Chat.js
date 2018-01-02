@@ -5,15 +5,26 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 
 let chat;
-let message = '';
 
 class Chat extends Component {
   
   getMessage = (e) => {
-    console.log(this.myMessage.input.value);
+    e.preventDefault();
+    let message = Array.from(this.props.messages);
+    
+    //Start an event to display message to room.
+    this.props.socket.emit('send-chat', {
+      sender: this.props.username,
+      message: this.myMessage.input.value,
+    })
+
+    this.props.setMessages(Array.from(message));
+    this.myMessage.input.value = '';
   }
 
   render() {
+
+    this.props.verifyToken();
 
     if (!this.props.isLoggedIn) {
       return <Redirect to='/' />
@@ -26,30 +37,33 @@ class Chat extends Component {
             <span style={senderStyle}>{value.sender}: </span>
             <span style={messageStyle}>{value.message}</span>
           </h3>
-          <br />
         </section>
       );
     })    
 
     return (
-
-      <section className="container divBorder chatFormSettings">
-        <h1 style={subTitle}>Chat</h1>
-        {chat}
-        <span>
-        <TextField placeholder="Type here"
-                    name="message"
-                    ref={input => this.myMessage = input}
-        >
-        </TextField>
-        <RaisedButton overlayStyle={sendButton}
-                      onClick={e => this.getMessage(e)}>
-          Send
-        </RaisedButton>
-        </span>
-        
-
-      </section>
+      <section>
+        <section className="container divBorder chatFormSettings">
+          <h1 style={subTitle}>Chat</h1>
+          {chat}
+        </section>  
+        <section className="container divBorder chatFormSettings">
+          <form onSubmit={e => this.getMessage(e)}>
+            <TextField fullWidth placeholder="Type here"
+                        autocomplete="off"
+                        name="message" ref={input => this.myMessage = input}
+            >
+            </TextField>
+            <section>
+              <RaisedButton buttonStyle={sendButton}
+                            fullWidth
+                            onClick={e => this.getMessage(e)}>
+                Send
+              </RaisedButton>
+            </section>
+          </form>
+        </section>
+      </section> 
     )
   }
 
@@ -59,8 +73,11 @@ class Chat extends Component {
 //Styles//
 //////////
 
+const messageStyle = {
+  fontFamily: 'overpass'
+}
+
 const sendButton = {
-  width: '190px',
   backgroundColor: '#7aff42',
   fontFamily: 'paintball',
   color: 'black',
@@ -68,10 +85,6 @@ const sendButton = {
 
 const senderStyle = {
   fontFamily: 'paintball'
-}
-
-const messageStyle = {
-  fontFamily: 'overpass'
 }
 
 const subTitle =  {
@@ -85,6 +98,8 @@ const subTitle =  {
 
 const mapStateToProps = (state) => {
   return {
+    username: state.loginReducer.username,
+
     isLoggedIn: state.generalReducer.isLoggedIn,
     messages: state.generalReducer.messages,
   };
