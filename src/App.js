@@ -90,7 +90,7 @@ class App extends Component {
       status: 'Busy',
     })
     .then(results => {
-      this.props.getAccountInput({ name: 'from', value: '' });
+      this.props.getAccountInput({ name: 'from', value: this.props.from });
       this.props.getAccountInput({ name: 'notify', value: false });
       this.props.getAccountInput({ name: 'status', value: 'Busy' });
       this.props.setChatting(true);
@@ -104,6 +104,11 @@ class App extends Component {
     this.props.setInviteModal(false);
 
     if (clicked) {
+      socket.emit('declined-invite', {
+        username: this.props.username,
+        from: this.props.from
+      })
+
       axios.put('/clear-invite', {
         username: this.props.username,
         notify: false,

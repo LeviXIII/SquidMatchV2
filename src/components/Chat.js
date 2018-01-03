@@ -24,15 +24,20 @@ class Chat extends Component {
   }
 
   leaveRoom = () => {
+    this.props.socket.emit('leave-room', {
+      username: this.props.username,
+      from: this.props.from,
+    })
+    
     axios.put('/leave-chat', {
       username: this.props.username,
     })
     .then(result => {
-
+      
     })
     .catch(error => {
       console.log(error);
-    })
+    }) 
 
     this.props.getAccountInput({ name: 'status', value: 'Available' });
     this.props.getAccountInput({ name: 'from', value: '' });
@@ -128,6 +133,8 @@ const subTitle =  {
 const mapStateToProps = (state) => {
   return {
     username: state.loginReducer.username,
+
+    from: state.accountReducer.from,
 
     isLoggedIn: state.generalReducer.isLoggedIn,
     messages: state.generalReducer.messages,

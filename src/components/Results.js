@@ -18,7 +18,6 @@ class Results extends Component {
   }
 
   notifyMembers = () => {
-
     axios.put('/send-invites', {
       from: this.props.username,
       notify: true,

@@ -48,8 +48,6 @@ connection.on('open', () => {
       socket.join(data.username);   //Join room.
       socket.room = data.username;  //Name room by username.
 
-      console.log('MADE IT!');
-
       socket.emit('room-created', {
         sender: 'Judd (Admin)',
         message: 'Welcome to Squid Chat!'
@@ -76,6 +74,29 @@ connection.on('open', () => {
         sender: 'Judd (Admin)',
         message: `${data.username} joined the chat!`,
       })
+    })
+
+    socket.on('leave-room', (data) => {
+      socket.room = data.from;  //Find user's room.
+
+      //Update people in the room.
+      socket.to(socket.room).emit('update-chat', {
+        sender: 'Judd (Admin)',
+        message: `${data.username} has swum away.`
+      });
+
+      //Remove the socket from the room that they were in last.
+      socket.leave(socket.room);
+    })
+
+    socket.on('declined-invite', (data) => {
+      socket.room = data.from;
+
+      //Update people in the room.
+      socket.to(socket.room).emit('update-chat', {
+        sender: 'Judd (Admin)',
+        message: `${data.username} declined your invite.`
+      });      
     })
 
     socket.on('send-chat', (data) => {
