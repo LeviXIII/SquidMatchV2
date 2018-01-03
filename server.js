@@ -55,13 +55,16 @@ connection.on('open', () => {
     })
 
     socket.on('add-member', (data) => {
-      for (let i=0; i < rooms.length; i++) {
-        if (rooms[i] === data.from) {
-          socket.room = rooms[i];
-          socket.join(rooms[i]);
-          break;
-        }
-      }
+      // for (let i=0; i < rooms.length; i++) {
+      //   if (rooms[i] === data.from) {
+      //     socket.room = rooms[i];
+      //     socket.join(rooms[i]);
+      //     break;
+      //   }
+      // }
+
+      socket.room = data.from;
+      socket.join(socket.room);
 
       //Message displayed to current user only.
       socket.emit('joined-room', {
@@ -100,13 +103,15 @@ connection.on('open', () => {
     })
 
     socket.on('send-chat', (data) => {
-      for (let i=0; i < rooms.length; i++) {
-        if ((rooms[i] === data.from) || (rooms[i] === data.sender)) {
-          socket.room = rooms[i];
-          socket.join(rooms[i]);
-          break;
-        }
-      }
+      // for (let i=0; i < rooms.length; i++) {
+      //   if ((rooms[i] === data.from) || (rooms[i] === data.sender)) {
+      //     socket.room = rooms[i];
+      //     socket.join(rooms[i]);
+      //     break;
+      //   }
+      // }
+      socket.room = data.from
+      socket.join(socket.room);
 
       io.sockets.in(socket.room).emit('update-chat', data);
     })
@@ -188,10 +193,10 @@ app.post('/login', (req, res) => {
 
           let token = jwt.sign(payload, secretKey);
           
-          //Update the user's login time for search results.
+          //Update the user's login time and status for search results.
           User.findOneAndUpdate(
             { username: req.body.username },
-            { time: Date.now() },
+            { time: Date.now(), status: 'Available' },
             {}
           ).then(result => {}).catch(error => {})
 
@@ -203,7 +208,7 @@ app.post('/login', (req, res) => {
             rank: result.rank,
             mode: result.mode,
             weapon: result.weapon,
-            status: result.status,
+            status: 'Available',
             notify: result.notification.notify,
             from: result.notification.from,
             message: "",
@@ -228,7 +233,6 @@ app.post('/login', (req, res) => {
     });
   });
 });
-
 
 app.post('/register', (req, res) => {
   const username = req.body.username;
@@ -312,7 +316,7 @@ app.post('/search-criteria', (req, res) => {
   let searchQuery = {}
   searchQuery['$and'] = []; //Start an $and query
   searchQuery["$and"].push({ status: "Available" }); //Always check for status.
-  searchQuery["$and"].push({ "notification.notify": false });
+  searchQuery["$and"].push({ "notification.from": { $eq: '' } });
   searchQuery["$and"].push({ username: { $ne: req.body.username }})
 
   /*
@@ -372,6 +376,23 @@ app.post('/search-criteria', (req, res) => {
   })
 
 });
+
+app.put('/logout', (req, res) => {
+  User.findOneAndUpdate(
+    { username: req.body.username },
+    {
+      status: 'Offline',
+      notification: { notify: false, from: '' }
+    },
+    {}
+  )
+  .then(oldData => {
+    res.json({ result: oldData });
+  })
+  .catch(error => {
+    console.log("Logout Error: " + error);
+  })
+})
 
 app.put('/update-profile', (req, res) => {
   User.findOneAndUpdate(
@@ -472,7 +493,8 @@ app.put('/leave-chat', (req, res) => {
     {
       notification: { notify: false, from: '' },
       status: 'Available'
-    }
+    },
+    {}
   )
   .then(oldData => {
     res.json({ result: oldData })

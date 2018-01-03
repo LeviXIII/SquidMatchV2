@@ -27,12 +27,23 @@ class SiteHeader extends Component {
   }
 
   logout = (e) => {
+    axios.put('/logout', {
+      username: this.props.username     
+    })
+    .then(result => {
+      
+    })
+    .catch(error => {
+      console.log(error);
+    })
+
     this.props.setInitialAccountState();
     this.props.setInitialLoginState();
     this.props.setInitialSearchState();
     this.props.setInitialGeneralState();
     this.props.setLoggedIn(false);
     localStorage.removeItem('token');
+    
   }
 
   render() {

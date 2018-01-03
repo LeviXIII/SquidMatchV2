@@ -11,16 +11,21 @@ class Chat extends Component {
   
   getMessage = (e) => {
     e.preventDefault();
-    let message = Array.from(this.props.messages);
-    
-    //Start an event to display message to room.
-    this.props.socket.emit('send-chat', {
-      sender: this.props.username,
-      message: this.myMessage.input.value,
-    })
 
-    this.props.setMessages(Array.from(message));
-    this.myMessage.input.value = '';
+    //Prevents user from inputting blank values.
+    if (this.myMessage.input.value !== '') {
+      let message = Array.from(this.props.messages);
+      
+      //Start an event to display message to room.
+      this.props.socket.emit('send-chat', {
+        sender: this.props.username,
+        message: this.myMessage.input.value,
+        from: this.props.from,
+      })
+
+      this.props.setMessages(Array.from(message));
+      this.myMessage.input.value = '';
+    }
   }
 
   leaveRoom = () => {
@@ -33,15 +38,13 @@ class Chat extends Component {
       username: this.props.username,
     })
     .then(result => {
-      
+      this.props.getAccountInput({ name: 'status', value: 'Available' });
+      this.props.getAccountInput({ name: 'from', value: '' });
+      this.props.setChatting(false);
     })
     .catch(error => {
       console.log(error);
     }) 
-
-    this.props.getAccountInput({ name: 'status', value: 'Available' });
-    this.props.getAccountInput({ name: 'from', value: '' });
-    this.props.setChatting(false);
   }
 
   render() {

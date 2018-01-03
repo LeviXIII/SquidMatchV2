@@ -118,11 +118,31 @@ class ChooseCriteria extends Component {
         <br />
 
         <section className="grid">
-          <Link to="/results">
-            <RaisedButton overlayStyle={loginButton} onClick={this.searchUsers()}>
-              Search
-            </RaisedButton>
-          </Link>
+          { /* If availability is set to busy, can't search */ }
+          {this.props.status === 'Busy' ? (
+            <section>
+              <section className="grid">
+                <RaisedButton buttonStyle={searchButton} onClick={this.searchUsers()}
+                              backgroundColor='#7aff42'
+                              disabledBackgroundColor='#bcbcbc' disabled={true}
+                >
+                  Search
+                </RaisedButton>
+              </section>
+              
+              <section className="grid">
+                <p style={messageStyle}>Please set your status to "Available"</p>
+              </section>
+            </section>
+
+          ) : (
+            <Link to="/results">
+              <RaisedButton buttonStyle={searchButton} backgroundColor='#7aff42'
+                            onClick={this.searchUsers()}>
+                Search
+              </RaisedButton>
+            </Link>
+          )}
         </section>
 
       </section>
@@ -139,6 +159,8 @@ const mapStateToProps = (state) => {
     searchWeapon: state.searchReducer.searchWeapon,
 
     isLoggedIn: state.generalReducer.isLoggedIn,
+
+    status: state.accountReducer.status,
 
     username: state.loginReducer.username,
   }
@@ -172,9 +194,8 @@ const signupButton = {
   color: 'black',
 }
 
-const loginButton = {
+const searchButton = {
   width: 150,
-  backgroundColor: '#7aff42',
   fontFamily: 'paintball',
   color: 'black',
 }
