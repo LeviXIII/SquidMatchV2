@@ -1,6 +1,7 @@
 import {
   SET_SOCKET,
   SET_MESSAGES,
+  SET_CHATTING,
   SET_LOGGED_IN,
   SET_UPDATE_MODAL,
   SET_INVITE_MODAL,
@@ -15,6 +16,7 @@ const initialState = {
   verifyMessage: '',
   updateModal: false,
   inviteModal: false,
+  isChatting: false,
   isLoggedIn: false,
   windowSize: window.innerWidth,
 };
@@ -25,6 +27,8 @@ export default (state = initialState, action) => {
       return { ...state, socket: action.payload };
     case SET_LOGGED_IN:
       return { ...state, isLoggedIn: action.payload };
+    case SET_CHATTING:
+      return { ...state, isChatting: action.payload };
     case SET_MESSAGES:
       return { ...state, messages: Array.from(action.payload) };
     case SET_UPDATE_MODAL:

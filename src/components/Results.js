@@ -19,8 +19,6 @@ class Results extends Component {
 
   notifyMembers = () => {
 
-    this.props.setShowModal(false);
-
     axios.put('/send-invites', {
       from: this.props.username,
       notify: true,
@@ -37,6 +35,23 @@ class Results extends Component {
       console.log(error);
     })
 
+    //Update user's status
+    axios.put('/set-chat-status', {
+      username: this.props.username,
+      notify: false,
+      status: 'Busy'
+    })
+    .then(result => {
+  
+    })
+    .catch(error => {
+      console.log(error);
+    })
+
+    this.props.setShowModal(false);
+    this.props.getAccountInput({ name: 'status', value: 'Busy' });
+    this.props.getAccountInput({ name: 'from', value: this.props.username });
+    this.props.setChatting(true);
   }
 
   closeModal = () => {

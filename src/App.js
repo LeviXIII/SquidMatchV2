@@ -76,6 +76,7 @@ class App extends Component {
 
   acceptRequest = () => {
     this.props.setInviteModal(false);
+    
     socket.emit('add-member', {
       username: this.props.username,
       from: this.props.from
@@ -84,12 +85,15 @@ class App extends Component {
     //Clear out the invite once inside the room.
     axios.put('/clear-invite', {
       username: this.props.username,
-      from: '',
       notify: false,
+      from: this.props.from,
+      status: 'Busy',
     })
     .then(results => {
       this.props.getAccountInput({ name: 'from', value: '' });
       this.props.getAccountInput({ name: 'notify', value: false });
+      this.props.getAccountInput({ name: 'status', value: 'Busy' });
+      this.props.setChatting(true);
     })
     .catch(error => {
       console.log(error);
@@ -102,8 +106,9 @@ class App extends Component {
     if (clicked) {
       axios.put('/clear-invite', {
         username: this.props.username,
-        from: '',
         notify: false,
+        from: this.props.from,
+        status: this.props.status,
       })
       .then(results => {
         this.props.getAccountInput({ name: 'from', value: '' });
@@ -113,6 +118,10 @@ class App extends Component {
         console.log(error);
       })
     }
+  }
+
+  closeUpdateModal = () => {
+    this.props.setUpdateModal(false);
   }
 
   //Check if the token is still valid.
@@ -147,6 +156,15 @@ class App extends Component {
       </Link>
     ]
 
+    const updateButton = [
+      <RaisedButton buttonStyle={chatButton}
+                    backgroundColor='#7aff42'
+                    onClick={this.closeUpdateModal}
+      >
+        Close
+      </RaisedButton>
+    ]
+
     return (
       <div className="mainBackground">
       {this.props.isLoggedIn && <SiteHeader />}
@@ -167,15 +185,27 @@ class App extends Component {
                 verifyToken={this.verifyToken}/>} />
       </Switch>
 
+      { /* Invite Modal */ }
       <Dialog
           title={`Join ${this.props.from}'s Chat?`}
           titleStyle={subTitle}
-          bodyStyle={dialogContent}
           actions={actionButtons}
           actionsContainerStyle={actionButtonStyle}
           modal={false}
           open={this.props.inviteModal}
           onRequestClose={(buttonClicked) => this.declineRequest(buttonClicked)}
+      >
+      </Dialog>
+
+      { /* Update Modal */ }
+      <Dialog
+          title="Profile Updated!"
+          titleStyle={subTitle}
+          actions={updateButton}
+          actionsContainerStyle={updateButtonStyle}
+          modal={false}
+          open={this.props.updateModal}
+          onRequestClose={this.closeUpdateModal}
       >
       </Dialog>
       </div>
@@ -193,6 +223,13 @@ const actionButtonStyle = {
   alignItems: 'center',
   paddingLeft: '30px',
   paddingRight: '30px',
+  paddingBottom: '20px'
+}
+
+const updateButtonStyle = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
   paddingBottom: '20px'
 }
 
@@ -228,8 +265,10 @@ const mapStateToProps = (state) => {
   return {
     from: state.accountReducer.from,
     notify: state.accountReducer.notify,
+    status: state.accountReducer.status,
 
     isLoggedIn: state.generalReducer.isLoggedIn,
+    updateModal: state.generalReducer.updateModal,
     inviteModal: state.generalReducer.inviteModal,
     messages: state.generalReducer.messages,
 

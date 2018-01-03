@@ -48,6 +48,8 @@ connection.on('open', () => {
       socket.join(data.username);   //Join room.
       socket.room = data.username;  //Name room by username.
 
+      console.log('MADE IT!');
+
       socket.emit('room-created', {
         sender: 'Judd (Admin)',
         message: 'Welcome to Squid Chat!'
@@ -180,7 +182,7 @@ app.post('/login', (req, res) => {
             rank: result.rank,
             mode: result.mode,
             weapon: result.weapon,
-            status: "Available",
+            status: result.status,
             notify: result.notification.notify,
             from: result.notification.from,
             message: "",
@@ -292,7 +294,7 @@ app.post('/search-criteria', (req, res) => {
   searchQuery["$and"].push({ "notification.notify": false });
   searchQuery["$and"].push({ username: { $ne: req.body.username }})
 
-  /* Magic!
+  /*
     Check to see which elements in the array match the fields required to search.
     If they do, add the field to the query.
     If a value is "any", find all values in the field.
@@ -426,14 +428,50 @@ app.put('/send-invites', (req, res) => {
   })
 })
 
+app.put('/set-chat-status', (req, res) => {
+  User.findOneAndUpdate(
+    { username: req.body.username },
+    {
+      notification: { notify: false, from: req.body.username },
+      status: req.body.status
+    },
+    {}
+  )
+  .then(result => {
+    res.json({ result: result });
+  })
+  .catch(error => {
+    console.log("Set Chat Status Error: " + error);
+  })
+})
+
+app.put('/leave-chat', (req, res) => {
+  User.findOneAndUpdate(
+    { username: req.body.username },
+    {
+      notification: { notify: false, from: '' },
+      status: 'Available'
+    }
+  )
+  .then(oldData => {
+    res.json({ result: oldData })
+  })
+  .catch(error => {
+    console.log("Leave Chat Error: " + error);
+  })
+})
+
 app.put('/clear-invite', (req, res) => {
   User.findOneAndUpdate(
     { username: req.body.username },
-    { notification: { notify: req.body.notify, from: req.body.from}},
+    { 
+      notification: { notify: req.body.notify, from: req.body.from }, 
+      status: req.body.status
+    },
     {}
   )
   .then(oldData => {
-    res.status(200);
+    res.json({ result: oldData });
   })
   .catch(error => {
     console.log(error);

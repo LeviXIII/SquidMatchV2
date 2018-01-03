@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 import { TextField, RaisedButton } from 'material-ui';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
@@ -20,6 +21,22 @@ class Chat extends Component {
 
     this.props.setMessages(Array.from(message));
     this.myMessage.input.value = '';
+  }
+
+  leaveRoom = () => {
+    axios.put('/leave-chat', {
+      username: this.props.username,
+    })
+    .then(result => {
+
+    })
+    .catch(error => {
+      console.log(error);
+    })
+
+    this.props.getAccountInput({ name: 'status', value: 'Available' });
+    this.props.getAccountInput({ name: 'from', value: '' });
+    this.props.setChatting(false);
   }
 
   render() {
@@ -50,13 +67,19 @@ class Chat extends Component {
         <section className="container divBorder chatFormSettings">
           <form onSubmit={e => this.getMessage(e)}>
             <TextField fullWidth placeholder="Type here"
-                        autocomplete="off"
+                        autoComplete="off"
                         name="message" ref={input => this.myMessage = input}
             >
             </TextField>
-            <section>
+            <section className="gridSelector">
+              <Link to="/choose-criteria">
+                <RaisedButton buttonStyle={cancelButton}
+                            onClick={this.leaveRoom}
+                >
+                  Leave
+                </RaisedButton>
+              </Link>
               <RaisedButton buttonStyle={sendButton}
-                            fullWidth
                             onClick={e => this.getMessage(e)}>
                 Send
               </RaisedButton>
@@ -75,6 +98,12 @@ class Chat extends Component {
 
 const messageStyle = {
   fontFamily: 'overpass'
+}
+
+const cancelButton = {
+  backgroundColor: '#ff43b7',
+  fontFamily: 'paintball',
+  color: 'black',
 }
 
 const sendButton = {

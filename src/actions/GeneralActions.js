@@ -1,6 +1,7 @@
 import {
   SET_SOCKET,
   SET_MESSAGES,
+  SET_CHATTING,
   SET_LOGGED_IN,
   SET_UPDATE_MODAL,
   SET_INVITE_MODAL,
@@ -27,6 +28,13 @@ export const setLoggedIn = (loggedIn) => {
   return {
     type: SET_LOGGED_IN,
     payload: loggedIn
+  }
+}
+
+export const setChatting = (chatting) => {
+  return {
+    type: SET_CHATTING,
+    payload: chatting
   }
 }
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Toolbar, ToolbarGroup, FlatButton, 
-          Avatar, IconMenu, MenuItem, Checkbox,
+          Avatar, IconMenu, MenuItem,
           IconButton, ToolbarTitle, Divider } from 'material-ui';
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 
@@ -14,33 +14,15 @@ class SiteHeader extends Component {
   
   componentWillMount() {
     window.addEventListener("resize", () => this.props.setWindowSize(window.innerWidth));
-
-    // axios.get('/check-status/' + this.props.username)
-    // .then(result => {
-    //   this.props.getAccountInput({ name: 'status', value: result.data.status });
-    // })
-    // .catch(error => {
-    //   console.log("Check Status Error: " + error);
-    // })
   }
 
   updateStatus = (status) => {
     axios.put('/update-status', { 
       username: this.props.username,
-      status: status,// available: availableCheck,
-      // busy: busyCheck
+      status: status,
     })
     .then(result => {
       this.props.getAccountInput({ name: 'status', value: result.data.status });
-
-      // if (result.data.status === 'Available') {
-      //   availableCheck = true;
-      //   busyCheck = false;
-      // }
-      // else {
-      //   availableCheck = false;
-      //   busyCheck = true;
-      // }
     })
   }
 
@@ -94,9 +76,9 @@ class SiteHeader extends Component {
               anchorOrigin={{horizontal: 'right', vertical: 'top'}}
               targetOrigin={{horizontal: 'right', vertical: 'top'}}
             >
-              <MenuItem primaryText="Available" 
+              <MenuItem primaryText="Available" disabled={this.props.isChatting} 
                 onClick={(status) => this.updateStatus('Available')}/>
-              <MenuItem primaryText="Busy" 
+              <MenuItem primaryText="Busy" disabled={this.props.isChatting}
                 onClick={(status) => this.updateStatus('Busy')}/>
               <Divider />
               <Link style={miniMenu} to="/update-info">
@@ -162,6 +144,7 @@ const mapStateToProps = (state) => {
 
     status: state.accountReducer.status,
 
+    isChatting: state.generalReducer.isChatting,
     windowSize: state.generalReducer.windowSize
   }
 }
