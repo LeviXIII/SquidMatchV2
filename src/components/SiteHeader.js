@@ -89,6 +89,7 @@ class SiteHeader extends Component {
               iconButtonElement={
                 this.props.notify ? (
                 <Badge
+                  badgeStyle={{top: '15px', right: '15px'}}
                   badgeContent={
                     <IconButton tooltip="Invite Pending">
                       <Invite color="black" />

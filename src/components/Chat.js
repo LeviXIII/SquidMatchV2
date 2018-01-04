@@ -62,10 +62,10 @@ class Chat extends Component {
     let chat = this.props.messages.map((value, i) => {
       return (
         <section key={i}>
-          <h3>
+          <h4>
             <span style={senderStyle}>{value.sender}: </span>
             <span style={messageStyle}>{value.message}</span>
-          </h3>
+          </h4>
         </section>
       );
     })    
@@ -84,6 +84,7 @@ class Chat extends Component {
       <section>
         <section className="container divBorder chatFormSettings">
           <h1 style={subTitle}>Chat</h1>
+          <p style={NSIDstyle}>NSID: {this.props.NSID}</p>
           {chat}
         </section>  
         <section className="container divBorder chatFormSettings">
@@ -137,6 +138,11 @@ const messageStyle = {
   fontFamily: 'overpass'
 }
 
+const NSIDstyle = {
+  fontFamily: 'overpass',
+  textAlign: 'center'
+}
+
 const leaveButton = {
   backgroundColor: '#ff43b7',
   fontFamily: 'paintball',
@@ -180,6 +186,7 @@ const mapStateToProps = (state) => {
   return {
     username: state.loginReducer.username,
 
+    NSID: state.accountReducer.NSID,
     from: state.accountReducer.from,
     
     newSearchModal: state.searchReducer.newSearchModal,

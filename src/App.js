@@ -62,6 +62,10 @@ class App extends Component {
 
       chat.push({ sender: data.sender, message: data.message })
       this.props.setMessages(Array.from(chat));
+
+      axios.post('/open-new-conversation', {
+        roomMembers: data.roomMembers
+      })
     })
 
     socket.on('update-chat', (data) => {

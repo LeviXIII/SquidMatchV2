@@ -9,6 +9,7 @@ const config = require('./config.js');
 
 const User = require('./models/User');
 const Friends = require('./models/Friends');
+const Messages = require('./models/Messages');
 
 const PORT = process.env.PORT || 8080;
 const MONGO_CONNECTION_STRING = 'mongodb://localhost:27017/data/db';
@@ -44,9 +45,11 @@ connection.on('open', () => {
 
     socket.on('create-room', (data) => {
       //Create the initial room and enter.
+      socket.username = data.username;  //Give the socket a username.
       rooms.push(data.username);    //Add room to rooms array.
       socket.join(data.username);   //Join room.
       socket.room = data.username;  //Name room by username.
+      
 
       socket.emit('room-created', {
         sender: 'Judd (Admin)',
@@ -55,21 +58,25 @@ connection.on('open', () => {
     })
 
     socket.on('add-member', (data) => {
-      // for (let i=0; i < rooms.length; i++) {
-      //   if (rooms[i] === data.from) {
-      //     socket.room = rooms[i];
-      //     socket.join(rooms[i]);
-      //     break;
-      //   }
-      // }
-
+      let roomMembers = [];
+      
+      socket.username = data.username;
       socket.room = data.from;
       socket.join(socket.room);
+
+      //Get all the clients currently in the room.
+      users = io.sockets.adapter.rooms[socket.room].sockets;
+      
+      for (let id in users ) {
+        //this is the username of each socket in the room.
+        roomMembers.push(io.sockets.connected[id].username);
+      }
 
       //Message displayed to current user only.
       socket.emit('joined-room', {
         sender: 'Judd (Admin)',
         message: `Welcome to ${data.from}'s chat!`,
+        roomMembers: roomMembers,
       })
 
       //Message displayed to rest of room.
@@ -103,13 +110,6 @@ connection.on('open', () => {
     })
 
     socket.on('send-chat', (data) => {
-      // for (let i=0; i < rooms.length; i++) {
-      //   if ((rooms[i] === data.from) || (rooms[i] === data.sender)) {
-      //     socket.room = rooms[i];
-      //     socket.join(rooms[i]);
-      //     break;
-      //   }
-      // }
       socket.room = data.from
       socket.join(socket.room);
 
@@ -329,6 +329,18 @@ app.post('/verify-token', (req, res) => {
       });
     }
   });
+})
+
+app.post('/open-new-conversation', (req, res) => {
+  //Create a new messages model and add it to the conversation field.
+  Messages({
+    users: req.body.roomMembers,
+    message: []
+  })
+  .save()
+  .catch(error => {
+    console.log('Save Error: ' + error);
+  })
 })
 
 app.post('/search-criteria', (req, res) => {
