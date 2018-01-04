@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Toolbar, ToolbarGroup, FlatButton, 
           Avatar, IconMenu, MenuItem,
-          IconButton, ToolbarTitle, Divider } from 'material-ui';
+          IconButton, ToolbarTitle, Divider,
+          Badge,  } from 'material-ui';
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
+import Invite from 'material-ui/svg-icons/social/notifications';
 
 import axios from 'axios';
 
@@ -14,6 +16,10 @@ class SiteHeader extends Component {
   
   componentWillMount() {
     window.addEventListener("resize", () => this.props.setWindowSize(window.innerWidth));
+  }
+
+  showInviteModal = () => {
+    this.props.setInviteModal(true);
   }
 
   updateStatus = (status) => {
@@ -47,6 +53,7 @@ class SiteHeader extends Component {
   }
 
   render() {
+    console.log(this.props.notify);
     return (
       <section className="header">
         <h1 className="siteTitle"><Link to="/home">Squid Match</Link></h1>
@@ -80,9 +87,22 @@ class SiteHeader extends Component {
             <ToolbarTitle style={statusStyle} text={this.props.status} />
             <IconMenu
               iconButtonElement={
-                <Avatar style={avatarLetter}>
-                  {this.props.username[0].toUpperCase()}
-                </Avatar>
+                this.props.notify ? (
+                <Badge
+                  badgeContent={
+                    <IconButton tooltip="Invite Pending">
+                      <Invite color="black" />
+                    </IconButton>}
+                >
+                  <Avatar style={avatarLetterBadge}>
+                    {this.props.username[0].toUpperCase()}
+                  </Avatar>
+                </Badge>
+                ) : (
+                  <Avatar style={avatarLetter}>
+                    {this.props.username[0].toUpperCase()}
+                  </Avatar>
+                )
               }
               anchorOrigin={{horizontal: 'right', vertical: 'top'}}
               targetOrigin={{horizontal: 'right', vertical: 'top'}}
@@ -92,6 +112,9 @@ class SiteHeader extends Component {
               <MenuItem primaryText="Busy" disabled={this.props.isChatting}
                 onClick={(status) => this.updateStatus('Busy')}/>
               <Divider />
+              {this.props.notify &&
+                <MenuItem primaryText="Check Invite" onClick={this.showInviteModal} />  
+              }
               <Link style={miniMenu} to="/update-info">
                 <MenuItem primaryText="Update Profile" />
               </Link>
@@ -110,8 +133,17 @@ class SiteHeader extends Component {
 
 }
 
+//////////
+//Styles//
+//////////
+
 const avatarLetter = {
   fontFamily: 'overpass',
+}
+
+const avatarLetterBadge = {
+  fontFamily: 'overpass',
+  marginBottom: '15px',
 }
 
 const miniMenu = {
@@ -154,6 +186,7 @@ const mapStateToProps = (state) => {
     username: state.loginReducer.username,
 
     status: state.accountReducer.status,
+    notify: state.accountReducer.notify,
 
     isChatting: state.generalReducer.isChatting,
     windowSize: state.generalReducer.windowSize
