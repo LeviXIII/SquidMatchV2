@@ -110,10 +110,24 @@ connection.on('open', () => {
     })
 
     socket.on('send-chat', (data) => {
+      let roomMembers = [];
+      
       socket.room = data.from
       socket.join(socket.room);
 
-      io.sockets.in(socket.room).emit('update-chat', data);
+      //Get all the clients currently in the room.
+      users = io.sockets.adapter.rooms[socket.room].sockets;
+      
+      for (let id in users ) {
+        //this is the username of each socket in the room.
+        roomMembers.push(io.sockets.connected[id].username);
+      }
+
+      io.sockets.in(socket.room).emit('update-chat', {
+          sender: data.sender,
+          message: data.message,
+          roomMembers: roomMembers
+      });
     })
 
   })
@@ -332,14 +346,44 @@ app.post('/verify-token', (req, res) => {
 })
 
 app.post('/open-new-conversation', (req, res) => {
-  //Create a new messages model and add it to the conversation field.
-  Messages({
-    users: req.body.roomMembers,
-    message: []
+  
+  //Check if a conversation already exists.
+  Messages.findOne({ users: { $all: req.body.roomMembers }})
+  .then(result => {
+    if (result === null) {
+      //Create a new messages model and add it to the conversation field.
+      Messages({
+        users: req.body.roomMembers,
+        message: []
+      })
+      .save()
+      .catch(error => {
+        console.log('Open Conversation Error: ' + error);
+      })
+    
+    }
   })
-  .save()
   .catch(error => {
-    console.log('Save Error: ' + error);
+    console.log('Search for Open Conversation Error: ' + error);
+  })
+  
+})
+
+app.post('/save-chat', (req, res) => {
+  Messages.findOneAndUpdate(
+    { users: { $all: req.body.roomMembers }},
+    { $push: 
+      { messages: 
+        { sender: req.body.sender, message: req.body.message }
+      }
+    },
+    {}
+  )
+  .then(oldData => {
+    res.json({ oldData: oldData })
+  })
+  .catch(error => {
+    console.log("Save Chat Error: " + error);
   })
 })
 

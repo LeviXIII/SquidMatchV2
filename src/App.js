@@ -40,7 +40,6 @@ class App extends Component {
         if (this.props.notify) {
           this.props.setInviteModal(true);
         };
-        
       })
       .catch(error => {
         console.log(error);
@@ -74,6 +73,18 @@ class App extends Component {
 
       chat.push({ sender: data.sender, message: data.message })
       this.props.setMessages(Array.from(chat));
+
+      axios.post('/save-chat', {
+        roomMembers: data.roomMembers,
+        sender: data.sender,
+        message: data.message,
+      })
+      .then(result => {
+
+      })
+      .catch(error => {
+        console.log("Save Chat Error: " + error);
+      })
     })
     
   }; //end componentDidMount
