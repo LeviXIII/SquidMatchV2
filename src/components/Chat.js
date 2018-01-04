@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom'
-import { TextField, RaisedButton } from 'material-ui';
+import { TextField, RaisedButton, Dialog } from 'material-ui';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
@@ -9,6 +9,10 @@ let chat;
 
 class Chat extends Component {
   
+  closeNewSearchModal = () => {
+    this.props.setNewSearchModal(false);
+  }
+
   getMessage = (e) => {
     e.preventDefault();
 
@@ -66,6 +70,16 @@ class Chat extends Component {
       );
     })    
 
+    const searchModalButtons = [
+      <Link to="/choose-criteria">
+        <RaisedButton buttonStyle={sendButton}
+                    onClick={this.closeNewSearchModal}
+        >
+          Search
+        </RaisedButton>
+      </Link>
+    ]
+
     return (
       <section>
         <section className="container divBorder chatFormSettings">
@@ -81,7 +95,7 @@ class Chat extends Component {
             </TextField>
             <section className="gridSelector">
               <Link to="/choose-criteria">
-                <RaisedButton buttonStyle={cancelButton}
+                <RaisedButton buttonStyle={leaveButton}
                             onClick={this.leaveRoom}
                 >
                   Leave
@@ -94,6 +108,21 @@ class Chat extends Component {
             </section>
           </form>
         </section>
+
+        { /* New Search Modal */ }
+        <Dialog
+            title="Ouch..."
+            titleStyle={subTitle}
+            actions={searchModalButtons}
+            actionsContainerStyle={searchModalStyle}
+            bodyStyle={dialogContent}
+            modal={false}
+            open={this.props.newSearchModal}
+            onRequestClose={this.closeNewSearchModal}
+        >
+          1 or more members have received invites already. Please search again.
+        </Dialog>
+
       </section> 
     )
   }
@@ -108,10 +137,24 @@ const messageStyle = {
   fontFamily: 'overpass'
 }
 
-const cancelButton = {
+const leaveButton = {
   backgroundColor: '#ff43b7',
   fontFamily: 'paintball',
   color: 'black',
+}
+
+const dialogContent = {
+  fontFamily: 'overpass',
+  fontSize: '1.3rem',
+  textAlign: 'center',
+  color: 'red',
+}
+
+const searchModalStyle = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  paddingBottom: '20px'
 }
 
 const sendButton = {
@@ -138,6 +181,8 @@ const mapStateToProps = (state) => {
     username: state.loginReducer.username,
 
     from: state.accountReducer.from,
+    
+    newSearchModal: state.searchReducer.newSearchModal,
 
     isLoggedIn: state.generalReducer.isLoggedIn,
     messages: state.generalReducer.messages,

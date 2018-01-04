@@ -294,6 +294,27 @@ app.post('/register', (req, res) => {
 
 })
 
+app.post('/check-invite-status', (req, res) => {
+  //Check if the member has been invited in the time it took to invite
+  //after searching.
+  Promise.all(req.body.members.map((value, i) => {
+    return (
+      User.findOne({ $and: [{ username: value.username }, { "notification.from": { $eq: '' }}]})
+    )
+  }))
+  .then(result => {
+    //Since result will return null as a spot in the array, need to
+    //check the actual value and return 0 manually for the length.
+    if (result[0] === null) {
+      res.json({ freeMembers: 0 });
+    }
+    else {
+      res.json({ freeMembers: result.length });
+    }
+    
+  })
+})
+
 app.post('/verify-token', (req, res) => {
   jwt.verify(req.body.currentToken, secretKey, (err, token) => {
     if (err) {
@@ -452,7 +473,7 @@ app.put('/update-status', (req, res) => {
 
 app.put('/send-invites', (req, res) => {
   //Allows for the database to update each field in the array of
-  //group members and then return one promise afterwards.
+  //group members and then return one promise afterwards.  
   Promise.all(req.body.members.map((value, i) => {
     return (
       User.findOneAndUpdate(
@@ -463,7 +484,7 @@ app.put('/send-invites', (req, res) => {
     )
   }))
   .then(oldData => {
-    res.json({ result: oldData });
+    res.json({ result: oldData});
   })
   .catch(error => {
     console.log(error);

@@ -18,39 +18,53 @@ class Results extends Component {
   }
 
   notifyMembers = () => {
-    axios.put('/send-invites', {
-      from: this.props.username,
-      notify: true,
-      members: squad,
-    })
-    .then(results => {
-      //Send out invites to each group member.
-      this.props.socket.emit('check-invites');
-
-      //Open room for the user.
-      this.props.socket.emit('create-room', { username: this.props.username });
-    })
-    .catch(error => {
-      console.log(error);
-    })
-
-    //Update user's status
-    axios.put('/set-chat-status', {
-      username: this.props.username,
-      notify: false,
-      status: 'Busy'
+    axios.post('/check-invite-status', {
+      members: this.props.squad,
     })
     .then(result => {
-  
-    })
-    .catch(error => {
-      console.log(error);
+      //Check to see if the person has an invite pending already.
+      if (result.data.freeMembers === this.props.squad.length) {  
+        axios.put('/send-invites', {
+          from: this.props.username,
+          notify: true,
+          members: this.props.squad,
+        })
+        .then(results => {
+          //Send out invites to each group member.
+          this.props.socket.emit('check-invites');
+
+          //Open room for the user.
+          this.props.socket.emit('create-room', { username: this.props.username });
+        })
+        .catch(error => {
+          console.log(error);
+        })
+
+        //Update user's status
+        axios.put('/set-chat-status', {
+          username: this.props.username,
+          notify: false,
+          status: 'Busy'
+        })
+        .then(result => {
+      
+        })
+        .catch(error => {
+          console.log(error);
+        })
+
+        this.props.setShowModal(false);
+        this.props.getAccountInput({ name: 'status', value: 'Busy' });
+        this.props.getAccountInput({ name: 'from', value: this.props.username });
+        this.props.setChatting(true);
+
+      }
+      else {
+        this.props.setNewSearchModal(true);
+      }
     })
 
-    this.props.setShowModal(false);
-    this.props.getAccountInput({ name: 'status', value: 'Busy' });
-    this.props.getAccountInput({ name: 'from', value: this.props.username });
-    this.props.setChatting(true);
+    
   }
 
   closeModal = () => {

@@ -2,6 +2,7 @@ import {
   SET_SEARCH_INPUT,
   SET_SQUAD,
   SET_SHOW_MODAL,
+  SET_NEW_SEARCH_MODAL,
   SET_SEARCH_RESULTS,
   SET_INITIAL_SEARCH_STATE,
 } from './types'
@@ -31,6 +32,13 @@ export const setShowModal = (modal) => {
   return {
     type: SET_SHOW_MODAL,
     payload: modal
+  }
+}
+
+export const setNewSearchModal = (newSearchModal) => {
+  return {
+    type: SET_NEW_SEARCH_MODAL,
+    payload: newSearchModal
   }
 }
 

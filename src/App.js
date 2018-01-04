@@ -112,7 +112,7 @@ class App extends Component {
       axios.put('/clear-invite', {
         username: this.props.username,
         notify: false,
-        from: this.props.from,
+        from: '',
         status: this.props.status,
       })
       .then(results => {
