@@ -4,7 +4,7 @@ import { Route, Switch, Link,
 import { connect } from 'react-redux';
 import { RaisedButton, Checkbox, Card,
           CardHeader, CardText, Avatar,
-          Dialog, } from 'material-ui';
+          Dialog, Snackbar } from 'material-ui';
 import axios from 'axios';
 import io from 'socket.io-client';
 import * as actions from './actions'
@@ -161,59 +161,47 @@ class App extends Component {
       </Link>
     ]
 
-    const updateButton = [
-      <RaisedButton buttonStyle={chatButton}
-                    backgroundColor='#7aff42'
-                    onClick={this.closeUpdateModal}
-      >
-        Close
-      </RaisedButton>
-    ]
-
     return (
-      <div className="mainBackground">
-      {this.props.isLoggedIn && <SiteHeader />}
-      <Switch>
-        <Route path="/" exact render={() => 
-          <LoginForm />} />
-        <Route path="/account-info" exact render={() => 
-          <AccountInfo />} />
-        <Route path="/update-info" exact render={() => 
-          <UpdateInfo verifyToken={this.verifyToken}/>} />
-        <Route path="/choose-criteria" exact render={() => 
-          <ChooseCriteria verifyToken={this.verifyToken}/>} />
-        <Route path="/results" exact render={() => 
-          <Results  socket={socket}
-                    verifyToken={this.verifyToken}/>} />
-        <Route path="/chat" exact render={() => 
-          <Chat socket={socket}
-                verifyToken={this.verifyToken}/>} />
-      </Switch>
+      <section className="mainBackground">
+        {this.props.isLoggedIn && <SiteHeader />}
+        <Switch>
+          <Route path="/" exact render={() => 
+            <LoginForm />} />
+          <Route path="/account-info" exact render={() => 
+            <AccountInfo />} />
+          <Route path="/update-info" exact render={() => 
+            <UpdateInfo verifyToken={this.verifyToken}/>} />
+          <Route path="/choose-criteria" exact render={() => 
+            <ChooseCriteria verifyToken={this.verifyToken}/>} />
+          <Route path="/results" exact render={() => 
+            <Results  socket={socket}
+                      verifyToken={this.verifyToken}/>} />
+          <Route path="/chat" exact render={() => 
+            <Chat socket={socket}
+                  verifyToken={this.verifyToken}/>} />
+        </Switch>
 
-      { /* Invite Modal */ }
-      <Dialog
-          title={`Join ${this.props.from}'s Chat?`}
-          titleStyle={subTitle}
-          actions={actionButtons}
-          actionsContainerStyle={actionButtonStyle}
-          modal={false}
-          open={this.props.inviteModal}
-          onRequestClose={(buttonClicked) => this.declineRequest(buttonClicked)}
-      >
-      </Dialog>
+        { /* Invite Modal */ }
+        <Dialog
+            title={`Join ${this.props.from}'s Chat?`}
+            titleStyle={subTitle}
+            actions={actionButtons}
+            actionsContainerStyle={actionButtonStyle}
+            modal={false}
+            open={this.props.inviteModal}
+            onRequestClose={(buttonClicked) => this.declineRequest(buttonClicked)}
+        >
+        </Dialog>
 
-      { /* Update Modal */ }
-      <Dialog
-          title="Profile Updated!"
-          titleStyle={subTitle}
-          actions={updateButton}
-          actionsContainerStyle={updateButtonStyle}
-          modal={false}
+        { /* Update Message */ }
+        <Snackbar
           open={this.props.updateModal}
+          message="Profile Updated"
+          autoHideDuration={3000}
+          contentStyle={dialogContent}
           onRequestClose={this.closeUpdateModal}
-      >
-      </Dialog>
-      </div>
+        />
+      </section>
     );
   }
 }
@@ -231,13 +219,6 @@ const actionButtonStyle = {
   paddingBottom: '20px'
 }
 
-const updateButtonStyle = {
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  paddingBottom: '20px'
-}
-
 const cancelButton = {
   width: '100px',
   fontFamily: 'paintball',
@@ -252,9 +233,8 @@ const chatButton = {
 
 const dialogContent = {
   fontFamily: 'overpass',
-  fontSize: '1.3rem',
+  fontSize: '1rem',
   textAlign: 'center',
-  color: 'red',
 }
 
 const subTitle =  {
