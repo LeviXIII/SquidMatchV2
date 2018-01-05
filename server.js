@@ -102,6 +102,8 @@ connection.on('open', () => {
     })
 
     socket.on('leave-room', (data) => {      
+      let roomMembers = [];
+      
       //Find user's room.
       socket.room = data.from;
       
@@ -110,9 +112,21 @@ connection.on('open', () => {
         sender: 'Judd (Admin)',
         message: `${data.username} has swum away.`
       });
-      
+
       //Remove the socket from the room that they were in last.
       socket.leave(socket.room);
+
+      //Get all the clients currently in the room.
+      users = io.sockets.adapter.rooms[socket.room].sockets;
+      //This is the username of each socket in the room.
+      for (let id in users) {
+        roomMembers.push(io.sockets.connected[id].username);
+      }
+      
+      //Open room for others left in the room.
+      socket.emit('remnant-room', {
+        roomMembers: roomMembers,
+      })
     })
 
     socket.on('declined-invite', (data) => {
@@ -369,6 +383,9 @@ app.post('/verify-token', (req, res) => {
 })
 
 app.post('/open-new-conversation', (req, res) => {
+  //Sort array to make sure insertion is always the same.
+  req.body.roomMembers.sort();
+  
   //Check if a conversation already exists.
   Messages.findOne({ users: req.body.roomMembers })
   .then(result => {
@@ -569,6 +586,8 @@ app.put('/set-chat-status', (req, res) => {
 })
 
 app.put('/save-chat', (req, res) => {
+  req.body.roomMembers.sort();
+  
   Messages.findOneAndUpdate(
     { users: req.body.roomMembers },
     { $push: { messages: 

@@ -66,7 +66,7 @@ class App extends Component {
         roomMembers: data.roomMembers
       })
       .then(result => {
-        
+
       })
       .catch(error => {
         console.log("Open New Conversation Error: " + error);
@@ -95,11 +95,32 @@ class App extends Component {
       })
     })
 
+    socket.on('remnant-room', (data) => {
+      axios.post('/open-new-conversation', {
+        roomMembers: data.roomMembers
+      })
+      .then(result => {
+        this.props.setMessages([]);
+      })
+      .catch(error => {
+        console.log("Open New Conversation Error: " + error);
+      })
+    })
+
     socket.on('room-closed', (data) => {
-      this.props.setEmptyRoom(data.emptyRoom);
-      this.props.getAccountInput({ name: 'status', value: 'Available' });
-      this.props.getAccountInput({ name: 'from', value: '' });
-      this.props.setChatting(false);
+      axios.put('/leave-chat', {
+        username: this.props.username,
+      })
+      .then(result => {
+        this.props.getAccountInput({ name: 'status', value: 'Available' });
+        this.props.getAccountInput({ name: 'from', value: '' });
+        this.props.setChatting(false);
+        this.props.setEmptyRoom(data.emptyRoom);
+        this.props.setMessages([]);
+      })
+      .catch(error => {
+        console.log(error);
+      })
     })
     
   }; //end componentDidMount
@@ -242,7 +263,7 @@ class App extends Component {
         <Snackbar
           open={this.props.emptyRoom}
           message="Squad leader closed the room."
-          autoHideDuration={4000}
+          autoHideDuration={5000}
           contentStyle={dialogContent}
           onRequestClose={this.closeEmptyMessage}
         />

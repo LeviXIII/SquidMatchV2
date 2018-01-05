@@ -55,6 +55,7 @@ class Chat extends Component {
       this.props.getAccountInput({ name: 'status', value: 'Available' });
       this.props.getAccountInput({ name: 'from', value: '' });
       this.props.setChatting(false);
+      this.props.setMessages([]);
     })
     .catch(error => {
       console.log(error);
