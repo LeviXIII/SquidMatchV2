@@ -2,6 +2,7 @@ import {
   SET_SOCKET,
   SET_MESSAGES,
   SET_CHATTING,
+  SET_EMPTY_ROOM,
   SET_LOGGED_IN,
   SET_UPDATE_MODAL,
   SET_INVITE_MODAL,
@@ -35,6 +36,13 @@ export const setChatting = (chatting) => {
   return {
     type: SET_CHATTING,
     payload: chatting
+  }
+}
+
+export const setEmptyRoom = (empty) => {
+  return {
+    type: SET_EMPTY_ROOM,
+    payload: empty
   }
 }
 

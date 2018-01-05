@@ -3,6 +3,7 @@ import {
   SET_MESSAGES,
   SET_CHATTING,
   SET_LOGGED_IN,
+  SET_EMPTY_ROOM,
   SET_UPDATE_MODAL,
   SET_INVITE_MODAL,
   SET_VERIFY_MESSAGE,
@@ -18,6 +19,7 @@ const initialState = {
   inviteModal: false,
   isChatting: false,
   isLoggedIn: false,
+  emptyRoom: false,
   windowSize: window.innerWidth,
 };
 
@@ -29,6 +31,8 @@ export default (state = initialState, action) => {
       return { ...state, isLoggedIn: action.payload };
     case SET_CHATTING:
       return { ...state, isChatting: action.payload };
+    case SET_EMPTY_ROOM:
+      return { ...state, emptyRoom: action.payload };
     case SET_MESSAGES:
       return { ...state, messages: Array.from(action.payload) };
     case SET_UPDATE_MODAL:

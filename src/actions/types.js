@@ -7,6 +7,7 @@ export const SET_SOCKET = 'set_socket';
 export const SET_MESSAGES = 'set_messages';
 export const SET_CHATTING = 'set_chatting';
 export const SET_LOGGED_IN = 'set_logged_in';
+export const SET_EMPTY_ROOM = 'set_empty_room';
 export const SET_UPDATE_MODAL = 'set_update_modal';
 export const SET_INVITE_MODAL = 'set_invite_modal';
 export const SET_WINDOW_SIZE = 'set_window_size';

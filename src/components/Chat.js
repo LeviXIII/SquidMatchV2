@@ -34,10 +34,19 @@ class Chat extends Component {
   }
 
   leaveRoom = () => {
-    this.props.socket.emit('leave-room', {
-      username: this.props.username,
-      from: this.props.from,
-    })
+    //Close the room if the room leader is leaving.
+    if (this.props.username === this.props.from) {
+      this.props.socket.emit('close-room', {
+        username: this.props.username,
+        from: this.props.from,
+      })
+    }
+    else {
+      this.props.socket.emit('leave-room', {
+        username: this.props.username,
+        from: this.props.from,
+      })
+    }
     
     axios.put('/leave-chat', {
       username: this.props.username,
@@ -58,6 +67,10 @@ class Chat extends Component {
 
     if (!this.props.isLoggedIn) {
       return <Redirect to='/' />
+    }
+
+    if (this.props.emptyRoom) {
+      return <Redirect to="/choose-criteria" />
     }
 
     let chat = this.props.messages.map((value, i) => {
@@ -96,6 +109,15 @@ class Chat extends Component {
             >
             </TextField>
             <section className="gridSelector">
+            {this.props.username === this.props.from ? (
+              <Link to="/choose-criteria">
+                <RaisedButton buttonStyle={leaveButton}
+                            onClick={this.leaveRoom}
+                >
+                  Close Room
+                </RaisedButton>
+              </Link>
+            ) : (
               <Link to="/choose-criteria">
                 <RaisedButton buttonStyle={leaveButton}
                             onClick={this.leaveRoom}
@@ -103,6 +125,8 @@ class Chat extends Component {
                   Leave
                 </RaisedButton>
               </Link>
+            )}
+              
               <RaisedButton buttonStyle={sendButton}
                             onClick={e => this.getMessage(e)}>
                 Send
@@ -145,6 +169,7 @@ const NSIDstyle = {
 }
 
 const leaveButton = {
+  width: '15vh',
   backgroundColor: '#ff43b7',
   fontFamily: 'paintball',
   color: 'black',
@@ -165,6 +190,7 @@ const searchModalStyle = {
 }
 
 const sendButton = {
+  width: '15vh',
   backgroundColor: '#7aff42',
   fontFamily: 'paintball',
   color: 'black',
@@ -194,6 +220,7 @@ const mapStateToProps = (state) => {
 
     isLoggedIn: state.generalReducer.isLoggedIn,
     messages: state.generalReducer.messages,
+    emptyRoom: state.generalReducer.emptyRoom,
   };
 }
 

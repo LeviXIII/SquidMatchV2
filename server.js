@@ -66,9 +66,9 @@ connection.on('open', () => {
 
       //Get all the clients currently in the room.
       users = io.sockets.adapter.rooms[socket.room].sockets;
-      
-      for (let id in users ) {
-        //this is the username of each socket in the room.
+
+      //This is the username of each socket in the room.
+      for (let id in users) {  
         roomMembers.push(io.sockets.connected[id].username);
       }
 
@@ -86,15 +86,31 @@ connection.on('open', () => {
       })
     })
 
-    socket.on('leave-room', (data) => {
-      socket.room = data.from;  //Find user's room.
+    socket.on('close-room', (data) => {
+      //Update people in the room.
+      socket.to(socket.room).emit('room-closed', {
+        emptyRoom: true
+      });
 
+      //Get all the clients currently in the room.
+      users = io.sockets.adapter.rooms[socket.room].sockets;
+
+      //Remove all members from room
+      for (let id in users) {
+        io.sockets.sockets[id].leave(socket.room);
+      }
+    })
+
+    socket.on('leave-room', (data) => {      
+      //Find user's room.
+      socket.room = data.from;
+      
       //Update people in the room.
       socket.to(socket.room).emit('update-chat', {
         sender: 'Judd (Admin)',
         message: `${data.username} has swum away.`
       });
-
+      
       //Remove the socket from the room that they were in last.
       socket.leave(socket.room);
     })
@@ -118,8 +134,8 @@ connection.on('open', () => {
       //Get all the clients currently in the room.
       users = io.sockets.adapter.rooms[socket.room].sockets;
       
-      for (let id in users ) {
-        //this is the username of each socket in the room.
+      //This is the username of each socket in the room.
+      for (let id in users) {
         roomMembers.push(io.sockets.connected[id].username);
       }
 

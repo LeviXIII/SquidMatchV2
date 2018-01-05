@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Switch, Link, 
-        withRouter } from 'react-router-dom';
+        withRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { RaisedButton, Checkbox, Card,
           CardHeader, CardText, Avatar,
@@ -94,6 +94,13 @@ class App extends Component {
         console.log("Save Chat Error: " + error);
       })
     })
+
+    socket.on('room-closed', (data) => {
+      this.props.setEmptyRoom(data.emptyRoom);
+      this.props.getAccountInput({ name: 'status', value: 'Available' });
+      this.props.getAccountInput({ name: 'from', value: '' });
+      this.props.setChatting(false);
+    })
     
   }; //end componentDidMount
 
@@ -152,6 +159,10 @@ class App extends Component {
     this.props.setUpdateModal(false);
   }
 
+  closeEmptyMessage = () => {
+    this.props.setEmptyRoom(false);
+  }
+
   //Check if the token is still valid.
   verifyToken = () => {
     axios.post('/verify-token', {
@@ -165,6 +176,8 @@ class App extends Component {
   }
 
   render() {
+
+    this.verifyToken();
 
     //Buttons for Modal
     const actionButtons = [
@@ -224,6 +237,15 @@ class App extends Component {
           contentStyle={dialogContent}
           onRequestClose={this.closeUpdateModal}
         />
+
+        { /* Room Closed Message */ }
+        <Snackbar
+          open={this.props.emptyRoom}
+          message="Squad leader closed the room."
+          autoHideDuration={4000}
+          contentStyle={dialogContent}
+          onRequestClose={this.closeEmptyMessage}
+        />
       </section>
     );
   }
@@ -278,6 +300,7 @@ const mapStateToProps = (state) => {
     isLoggedIn: state.generalReducer.isLoggedIn,
     updateModal: state.generalReducer.updateModal,
     inviteModal: state.generalReducer.inviteModal,
+    emptyRoom: state.generalReducer.emptyRoom,
     messages: state.generalReducer.messages,
 
     username: state.loginReducer.username,
