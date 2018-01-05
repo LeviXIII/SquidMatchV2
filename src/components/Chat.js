@@ -84,7 +84,7 @@ class Chat extends Component {
         </section>
       );
     })    
-
+    
     const searchModalButtons = [
       <Link to="/choose-criteria">
         <RaisedButton buttonStyle={sendButton}
@@ -152,6 +152,10 @@ class Chat extends Component {
 
       </section> 
     )
+  }
+
+  componentWillUnmount() {
+    this.leaveRoom();
   }
 
 }

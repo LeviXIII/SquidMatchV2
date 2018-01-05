@@ -73,6 +73,20 @@ class App extends Component {
       })
     })
 
+    socket.on('retrieve-old-messages', (data) => {
+      //Retrieve previous messages.
+      axios.post('/get-messages', {
+        roomMembers: data.roomMembers,
+      })
+      .then(result => {
+        let oldMessages = Array.from(this.props.messages);
+        this.props.setMessages(oldMessages.concat(result.data.messages));
+      })
+      .catch(error => {
+        console.log("Get Messages Error: " + error);
+      })
+    })
+
     socket.on('update-chat', (data) => {
       //Update chat for everyone to see.
       let chat = Array.from(this.props.messages);

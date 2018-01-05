@@ -65,7 +65,7 @@ connection.on('open', () => {
       socket.join(socket.room);
 
       //Get all the clients currently in the room.
-      users = io.sockets.adapter.rooms[socket.room].sockets;
+      let users = io.sockets.adapter.rooms[socket.room].sockets;
 
       //This is the username of each socket in the room.
       for (let id in users) {  
@@ -84,20 +84,30 @@ connection.on('open', () => {
         sender: 'Judd (Admin)',
         message: `${data.username} joined the chat!`,
       })
+
+      //Get old messages.
+      io.sockets.in(socket.room).emit('retrieve-old-messages', {
+        roomMembers: roomMembers,
+      })
     })
 
     socket.on('close-room', (data) => {
+      socket.room = data.from;
+      
       //Update people in the room.
       socket.to(socket.room).emit('room-closed', {
         emptyRoom: true
       });
 
-      //Get all the clients currently in the room.
-      users = io.sockets.adapter.rooms[socket.room].sockets;
+      //Check to make sure room twice doesn't close twice.
+      if (io.sockets.adapter.rooms[socket.room] !== undefined) {
+        //Get all the clients currently in the room.
+        let users = io.sockets.adapter.rooms[socket.room].sockets;
 
-      //Remove all members from room
-      for (let id in users) {
-        io.sockets.sockets[id].leave(socket.room);
+        //Remove all members from room
+        for (let id in users) {
+          io.sockets.sockets[id].leave(socket.room);
+        }
       }
     })
 
@@ -116,17 +126,20 @@ connection.on('open', () => {
       //Remove the socket from the room that they were in last.
       socket.leave(socket.room);
 
-      //Get all the clients currently in the room.
-      users = io.sockets.adapter.rooms[socket.room].sockets;
-      //This is the username of each socket in the room.
-      for (let id in users) {
-        roomMembers.push(io.sockets.connected[id].username);
+      //Check to make sure room twice doesn't close twice.
+      if (io.sockets.adapter.rooms[socket.room] !== undefined) {
+        //Get all the clients currently in the room.
+        let users = io.sockets.adapter.rooms[socket.room].sockets;
+        //This is the username of each socket in the room.
+        for (let id in users) {
+          roomMembers.push(io.sockets.connected[id].username);
+        }
+        
+        //Open room for others left in the room.
+        socket.emit('remnant-room', {
+          roomMembers: roomMembers,
+        })
       }
-      
-      //Open room for others left in the room.
-      socket.emit('remnant-room', {
-        roomMembers: roomMembers,
-      })
     })
 
     socket.on('declined-invite', (data) => {
@@ -146,7 +159,7 @@ connection.on('open', () => {
       socket.join(socket.room);
 
       //Get all the clients currently in the room.
-      users = io.sockets.adapter.rooms[socket.room].sockets;
+      let users = io.sockets.adapter.rooms[socket.room].sockets;
       
       //This is the username of each socket in the room.
       for (let id in users) {
@@ -362,7 +375,6 @@ app.post('/check-invite-status', (req, res) => {
     else {
       res.json({ freeMembers: result.length });
     }
-    
   })
 })
 
@@ -406,6 +418,24 @@ app.post('/open-new-conversation', (req, res) => {
     console.log('Search for Open Conversation Error: ' + error);
   })
   
+})
+
+app.post('/get-messages', (req, res) => {
+  //Sort array to make sure insertion is always the same.
+  req.body.roomMembers.sort();
+
+  Messages.findOne({ users: req.body.roomMembers })
+  .then(result => {
+    if (result === null) {
+      res.json({ result: result });
+    }
+    else {
+      res.json({ messages: result.messages });
+    }
+  })
+  .catch(error => {
+    console.log("Get Messages Error: " + error);
+  })
 })
 
 app.post('/search-criteria', (req, res) => {
