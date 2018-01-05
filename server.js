@@ -123,10 +123,17 @@ connection.on('open', () => {
         roomMembers.push(io.sockets.connected[id].username);
       }
 
+      //Make sure to save chat for only one socket (if put
+      //in the event below, would write to db multiple times).
+      socket.emit('update-save-chat', {
+        sender: data.sender,
+        message: data.message,
+        roomMembers: roomMembers,
+      })
+
       io.sockets.in(socket.room).emit('update-chat', {
           sender: data.sender,
           message: data.message,
-          roomMembers: roomMembers
       });
     })
 
@@ -346,9 +353,8 @@ app.post('/verify-token', (req, res) => {
 })
 
 app.post('/open-new-conversation', (req, res) => {
-  
   //Check if a conversation already exists.
-  Messages.findOne({ users: { $all: req.body.roomMembers }})
+  Messages.findOne({ users: req.body.roomMembers })
   .then(result => {
     if (result === null) {
       //Create a new messages model and add it to the conversation field.
@@ -360,31 +366,13 @@ app.post('/open-new-conversation', (req, res) => {
       .catch(error => {
         console.log('Open Conversation Error: ' + error);
       })
-    
     }
+    res.json({ message: result });
   })
   .catch(error => {
     console.log('Search for Open Conversation Error: ' + error);
   })
   
-})
-
-app.post('/save-chat', (req, res) => {
-  Messages.findOneAndUpdate(
-    { users: { $all: req.body.roomMembers }},
-    { $push: 
-      { messages: 
-        { sender: req.body.sender, message: req.body.message }
-      }
-    },
-    {}
-  )
-  .then(oldData => {
-    res.json({ oldData: oldData })
-  })
-  .catch(error => {
-    console.log("Save Chat Error: " + error);
-  })
 })
 
 app.post('/search-criteria', (req, res) => {
@@ -561,6 +549,22 @@ app.put('/set-chat-status', (req, res) => {
   })
   .catch(error => {
     console.log("Set Chat Status Error: " + error);
+  })
+})
+
+app.put('/save-chat', (req, res) => {
+  Messages.findOneAndUpdate(
+    { users: req.body.roomMembers },
+    { $push: { messages: 
+        { sender: req.body.sender, message: req.body.message }
+      }
+    }
+  )
+  .then(oldData => {
+    res.json({ oldData: oldData })
+  })
+  .catch(error => {
+    console.log("Save Chat Error: " + error);
   })
 })
 

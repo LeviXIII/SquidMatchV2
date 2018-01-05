@@ -29,6 +29,7 @@ class Chat extends Component {
 
       this.props.setMessages(Array.from(message));
       this.myMessage.input.value = '';
+
     }
   }
 

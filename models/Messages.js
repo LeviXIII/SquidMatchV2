@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 //Create blueprint
 const MessagesSchema = new Schema({
-  users: [{ type: String, unique: true, required: true }],
+  users: [{ type: String, required: true }],
   messages: [{
     sender: { type: String, required: true },
     message: { type: String, required: true }

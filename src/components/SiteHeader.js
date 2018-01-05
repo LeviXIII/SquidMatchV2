@@ -53,7 +53,6 @@ class SiteHeader extends Component {
   }
 
   render() {
-    console.log(this.props.notify);
     return (
       <section className="header">
         <h1 className="siteTitle"><Link to="/home">Squid Match</Link></h1>

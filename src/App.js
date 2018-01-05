@@ -65,6 +65,12 @@ class App extends Component {
       axios.post('/open-new-conversation', {
         roomMembers: data.roomMembers
       })
+      .then(result => {
+        
+      })
+      .catch(error => {
+        console.log("Open New Conversation Error: " + error);
+      })
     })
 
     socket.on('update-chat', (data) => {
@@ -73,14 +79,16 @@ class App extends Component {
 
       chat.push({ sender: data.sender, message: data.message })
       this.props.setMessages(Array.from(chat));
+    })
 
-      axios.post('/save-chat', {
+    socket.on('update-save-chat', (data) => {
+      axios.put('/save-chat', {
         roomMembers: data.roomMembers,
         sender: data.sender,
         message: data.message,
       })
       .then(result => {
-
+        
       })
       .catch(error => {
         console.log("Save Chat Error: " + error);
