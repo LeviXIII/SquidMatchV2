@@ -51,7 +51,7 @@ class App extends Component {
       //Set initial chat message.
       let chat = Array.from(this.props.messages);
 
-      chat.push({ sender: data.sender, message: data.message })
+      chat.push({ time: data.time, sender: data.sender, message: data.message })
       this.props.setMessages(Array.from(chat));
     })
 
@@ -59,7 +59,7 @@ class App extends Component {
       //Set initial chat message.
       let chat = Array.from(this.props.messages);
 
-      chat.push({ sender: data.sender, message: data.message })
+      chat.push({ time: data.time, sender: data.sender, message: data.message })
       this.props.setMessages(Array.from(chat));
 
       axios.post('/open-new-conversation', {
@@ -79,8 +79,10 @@ class App extends Component {
         roomMembers: data.roomMembers,
       })
       .then(result => {
-        let oldMessages = Array.from(this.props.messages);
-        this.props.setMessages(oldMessages.concat(result.data.messages));
+        if (result.data.messages.messages !== null) {
+          let oldMessages = Array.from(this.props.messages);
+          this.props.setMessages(oldMessages.concat(result.data.messages.messages));
+        }
       })
       .catch(error => {
         console.log("Get Messages Error: " + error);
@@ -91,13 +93,14 @@ class App extends Component {
       //Update chat for everyone to see.
       let chat = Array.from(this.props.messages);
 
-      chat.push({ sender: data.sender, message: data.message })
+      chat.push({ time: data.time, sender: data.sender, message: data.message })
       this.props.setMessages(Array.from(chat));
     })
 
     socket.on('update-save-chat', (data) => {
       axios.put('/save-chat', {
         roomMembers: data.roomMembers,
+        time: data.time,
         sender: data.sender,
         message: data.message,
       })

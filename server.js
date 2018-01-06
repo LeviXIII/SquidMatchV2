@@ -52,6 +52,7 @@ connection.on('open', () => {
       
 
       socket.emit('room-created', {
+        time: Date.now(),
         sender: 'Judd (Admin)',
         message: 'Welcome to Squid Chat!'
       })
@@ -74,6 +75,7 @@ connection.on('open', () => {
 
       //Message displayed to current user only.
       socket.emit('joined-room', {
+        time: Date.now(),
         sender: 'Judd (Admin)',
         message: `Welcome to ${data.from}'s chat!`,
         roomMembers: roomMembers,
@@ -81,6 +83,7 @@ connection.on('open', () => {
 
       //Message displayed to rest of room.
       socket.to(socket.room).emit('update-chat', {
+        time: Date.now(),
         sender: 'Judd (Admin)',
         message: `${data.username} joined the chat!`,
       })
@@ -119,6 +122,7 @@ connection.on('open', () => {
       
       //Update people in the room.
       socket.to(socket.room).emit('update-chat', {
+        time: Date.now(),
         sender: 'Judd (Admin)',
         message: `${data.username} has swum away.`
       });
@@ -147,6 +151,7 @@ connection.on('open', () => {
 
       //Update people in the room.
       socket.to(socket.room).emit('update-chat', {
+        time: Date.now(),
         sender: 'Judd (Admin)',
         message: `${data.username} declined your invite.`
       });      
@@ -169,12 +174,14 @@ connection.on('open', () => {
       //Make sure to save chat for only one socket (if put
       //in the event below, would write to db multiple times).
       socket.emit('update-save-chat', {
+        time: data.time,
         sender: data.sender,
         message: data.message,
         roomMembers: roomMembers,
       })
 
       io.sockets.in(socket.room).emit('update-chat', {
+          time: data.time,
           sender: data.sender,
           message: data.message,
       });
@@ -426,12 +433,7 @@ app.post('/get-messages', (req, res) => {
 
   Messages.findOne({ users: req.body.roomMembers })
   .then(result => {
-    if (result === null) {
-      res.json({ result: result });
-    }
-    else {
-      res.json({ messages: result.messages });
-    }
+    res.json({ messages: result });
   })
   .catch(error => {
     console.log("Get Messages Error: " + error);
@@ -621,7 +623,7 @@ app.put('/save-chat', (req, res) => {
   Messages.findOneAndUpdate(
     { users: req.body.roomMembers },
     { $push: { messages: 
-        { sender: req.body.sender, message: req.body.message }
+        { time: req.body.time, sender: req.body.sender, message: req.body.message }
       }
     }
   )

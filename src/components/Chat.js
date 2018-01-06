@@ -22,6 +22,7 @@ class Chat extends Component {
       
       //Start an event to display message to room.
       this.props.socket.emit('send-chat', {
+        time: Date.now(),
         sender: this.props.username,
         message: this.myMessage.input.value,
         from: this.props.from,
@@ -78,6 +79,7 @@ class Chat extends Component {
       return (
         <section key={i}>
           <h4>
+            <span style={senderStyle}>{value.time} </span>
             <span style={senderStyle}>{value.sender}: </span>
             <span style={messageStyle}>{value.message}</span>
           </h4>
