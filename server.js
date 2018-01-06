@@ -153,7 +153,7 @@ connection.on('open', () => {
       socket.to(socket.room).emit('update-chat', {
         time: Date.now(),
         sender: 'Judd (Admin)',
-        message: `${data.username} declined your invite.`
+        message: `${data.username} declined the invite.`
       });      
     })
 
@@ -218,6 +218,7 @@ app.get('/current-profile/:username', (req, res) => {
       rank: result.rank,
       mode: result.mode,
       weapon: result.weapon,
+      playstyle: result.playstyle,
     });
   })
   .catch(err => {
@@ -279,6 +280,7 @@ app.post('/login', (req, res) => {
             rank: result.rank,
             mode: result.mode,
             weapon: result.weapon,
+            playstyle: result.playstyle,
             status: 'Available',
             notify: result.notification.notify,
             from: result.notification.from,
@@ -332,6 +334,7 @@ app.post('/register', (req, res) => {
         rank: req.body.rank,
         mode: req.body.mode,
         weapon: req.body.weapon,
+        playstyle: req.body.playstyle,
         status: req.body.status,
         time: Date.now(),
         notification: { notify: false, from: '' },
@@ -455,6 +458,11 @@ app.post('/search-criteria', (req, res) => {
     If a value is "any", find all values in the field.
   */
   
+  //Screen Name
+  if (req.body.searchScreenName !== "") {
+    searchQuery["$and"].push({ username: req.body.searchScreenName });
+  }
+
   //Age
   if (req.body.searchAge === "Any") {
     searchQuery["$and"].push({ age: {$regex: /^.*$/ } }); //regex searches from start to end for anything.
@@ -495,6 +503,14 @@ app.post('/search-criteria', (req, res) => {
     searchQuery["$and"].push({ weapon: req.body.searchWeapon });
   }
 
+  //Playstyle
+  if (req.body.searchPlaystyle === "Any") {
+    searchQuery["$and"].push({ playstyle: {$regex: /^.*$/ } });
+  }
+  else {
+    searchQuery["$and"].push({ playstyle: req.body.searchPlaystyle });
+  }
+
   //Find the users that match the given criteria by time in the queue.
   User.find(searchQuery).sort({ time: 1 })
   .then(result => {
@@ -533,6 +549,7 @@ app.put('/update-profile', (req, res) => {
       rank: req.body.rank,
       mode: req.body.mode,
       weapon: req.body.weapon,
+      playstyle: req.body.playstyle,
     },
     {}
   )

@@ -83,8 +83,8 @@ class Chat extends Component {
 
       return (
         <section key={i} style={{textAlign: alignment}}>
-          <h4 style={senderStyle}>{displayTime.format('LTS')} </h4>
-          <h4>
+          <h5 style={timeStyle}>{displayTime.format('LTS')} </h5>
+          <h4 style={{marginTop: '0%'}}>
             <span style={senderStyle}>{value.sender}: </span>
             <span style={messageStyle}>{value.message}</span>
           </h4>
@@ -212,13 +212,19 @@ const senderStyle = {
   fontFamily: 'paintball'
 }
 
-const subTitle =  {
+const subTitle = {
   fontFamily: 'paintball',
   fontSize: '1.5rem',
   textAlign: 'center',
   color: '#464547',
   marginTop: '1%',
   marginBottom: '1%',
+}
+
+const timeStyle = {
+  fontFamily: 'paintball',
+  marginBottom: '0%',
+  marginTop: '2%',
 }
 
 const mapStateToProps = (state) => {

@@ -18,6 +18,7 @@ class ChooseCriteria extends Component {
       searchMode: this.props.searchMode,
       searchWeapon: this.props.searchWeapon,
       searchPlaystyle: this.props.searchPlaystyle,
+      searchScreenName: this.props.searchScreenName,
     })
     .then(result => {
       this.props.setSearchResults(result.data.result);
