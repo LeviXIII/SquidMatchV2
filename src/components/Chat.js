@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom'
 import { TextField, RaisedButton, Dialog } from 'material-ui';
 import axios from 'axios';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
@@ -76,10 +77,14 @@ class Chat extends Component {
     }
 
     let chat = this.props.messages.map((value, i) => {
+      //Set display for time.
+      let displayTime = moment(value.time);
+      let alignment = this.props.username === value.sender ? 'right' : 'left';
+
       return (
-        <section key={i}>
+        <section key={i} style={{textAlign: alignment}}>
           <h4>
-            <span style={senderStyle}>{value.time} </span>
+            <span style={senderStyle}>{displayTime.format('LTS')} </span>
             <span style={senderStyle}>{value.sender}: </span>
             <span style={messageStyle}>{value.message}</span>
           </h4>
