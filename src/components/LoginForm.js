@@ -33,6 +33,7 @@ class LoginForm extends Component {
       this.props.getAccountInput({ name: "rank", value: result.data.rank });
       this.props.getAccountInput({ name: "mode", value: result.data.mode });
       this.props.getAccountInput({ name: "weapon", value: result.data.weapon });
+      this.props.getAccountInput({ name: "playstyle", value: result.data.playstyle });
       this.props.getAccountInput({ name: "status", value: result.data.status });
       this.props.getAccountInput({ name: "notify", value: result.data.notify });
       this.props.getAccountInput({ name: "from", value: result.data.from });

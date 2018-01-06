@@ -17,6 +17,7 @@ class UpdateInfo extends Component {
       this.props.getAccountInput({ name: "rank", value: result.data.rank });
       this.props.getAccountInput({ name: "mode", value: result.data.mode });
       this.props.getAccountInput({ name: "weapon", value: result.data.weapon });
+      this.props.getAccountInput({ name: "playstyle", value: result.data.playstyle });
     })
     .catch(error => {
       console.log("Current Profile error: " + error);
@@ -34,6 +35,7 @@ class UpdateInfo extends Component {
         rank: this.props.rank,
         mode: this.props.mode,
         weapon: this.props.weapon,
+        playstyle: this.props.playstyle,
       })
       .then(result => {
         this.props.setUpdateModal(true);
@@ -133,6 +135,16 @@ class UpdateInfo extends Component {
             <MenuItem value="Dualies" primaryText="Dualies"/>
             <MenuItem value="Brellas" primaryText="Brellas"/>
           </SelectField>
+
+          <SelectField
+            name="playstyle" value={this.props.playstyle}
+            onChange={(e, index, value) => this.props.getAccountInput({ name: "playstyle", value: value })}
+            floatingLabelFixed floatingLabelText="Playstyle"
+            style={customWidth}
+          >
+            <MenuItem value="Casual" primaryText="Casual"/>
+            <MenuItem value="Competitive" primaryText="Competitive"/>
+          </SelectField>
         </section>
 
         <section className="grid">
@@ -169,6 +181,7 @@ const mapStateToProps = (state) => {
     rank: state.accountReducer.rank,
     mode: state.accountReducer.mode,
     weapon: state.accountReducer.weapon,
+    playstyle: state.accountReducer.playstyle,
 
     isLoggedIn: state.generalReducer.isLoggedIn,
     updateModal: state.generalReducer.updateModal,

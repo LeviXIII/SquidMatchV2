@@ -13,6 +13,8 @@ const initialState = {
   searchRank: 'Any',
   searchMode: 'Any',
   searchWeapon: 'Any',
+  searchPlaystyle: 'Any',
+  searchScreenName: '',
   searchResults: [],
   squad: [],
   showModal: false,

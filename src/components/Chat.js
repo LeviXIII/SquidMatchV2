@@ -83,8 +83,8 @@ class Chat extends Component {
 
       return (
         <section key={i} style={{textAlign: alignment}}>
+          <h4 style={senderStyle}>{displayTime.format('LTS')} </h4>
           <h4>
-            <span style={senderStyle}>{displayTime.format('LTS')} </span>
             <span style={senderStyle}>{value.sender}: </span>
             <span style={messageStyle}>{value.message}</span>
           </h4>

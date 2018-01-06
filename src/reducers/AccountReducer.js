@@ -11,6 +11,7 @@ const initialState = {
   rank: 'C',
   mode: 'Turf War',
   weapon: 'Shooters',
+  playstyle: 'Casual',
   status: 'Available',
   notify: false,
   from: '',

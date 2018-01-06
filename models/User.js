@@ -13,6 +13,7 @@ const UserSchema = new Schema({
   rank: { type: String, required: true },
   mode: { type: String, required: true },
   weapon: { type: String, required: true },
+  playstyle: { type: String, required: true },
   status: { type: String, required: true },
   time: { type: Date, required: true },
   notification: { 

@@ -17,6 +17,7 @@ class ChooseCriteria extends Component {
       searchRank: this.props.searchRank,
       searchMode: this.props.searchMode,
       searchWeapon: this.props.searchWeapon,
+      searchPlaystyle: this.props.searchPlaystyle,
     })
     .then(result => {
       this.props.setSearchResults(result.data.result);
@@ -40,7 +41,17 @@ class ChooseCriteria extends Component {
         <h1 style={subTitle}>Choose Your Criteria</h1>
         
         <section className="grid">
+          <TextField style={fieldWidth} floatingLabelText="Screen Name" floatingLabelFixed
+                      name="searchScreenName" value={this.props.searchScreenName}
+                      onChange={e => this.props.setSearchInput({
+                        name: "searchScreenName", value: e.target.value.replace(/ /g, "")
+                      })}>
+          </TextField>
+        </section>
+
+        <section className="gridSelector">
           <SelectField
+            name="searchAge"
             value={this.props.searchAge} style={customWidth}
             onChange={(e, index, value) => this.props.setSearchInput({ name: "searchAge", value: value })}
             floatingLabelFixed floatingLabelText="Age"
@@ -51,11 +62,9 @@ class ChooseCriteria extends Component {
             <MenuItem value="26-30" primaryText="26-30" />
             <MenuItem value="> 30" primaryText="> 30" />
           </SelectField>
-        </section>
-        
-        <section className="grid">
+
           <SelectField
-            name="location" value={this.props.searchLocation}
+            name="searchLocation" value={this.props.searchLocation}
             onChange={(e, index, value) => this.props.setSearchInput({ name: "searchLocation", value: value })}
             floatingLabelFixed floatingLabelText="Location"
             style={customWidth}
@@ -68,9 +77,9 @@ class ChooseCriteria extends Component {
           </SelectField>
         </section>
 
-        <section className="grid">
+        <section className="gridSelector">
           <SelectField
-            name="rank" value={this.props.searchRank}
+            name="searchRank" value={this.props.searchRank}
             onChange={(e, index, value) => this.props.setSearchInput({ name: "searchRank", value: value })}
             floatingLabelFixed floatingLabelText="Rank"
             style={customWidth}
@@ -82,11 +91,9 @@ class ChooseCriteria extends Component {
             <MenuItem value="S" primaryText="S"/>
             <MenuItem value="S+" primaryText="S+"/>
           </SelectField>
-        </section>
-
-        <section className="grid">
+        
           <SelectField
-            name="mode" value={this.props.searchMode}
+            name="searchMode" value={this.props.searchMode}
             onChange={(e, index, value) => this.props.setSearchInput({ name: "searchMode", value: value })}
             floatingLabelFixed floatingLabelText="Mode"
             style={customWidth}
@@ -100,7 +107,7 @@ class ChooseCriteria extends Component {
         
         <section className="gridSelector">
           <SelectField
-            name="weapon" value={this.props.searchWeapon}
+            name="searchWeapon" value={this.props.searchWeapon}
             onChange={(e, index, value) => this.props.setSearchInput({ name: "searchWeapon", value: value })}
             floatingLabelFixed floatingLabelText="Weapon"
             style={customWidth}
@@ -113,6 +120,17 @@ class ChooseCriteria extends Component {
             <MenuItem value="Splatlings" primaryText="Splatlings"/>
             <MenuItem value="Dualies" primaryText="Dualies"/>
             <MenuItem value="Brellas" primaryText="Brellas"/>
+          </SelectField>
+        
+          <SelectField
+            name="searchPlaystyle" value={this.props.searchPlaystyle}
+            onChange={(e, index, value) => this.props.setSearchInput({ name: "searchPlaystyle", value: value })}
+            floatingLabelFixed floatingLabelText="Playstyle"
+            style={customWidth}
+          >
+            <MenuItem value="Any" primaryText="Any"/>
+            <MenuItem value="Casual" primaryText="Casual"/>
+            <MenuItem value="Competitive" primaryText="Competitive"/>
           </SelectField>
         </section>
         <br />
@@ -157,6 +175,8 @@ const mapStateToProps = (state) => {
     searchRank: state.searchReducer.searchRank,
     searchMode: state.searchReducer.searchMode,
     searchWeapon: state.searchReducer.searchWeapon,
+    searchPlaystyle: state.searchReducer.searchPlaystyle,
+    searchScreenName: state.searchReducer.searchScreenName,
 
     isLoggedIn: state.generalReducer.isLoggedIn,
 
@@ -175,7 +195,7 @@ const fieldWidth = {
 }
 
 const customWidth = {
-  width: 250,
+  width: 130,
 }
 
 const messageStyle = {

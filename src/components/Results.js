@@ -110,11 +110,13 @@ class Results extends Component {
             avatar={<Avatar>{value.username[0].toUpperCase()}</Avatar>}
           />
           <CardText>
-            <Checkbox label={<p style={cardText}>Age: {value.age} <br />
+            <Checkbox label={<p style={cardText}>
+                        Age: {value.age} <br />
                         Location: {value.location} <br />
                         Rank: {value.rank} <br />
                         Mode: {value.mode} <br />
-                        Weapon: {value.weapon}
+                        Weapon: {value.weapon} <br />
+                        Playstyle: {value.playstyle}
                       </p>}
                       iconStyle={checkboxStyle}
                       onCheck={(e, isChecked, user) => this.addToSquad(isChecked, value)}

@@ -24,6 +24,7 @@ class AccountInfo extends Component {
         rank: this.props.rank,
         mode: this.props.mode,
         weapon: this.props.weapon,
+        playstyle: this.props.playstyle,
         status: "Available",
       })
       .then(result => {
@@ -139,6 +140,16 @@ class AccountInfo extends Component {
             <MenuItem value="Dualies" primaryText="Dualies"/>
             <MenuItem value="Brellas" primaryText="Brellas"/>
           </SelectField>
+
+          <SelectField
+            name="playstyle" value={this.props.playstyle}
+            onChange={(e, index, value) => this.props.getAccountInput({ name: "playstyle", value: value })}
+            floatingLabelFixed floatingLabelText="Playstyle"
+            style={customWidth}
+          >
+            <MenuItem value="Casual" primaryText="Casual"/>
+            <MenuItem value="Competitive" primaryText="Competitive"/>
+          </SelectField>
         </section>
 
         <section className="grid">
@@ -169,6 +180,7 @@ const mapStateToProps = (state) => {
     rank: state.accountReducer.rank,
     mode: state.accountReducer.mode,
     weapon: state.accountReducer.weapon,
+    playstyle: state.accountReducer.playstyle,
 
     isLoggedIn: state.generalReducer.isLoggedIn,
     verifyMessage: state.generalReducer.verifyMessage,
