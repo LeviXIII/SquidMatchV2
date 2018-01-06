@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { RaisedButton, Checkbox, Card,
-        CardHeader, CardText, Avatar,
-        Dialog, } from 'material-ui';
+        CardHeader, CardText, CardActions,
+        Avatar, Dialog, IconButton } from 'material-ui';
 import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
+import AddFriend from 'material-ui/svg-icons/social/person-add';
 
 import background from '../images/cardPaintBackground.jpg'
 
@@ -87,6 +88,10 @@ class Results extends Component {
     this.props.setSquad(Array.from(squad));
   }
 
+  addToFriends = () => {
+
+  }
+
   render() {
 
     this.props.verifyToken();
@@ -108,7 +113,15 @@ class Results extends Component {
             titleStyle={cardHeaderText}
             title={value.username}
             avatar={<Avatar>{value.username[0].toUpperCase()}</Avatar>}
-          />
+          >
+            <section style={friendIconStyle}>
+              <IconButton disabled={false}
+                          onClick={this.addToFriends}    
+              >
+                <AddFriend />
+              </IconButton>
+            </section>
+          </CardHeader>
           <CardText>
             <Checkbox label={<p style={cardText}>
                         Age: {value.age} <br />
@@ -152,7 +165,7 @@ class Results extends Component {
         <h1 style={subTitle}>Results</h1>
         {this.props.searchResults.length !== 0 ? 
         (
-          <p style={resultsSubText}>Choose up to 3 members</p>
+          <p style={resultsSubText}>Check up to 3 members to start chat</p>
         ) : (
           <p style={resultsSubText}>Sorry, there were no results.</p>
         )
@@ -253,6 +266,10 @@ const dialogContent = {
   color: 'red',
 }
 
+const friendIconStyle = {
+  float: 'right',
+  marginRight: '4%'
+}
 const resultsSubText =  {
   fontFamily: 'overpass',
   fontSize: '1.0rem',

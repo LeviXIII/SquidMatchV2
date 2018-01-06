@@ -222,7 +222,7 @@ const subTitle = {
 }
 
 const timeStyle = {
-  fontFamily: 'paintball',
+  fontFamily: 'overpass',
   marginBottom: '0%',
   marginTop: '2%',
 }
