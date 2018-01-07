@@ -15,6 +15,7 @@ const initialState = {
   status: 'Available',
   notify: false,
   from: '',
+  friendlist: [],
 };
 
 export default (state = initialState, action) => {

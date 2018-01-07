@@ -80,17 +80,36 @@ class Results extends Component {
   }
 
   addToFriends = (user) => {
-    axios.put('/add-to-friends', {
-      username: this.props.username,
-      user: user,
-    })
-    .then(result => {
-      this.props.setFriendModal(true);
-      this.props.setFriendMessage(result.data.result);
-    })
-    .catch(error => {
-      console.log("Add to Friends Error: " + error);
-    })
+    let inList = false;
+    
+    //If friend is already in the list.
+    for (let i=0; i < this.props.friendlist.length; i++) {
+      if (this.props.friendlist[i] === user) {        
+        this.props.setFriendModal(true);
+        this.props.setFriendMessage(`${user} is already in your list.`);
+        inList = true;
+      }
+    }
+    
+    //If friend isn't in list, add to db.
+    if (inList === false) {
+      axios.put('/add-to-friends', {
+        username: this.props.username,
+        user: user,
+      })
+      .then(result => {
+        this.props.setFriendModal(true);
+        this.props.setFriendMessage(result.data.result);
+      })
+      .catch(error => {
+        console.log("Add to Friends Error: " + error);
+      })
+
+      //Add to current array.
+      let friendArray = Array.from(this.props.friendlist);
+      friendArray.push(user);
+      this.props.getAccountInput({ name: 'friendlist', value: Array.from(friendArray) });
+    }
   }
 
   closeModal = () => {
@@ -110,7 +129,6 @@ class Results extends Component {
     }
 
     /* Creating the list of available users. */
-
     let disableButton = (squad.length > 0 && squad.length <= 3) ? false : true;
 
     let results = this.props.searchResults.map((value, index) => {
@@ -323,6 +341,7 @@ const mapStateToProps = (state) => {
     username: state.loginReducer.username,
     
     notify: state.accountReducer.notify,
+    friendlist: state.accountReducer.friendlist,
 
     isLoggedIn: state.generalReducer.isLoggedIn,
     friendModal: state.generalReducer.friendModal,

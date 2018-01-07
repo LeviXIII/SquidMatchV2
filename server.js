@@ -284,6 +284,7 @@ app.post('/login', (req, res) => {
             status: 'Available',
             notify: result.notification.notify,
             from: result.notification.from,
+            friendlist: result.friendlist,
             message: "",
             setLogin: true
           });    
@@ -519,8 +520,22 @@ app.post('/search-criteria', (req, res) => {
     console.log("Couldn't get the users you searched for." + error);
     res.status(500);
   })
-
 });
+
+app.post('/search-friends', (req, res) => {
+  Promise.all(req.body.friendlist.map((value, i) => {
+    return (
+      User.findOne({ username: value })
+    )
+  }))
+  .then(result => {
+    res.json({ list: result })
+  })
+  .catch(error => {
+    console.log("Search Friends Error: " + error);
+    res.status(500);
+  })
+})
 
 app.put('/logout', (req, res) => {
   User.findOneAndUpdate(
@@ -597,23 +612,13 @@ app.put('/update-status', (req, res) => {
 })
 
 app.put('/add-to-friends', (req, res) => {
-  //Check if person is on list already. If not, add
-  //to the list.
-  User.findOne({ friendlist: req.body.user })
+  User.findOneAndUpdate(
+    { username: req.body.username },
+    { $push: { friendlist: req.body.user }},
+    {}
+  )
   .then(result => {
-    if (result === null) {
-      User.findOneAndUpdate(
-        { username: req.body.username },
-        { $push: { friendlist: req.body.user }},
-        {}
-      )
-      .then(result => {
-        res.json({ result: `${req.body.user} added.` })
-      })
-    }
-    else {
-      res.json({ result: `${req.body.user} is already in your list.` })
-    }
+    res.json({ result: `${req.body.user} was added to friendlist.` })
   })
   .catch(error => {
     console.log("Add to Friends Error: " + error);

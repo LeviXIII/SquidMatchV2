@@ -37,6 +37,7 @@ class LoginForm extends Component {
       this.props.getAccountInput({ name: "status", value: result.data.status });
       this.props.getAccountInput({ name: "notify", value: result.data.notify });
       this.props.getAccountInput({ name: "from", value: result.data.from });
+      this.props.getAccountInput({ name: "friendlist", value: result.data.friendlist });
       this.props.setVerifyMessage(result.data.message);
       this.props.setLoggedIn(result.data.setLogin);
     })
@@ -63,12 +64,16 @@ class LoginForm extends Component {
     }
   }
 
+  clearFields = () => {
+    this.props.setVerifyMessage("");
+    this.props.setInitialAccountState();
+  }
+
   render() {
     //If passwords match for creating account, clear the verify message,
     //setup account state, and allow access to next page.
     if (this.props.matchingPassword && this.props.verified) {
-      this.props.setVerifyMessage("");
-      this.props.setInitialAccountState();
+      this.clearFields();
       return <Redirect to="/account-info" />
     }
 

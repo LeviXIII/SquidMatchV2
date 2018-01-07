@@ -20,8 +20,8 @@ const UserSchema = new Schema({
       notify: { type: Boolean, required: true },
       from: { type: String, required: false }
   },
-  //friendlist: [{ type: ObjectId, ref: 'Friends' }],
-  friendlist: [{ type: String, required: false, unique: true }],
+  //friendlist: [{ type: ObjectId, ref: 'User' }],
+  friendlist: [{ type: String, required: false }],
 })
 
 //Create the model

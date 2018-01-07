@@ -30,7 +30,7 @@ class AccountInfo extends Component {
       .then(result => {
         localStorage.setItem('token', result.data.token);
         this.props.setLoggedIn(true);
-
+        this.props.getLoginInput({ name: 'verified', value: false });
       })
       .catch(error => {
         console.log(error);
@@ -48,7 +48,7 @@ class AccountInfo extends Component {
     }
 
     if (this.props.isLoggedIn) {
-      this.props.getLoginInput({ name: 'verified', value: false });
+      //this.props.getLoginInput({ name: 'verified', value: false });
       return <Redirect to='/choose-criteria' />
     }
 
