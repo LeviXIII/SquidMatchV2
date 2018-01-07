@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { RaisedButton, Checkbox, Card,
         CardHeader, CardText, CardActions,
-        Avatar, Dialog, IconButton } from 'material-ui';
+        Avatar, Dialog, IconButton,
+        Snackbar, } from 'material-ui';
 import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';
@@ -10,12 +11,12 @@ import AddFriend from 'material-ui/svg-icons/social/person-add';
 
 import background from '../images/cardPaintBackground.jpg'
 
-let squad;
+let squad = [];
 
 class Results extends Component {
 
   componentWillMount() {
-    squad = [];
+    //squad = [];
   }
 
   notifyMembers = () => {
@@ -64,12 +65,6 @@ class Results extends Component {
         this.props.setNewSearchModal(true);
       }
     })
-
-    
-  }
-
-  closeModal = () => {
-    this.props.setShowModal(false);
   }
 
   addToSquad = (isChecked, user) => {
@@ -88,8 +83,26 @@ class Results extends Component {
     this.props.setSquad(Array.from(squad));
   }
 
-  addToFriends = () => {
+  addToFriends = (user) => {
+    axios.put('/add-to-friends', {
+      username: this.props.username,
+      user: user,
+    })
+    .then(result => {
+      this.props.setFriendModal(true);
+      this.props.setFriendMessage(result.data.result);
+    })
+    .catch(error => {
+      console.log("Add to Friends Error: " + error);
+    })
+  }
 
+  closeModal = () => {
+    this.props.setShowModal(false);
+  }
+
+  closeFriendModal = () => {
+    this.props.setFriendModal(false);
   }
 
   render() {
@@ -115,8 +128,8 @@ class Results extends Component {
             avatar={<Avatar>{value.username[0].toUpperCase()}</Avatar>}
           >
             <section style={friendIconStyle}>
-              <IconButton disabled={false}
-                          onClick={this.addToFriends}    
+              <IconButton tooltip="Add to Friendlist"
+                          onClick={() => this.addToFriends(value.username)}    
               >
                 <AddFriend />
               </IconButton>
@@ -196,6 +209,15 @@ class Results extends Component {
         >
           You can only have up to 3 members in your group.
         </Dialog>
+
+        { /* Add Friend Message */ }
+        <Snackbar
+          open={this.props.friendModal}
+          message={this.props.friendMessage}
+          autoHideDuration={2000}
+          contentStyle={friendModalStyle}
+          onRequestClose={this.closeFriendModal}
+        />
       </section>
     )
   }
@@ -270,6 +292,14 @@ const friendIconStyle = {
   float: 'right',
   marginRight: '4%'
 }
+
+const friendModalStyle = {
+  fontFamily: 'overpass',
+  fontSize: '1rem',
+  textAlign: 'center',
+  color: 'white',
+}
+
 const resultsSubText =  {
   fontFamily: 'overpass',
   fontSize: '1.0rem',
@@ -299,6 +329,8 @@ const mapStateToProps = (state) => {
     notify: state.accountReducer.notify,
 
     isLoggedIn: state.generalReducer.isLoggedIn,
+    friendModal: state.generalReducer.friendModal,
+    friendMessage: state.generalReducer.friendMessage,
   };
 }
 

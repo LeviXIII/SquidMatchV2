@@ -127,9 +127,7 @@ class Chat extends Component {
               </Link>
             ) : (
               <Link to="/choose-criteria">
-                <RaisedButton buttonStyle={leaveButton}
-                            onClick={this.leaveRoom}
-                >
+                <RaisedButton buttonStyle={leaveButton}>
                   Leave
                 </RaisedButton>
               </Link>

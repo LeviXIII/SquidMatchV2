@@ -116,7 +116,7 @@ connection.on('open', () => {
 
     socket.on('leave-room', (data) => {      
       let roomMembers = [];
-      
+
       //Find user's room.
       socket.room = data.from;
       
@@ -444,10 +444,9 @@ app.post('/get-messages', (req, res) => {
 })
 
 app.post('/search-criteria', (req, res) => {
-
   //Build the query object in order to search dynamically.
   let searchQuery = {}
-  searchQuery['$and'] = []; //Start an $and query
+  searchQuery["$and"] = []; //Start an $and query
   searchQuery["$and"].push({ status: "Available" }); //Always check for status.
   searchQuery["$and"].push({ "notification.from": { $eq: '' } });
   searchQuery["$and"].push({ username: { $ne: req.body.username }})
@@ -595,6 +594,30 @@ app.put('/update-status', (req, res) => {
       res.status(500);
     }) 
   }
+})
+
+app.put('/add-to-friends', (req, res) => {
+  //Check if person is on list already. If not, add
+  //to the list.
+  User.findOne({ friendlist: req.body.user })
+  .then(result => {
+    if (result === null) {
+      User.findOneAndUpdate(
+        { username: req.body.username },
+        { $push: { friendlist: req.body.user }},
+        {}
+      )
+      .then(result => {
+        res.json({ result: `${req.body.user} added.` })
+      })
+    }
+    else {
+      res.json({ result: `${req.body.user} is already in your list.` })
+    }
+  })
+  .catch(error => {
+    console.log("Add to Friends Error: " + error);
+  })
 })
 
 app.put('/send-invites', (req, res) => {

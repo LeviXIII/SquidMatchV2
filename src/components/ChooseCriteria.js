@@ -9,7 +9,6 @@ import * as actions from '../actions';
 class ChooseCriteria extends Component {
 
   searchUsers = () => {
-    
     axios.post('/search-criteria', {
       username: this.props.username,
       searchAge: this.props.searchAge,
@@ -141,7 +140,7 @@ class ChooseCriteria extends Component {
           {this.props.status === 'Busy' ? (
             <section>
               <section className="grid">
-                <RaisedButton buttonStyle={searchButton} onClick={this.searchUsers()}
+                <RaisedButton buttonStyle={searchButton} onClick={this.searchUsers}
                               backgroundColor='#7aff42'
                               disabledBackgroundColor='#bcbcbc' disabled={true}
                 >
@@ -157,7 +156,7 @@ class ChooseCriteria extends Component {
           ) : (
             <Link to="/results">
               <RaisedButton buttonStyle={searchButton} backgroundColor='#7aff42'
-                            onClick={this.searchUsers()}>
+                            onClick={this.searchUsers}>
                 Search
               </RaisedButton>
             </Link>

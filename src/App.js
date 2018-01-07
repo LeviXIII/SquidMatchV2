@@ -79,7 +79,7 @@ class App extends Component {
         roomMembers: data.roomMembers,
       })
       .then(result => {
-        if (result.data.messages.messages !== null) {
+        if (result.data.messages !== null) {
           let oldMessages = Array.from(this.props.messages);
           this.props.setMessages(oldMessages.concat(result.data.messages.messages));
         }

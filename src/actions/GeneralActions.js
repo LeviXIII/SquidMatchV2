@@ -4,9 +4,11 @@ import {
   SET_CHATTING,
   SET_EMPTY_ROOM,
   SET_LOGGED_IN,
+  SET_FRIEND_MODAL,
   SET_UPDATE_MODAL,
   SET_INVITE_MODAL,
   SET_VERIFY_MESSAGE,
+  SET_FRIEND_MESSAGE,
   SET_WINDOW_SIZE,
   SET_INITIAL_GENERAL_STATE,
 } from './types'
@@ -46,6 +48,13 @@ export const setEmptyRoom = (empty) => {
   }
 }
 
+export const setFriendModal = (friend) => {
+  return {
+    type: SET_FRIEND_MODAL,
+    payload: friend
+  }
+}
+
 export const setUpdateModal = (update) => {
   return {
     type: SET_UPDATE_MODAL,
@@ -64,6 +73,13 @@ export const setVerifyMessage = (verifyMessage) => {
   return {
     type: SET_VERIFY_MESSAGE,
     payload: verifyMessage
+  }
+}
+
+export const setFriendMessage = (friendMessage) => {
+  return {
+    type: SET_FRIEND_MESSAGE,
+    payload: friendMessage
   }
 }
 
