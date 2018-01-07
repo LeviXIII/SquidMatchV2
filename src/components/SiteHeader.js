@@ -77,7 +77,7 @@ class SiteHeader extends Component {
           <ToolbarGroup style={toolbarStyle}>
             <Link to="/choose-criteria"><FlatButton style={menuItems} label="Find Squad" /></Link>
             <Link to="#"><FlatButton style={menuItems} label="News" /></Link>
-            <Link to="#"><FlatButton style={menuItems} label="Friend List" /></Link>
+            <Link to="/friend-list"><FlatButton style={menuItems} label="Friend List" /></Link>
             <Link to="#"><FlatButton style={menuItems} label="Help" /></Link>
           </ToolbarGroup>
           )}

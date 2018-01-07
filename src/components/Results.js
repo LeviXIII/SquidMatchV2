@@ -15,10 +15,6 @@ let squad = [];
 
 class Results extends Component {
 
-  componentWillMount() {
-    //squad = [];
-  }
-
   notifyMembers = () => {
     axios.post('/check-invite-status', {
       members: this.props.squad,

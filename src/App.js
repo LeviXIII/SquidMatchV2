@@ -16,6 +16,7 @@ import SiteHeader from './components/SiteHeader';
 import ChooseCriteria from './components/ChooseCriteria';
 import Results from './components/Results';
 import Chat from './components/Chat';
+import FriendList from './components/FriendList';
 
 const socket = io('http://localhost:8080');
 
@@ -253,6 +254,8 @@ class App extends Component {
           <Route path="/chat" exact render={() => 
             <Chat socket={socket}
                   verifyToken={this.verifyToken}/>} />
+          <Route path="/friend-list" exact render={() => 
+            <FriendList verifyToken={this.verifyToken}/>} />
         </Switch>
 
         { /* Invite Modal */ }
