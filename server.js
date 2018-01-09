@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+mongoose.Promise = global.Promise;
 //const config = require('./config.js');
 
 const User = require('./models/User');
@@ -15,7 +16,7 @@ const MONGO_CONNECTION_STRING = process.env.mLab || 'mongodb://localhost:27017/d
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-mongoose.connect(MONGO_CONNECTION_STRING, { auth: { authdb: "admin" } });//{ useMongoClient: true });
+mongoose.createConnection(MONGO_CONNECTION_STRING, { useMongoClient: true });
 
 const connection = mongoose.connection;
 const secretKey = process.env.token_secretKey;
