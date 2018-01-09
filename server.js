@@ -12,11 +12,11 @@ const User = require('./models/User');
 const Messages = require('./models/Messages');
 
 const PORT = process.env.PORT || 8080;
-const MONGO_CONNECTION_STRING = process.env.mLab || 'mongodb://localhost:27017/data/db';
+const MONGO_CONNECTION_STRING = process.env.mLab;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-mongoose.createConnection(MONGO_CONNECTION_STRING, { useMongoClient: true });
+mongoose.connection(MONGO_CONNECTION_STRING, { useMongoClient: true });
 
 const connection = mongoose.connection;
 const secretKey = process.env.token_secretKey;
