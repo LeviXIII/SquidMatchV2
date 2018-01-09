@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { RaisedButton, Checkbox, Card,
-        CardHeader, CardText, CardActions,
-        Avatar, Dialog, IconButton,
-        Snackbar, } from 'material-ui';
+        CardHeader, CardText, Avatar, 
+        Dialog, IconButton, Snackbar, } from 'material-ui';
 import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';

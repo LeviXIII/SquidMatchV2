@@ -8,7 +8,7 @@ import * as actions from '../actions';
 
 class UpdateInfo extends Component {
   
-  componentWillMount() {
+  componentDidMount() {
     axios.get('/current-profile/' + this.props.username)
     .then(result => {
       this.props.getAccountInput({ name: "NSID", value: result.data.NSID });

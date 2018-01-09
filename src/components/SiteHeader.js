@@ -1,22 +1,22 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Toolbar, ToolbarGroup, FlatButton, 
           Avatar, IconMenu, MenuItem,
           IconButton, ToolbarTitle, Divider,
           Badge,  } from 'material-ui';
-import MenuIcon from 'material-ui/svg-icons/navigation/menu';
-import Invite from 'material-ui/svg-icons/social/notifications';
-
 import axios from 'axios';
-
 import { connect } from 'react-redux';
 import * as actions from '../actions';
+
+
+import MenuIcon from 'material-ui/svg-icons/navigation/menu';
+import Invite from 'material-ui/svg-icons/social/notifications';
 
 class SiteHeader extends Component {
   
   componentDidMount() {
     window.addEventListener("resize", () => this.props.setWindowSize(window.innerWidth));
-    window.addEventListener("beforeunload", () => this.logout());
+    window.addEventListener("beforeunload", () => this.props.logout());
   }
 
   showInviteModal = () => {
@@ -31,25 +31,6 @@ class SiteHeader extends Component {
     .then(result => {
       this.props.getAccountInput({ name: 'status', value: result.data.status });
     })
-  }
-
-  logout = () => {
-    axios.put('/logout', {
-      username: this.props.username     
-    })
-    .then(result => {
-      
-    })
-    .catch(error => {
-      console.log(error);
-    })
-
-    this.props.setInitialAccountState();
-    this.props.setInitialLoginState();
-    this.props.setInitialSearchState();
-    this.props.setInitialGeneralState();
-    this.props.setLoggedIn(false);
-    localStorage.removeItem('token');  
   }
 
   render() {
@@ -68,11 +49,12 @@ class SiteHeader extends Component {
                 <Link style={miniMenu} to="/choose-criteria">
                   <MenuItem primaryText="Find Squad" />
                 </Link>
-                <MenuItem primaryText="News" />
+                <Link style={miniMenu} to="/news">
+                  <MenuItem primaryText="News" />
+                </Link>
                 <Link style={miniMenu} to="/friend-list">
                   <MenuItem primaryText="Friend List" />
                 </Link>
-                <MenuItem primaryText="Help" />
               </IconMenu>
             </section>
           ) : (
@@ -80,14 +62,11 @@ class SiteHeader extends Component {
             <Link to="/choose-criteria">
               <FlatButton style={menuItems} label="Find Squad" />
             </Link>
-            <Link to="#">
+            <Link to="/news">
               <FlatButton style={menuItems} label="News" />
             </Link>
             <Link to="/friend-list">
               <FlatButton style={menuItems} label="Friend List" />
-            </Link>
-            <Link to="#">
-              <FlatButton style={menuItems} label="Help" />
             </Link>
           </ToolbarGroup>
           )}
@@ -128,7 +107,7 @@ class SiteHeader extends Component {
               <Link style={miniMenu} to="/update-info">
                 <MenuItem primaryText="Update Profile" />
               </Link>
-              <MenuItem primaryText="Logout" onClick={this.logout}/>
+              <MenuItem primaryText="Logout" onClick={this.props.logout}/>
             </IconMenu>
           </ToolbarGroup>
           

@@ -6,8 +6,6 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
-let chat;
-
 class Chat extends Component {
   
   closeNewSearchModal = () => {

@@ -30,7 +30,7 @@ class ChooseCriteria extends Component {
 
   render() {
 
-    this.props.verifyToken();
+    this.props.verifyToken()
 
     if (!this.props.isLoggedIn) {
       return <Redirect to='/' />
@@ -205,13 +205,6 @@ const messageStyle = {
   color: 'red',
   marginTop: '1%',
   marginBottom: '2%',
-}
-
-const signupButton = {
-  width: 150,
-  backgroundColor: '#ff43b7',
-  fontFamily: 'paintball',
-  color: 'black',
 }
 
 const searchButton = {

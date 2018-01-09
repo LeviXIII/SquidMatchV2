@@ -354,7 +354,6 @@ app.post('/register', (req, res) => {
           sub: username,
           exp: Math.floor(Date.now() / 1000) + (60 * 60),
         }
-
         let token = jwt.sign(payload, secretKey);
 
         res.status(200).json({

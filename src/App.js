@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { Route, Switch, Link, 
-        withRouter, Redirect } from 'react-router-dom';
+        withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { RaisedButton, Checkbox, Card,
-          CardHeader, CardText, Avatar,
-          Dialog, Snackbar } from 'material-ui';
+import { RaisedButton, Dialog, Snackbar } from 'material-ui';
 import axios from 'axios';
 import io from 'socket.io-client';
 import * as actions from './actions'
@@ -17,6 +15,7 @@ import ChooseCriteria from './components/ChooseCriteria';
 import Results from './components/Results';
 import Chat from './components/Chat';
 import FriendList from './components/FriendList';
+import News from './components/News';
 
 const socket = io('http://localhost:8080');
 
@@ -202,6 +201,26 @@ class App extends Component {
     this.props.setEmptyRoom(false);
   }
 
+  logout = () => {
+    axios.put('/logout', {
+      username: this.props.username     
+    })
+    .then(result => {
+      
+    })
+    .catch(error => {
+      console.log(error);
+    })
+
+    this.props.setLoggedIn(false);
+    localStorage.removeItem('token');
+    socket.disconnect();
+    this.props.setInitialAccountState();
+    this.props.setInitialLoginState();
+    this.props.setInitialSearchState();
+    this.props.setInitialGeneralState();
+  }
+
   //Check if the token is still valid.
   verifyToken = () => {
     axios.post('/verify-token', {
@@ -209,15 +228,12 @@ class App extends Component {
     })
     .then(result => {
       if (result.data.token === false) {
-        this.props.setLoggedIn(false);
+        this.logout();
       }
     });
   }
-  
+
   render() {
-
-    this.verifyToken();
-
     //Buttons for Modal
     const actionButtons = [
       <RaisedButton buttonStyle={cancelButton}
@@ -238,7 +254,7 @@ class App extends Component {
 
     return (
       <section className="mainBackground">
-        {this.props.isLoggedIn && <SiteHeader />}
+        {this.props.isLoggedIn && <SiteHeader logout={this.logout}/>}
         <Switch>
           <Route path="/" exact render={() => 
             <LoginForm />} />
@@ -257,6 +273,9 @@ class App extends Component {
           <Route path="/friend-list" exact render={() => 
             <FriendList socket={socket}
                         verifyToken={this.verifyToken}/>} />
+          <Route path="/news" exact render={() => 
+            <News socket={socket}
+                  verifyToken={this.verifyToken}/>} />
         </Switch>
 
         { /* Invite Modal */ }
