@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-//const ObjectId = Schema.Types.ObjectId;
 
 //Create blueprint
 const UserSchema = new Schema({
@@ -20,7 +19,6 @@ const UserSchema = new Schema({
       notify: { type: Boolean, required: true },
       from: { type: String, required: false }
   },
-  //friendlist: [{ type: ObjectId, ref: 'User' }],
   friendlist: [{ type: String, required: false }],
 })
 
