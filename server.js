@@ -15,7 +15,7 @@ const MONGO_CONNECTION_STRING = process.env.mLab || 'mongodb://localhost:27017/d
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-mongoose.connect(MONGO_CONNECTION_STRING, { useMongoClient: true });
+mongoose.connect(MONGO_CONNECTION_STRING, { auth: { authdb: "admin" } });//{ useMongoClient: true });
 
 const connection = mongoose.connection;
 const secretKey = process.env.token_secretKey;
