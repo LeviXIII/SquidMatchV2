@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-//Taken out for deployment.
 //const config = require('./config.js');
 
 const User = require('./models/User');
