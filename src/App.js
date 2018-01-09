@@ -17,13 +17,13 @@ import Chat from './components/Chat';
 import FriendList from './components/FriendList';
 import News from './components/News';
 
-const socket = io();
+let socket;
 
 class App extends Component {
   
   componentDidMount() {
     
-    socket.connect();
+    socket.io.connect();
     
     socket.on('connect', () => {
       this.props.setSocket(socket);
