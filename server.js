@@ -5,21 +5,21 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const config = require('./config.js');
+//const config = require('./config.js');
 
 const User = require('./models/User');
 const Friends = require('./models/Friends');
 const Messages = require('./models/Messages');
 
 const PORT = process.env.PORT || 8080;
-const MONGO_CONNECTION_STRING = 'mongodb://heroku_c62cfk5m:9yVaRvte5nK6RMLP@ds249787.mlab.com:49787/heroku_c62cfk5mlocalhost:27017/data/db';
+const MONGO_CONNECTION_STRING = 'mongodb://heroku_c62cfk5m:37r0hs8c657v2f1fed80goooru@ds249787.mlab.com:49787/heroku_c62cfk5m';
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 mongoose.connect(MONGO_CONNECTION_STRING);
 
 const connection = mongoose.connection;
-const secretKey = config.token_secretKey;
+const secretKey = process.env.token_secretKey;
 const rooms = [];
 
 /******************************************************************/
