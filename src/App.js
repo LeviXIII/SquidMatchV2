@@ -17,13 +17,15 @@ import Chat from './components/Chat';
 import FriendList from './components/FriendList';
 import News from './components/News';
 
-let socket;
+const socket = io('https://squidmatch.herokuapp.com/', {
+  transports: ['websocket']
+});
 
 class App extends Component {
   
   componentDidMount() {
     
-    socket.io.connect();
+    socket.connect();
     
     socket.on('connect', () => {
       this.props.setSocket(socket);
