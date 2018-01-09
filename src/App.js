@@ -17,7 +17,7 @@ import Chat from './components/Chat';
 import FriendList from './components/FriendList';
 import News from './components/News';
 
-const socket = io('http://localhost:8080');
+const socket = io('https://squidmatch.herokuapp.com/');
 
 class App extends Component {
   

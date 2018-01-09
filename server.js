@@ -12,7 +12,7 @@ const Friends = require('./models/Friends');
 const Messages = require('./models/Messages');
 
 const PORT = process.env.PORT || 8080;
-const MONGO_CONNECTION_STRING = 'mongodb://localhost:27017/data/db';
+const MONGO_CONNECTION_STRING = 'mongodb://heroku_c62cfk5m:9yVaRvte5nK6RMLP@ds249787.mlab.com:49787/heroku_c62cfk5mlocalhost:27017/data/db';
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
