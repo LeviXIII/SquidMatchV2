@@ -11,7 +11,7 @@ const User = require('./models/User');
 const Messages = require('./models/Messages');
 
 const PORT = process.env.PORT || 5000;
-const MONGO_CONNECTION_STRING = 'mongodb://heroku_dgtngdz3:q1fma8o5ppocpbgs71uccu9587@ds249787.mlab.com:49787/heroku_c62cfk5m';
+const MONGO_CONNECTION_STRING = process.env.mLab || 'mongodb://localhost:27017/data/db';
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
