@@ -8,7 +8,6 @@ const jwt = require('jsonwebtoken');
 //const config = require('./config.js');
 
 const User = require('./models/User');
-const Friends = require('./models/Friends');
 const Messages = require('./models/Messages');
 
 const PORT = process.env.PORT || 8080;
