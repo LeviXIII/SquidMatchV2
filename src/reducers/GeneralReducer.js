@@ -1,6 +1,7 @@
 import {
   SET_SOCKET,
   SET_MESSAGES,
+  SET_TEMP_FRIEND_LIST,
   SET_CHATTING,
   SET_LOGGED_IN,
   SET_EMPTY_ROOM,
@@ -15,6 +16,7 @@ import {
 
 const initialState = {
   messages: [],
+  tempFriendList: [],
   socket: {},
   verifyMessage: '',
   friendMessage: '',
@@ -39,6 +41,8 @@ export default (state = initialState, action) => {
       return { ...state, emptyRoom: action.payload };
     case SET_MESSAGES:
       return { ...state, messages: Array.from(action.payload) };
+    case SET_TEMP_FRIEND_LIST:
+      return { ...state, tempFriendList: Array.from(action.payload) };
     case SET_FRIEND_MODAL:
       return { ...state, friendModal: action.payload };
     case SET_UPDATE_MODAL:

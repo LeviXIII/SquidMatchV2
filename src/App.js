@@ -213,7 +213,7 @@ class App extends Component {
       }
     });
   }
-
+  
   render() {
 
     this.verifyToken();
@@ -255,7 +255,8 @@ class App extends Component {
             <Chat socket={socket}
                   verifyToken={this.verifyToken}/>} />
           <Route path="/friend-list" exact render={() => 
-            <FriendList verifyToken={this.verifyToken}/>} />
+            <FriendList socket={socket}
+                        verifyToken={this.verifyToken}/>} />
         </Switch>
 
         { /* Invite Modal */ }

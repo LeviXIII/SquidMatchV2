@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { Toolbar, ToolbarGroup, FlatButton, 
           Avatar, IconMenu, MenuItem,
           IconButton, ToolbarTitle, Divider,
@@ -14,8 +14,9 @@ import * as actions from '../actions';
 
 class SiteHeader extends Component {
   
-  componentWillMount() {
+  componentDidMount() {
     window.addEventListener("resize", () => this.props.setWindowSize(window.innerWidth));
+    window.addEventListener("beforeunload", () => this.logout());
   }
 
   showInviteModal = () => {
@@ -32,7 +33,7 @@ class SiteHeader extends Component {
     })
   }
 
-  logout = (e) => {
+  logout = () => {
     axios.put('/logout', {
       username: this.props.username     
     })
@@ -48,8 +49,7 @@ class SiteHeader extends Component {
     this.props.setInitialSearchState();
     this.props.setInitialGeneralState();
     this.props.setLoggedIn(false);
-    localStorage.removeItem('token');
-    
+    localStorage.removeItem('token');  
   }
 
   render() {
@@ -69,16 +69,26 @@ class SiteHeader extends Component {
                   <MenuItem primaryText="Find Squad" />
                 </Link>
                 <MenuItem primaryText="News" />
-                <MenuItem primaryText="Friend List" />
+                <Link style={miniMenu} to="/friend-list">
+                  <MenuItem primaryText="Friend List" />
+                </Link>
                 <MenuItem primaryText="Help" />
               </IconMenu>
             </section>
           ) : (
           <ToolbarGroup style={toolbarStyle}>
-            <Link to="/choose-criteria"><FlatButton style={menuItems} label="Find Squad" /></Link>
-            <Link to="#"><FlatButton style={menuItems} label="News" /></Link>
-            <Link to="/friend-list"><FlatButton style={menuItems} label="Friend List" /></Link>
-            <Link to="#"><FlatButton style={menuItems} label="Help" /></Link>
+            <Link to="/choose-criteria">
+              <FlatButton style={menuItems} label="Find Squad" />
+            </Link>
+            <Link to="#">
+              <FlatButton style={menuItems} label="News" />
+            </Link>
+            <Link to="/friend-list">
+              <FlatButton style={menuItems} label="Friend List" />
+            </Link>
+            <Link to="#">
+              <FlatButton style={menuItems} label="Help" />
+            </Link>
           </ToolbarGroup>
           )}
 
@@ -118,7 +128,7 @@ class SiteHeader extends Component {
               <Link style={miniMenu} to="/update-info">
                 <MenuItem primaryText="Update Profile" />
               </Link>
-              <MenuItem primaryText="Logout" onClick={e => this.logout(e)}/>
+              <MenuItem primaryText="Logout" onClick={this.logout}/>
             </IconMenu>
           </ToolbarGroup>
           
@@ -189,7 +199,7 @@ const mapStateToProps = (state) => {
     notify: state.accountReducer.notify,
 
     isChatting: state.generalReducer.isChatting,
-    windowSize: state.generalReducer.windowSize
+    windowSize: state.generalReducer.windowSize,
   }
 }
 

@@ -195,6 +195,8 @@ connection.on('open', () => {
 
 /**************************END POINTS******************************/
 
+/******************************GET*********************************/
+
 app.get('/get-invite/:username', (req, res) => {
   User.findOne({ username: req.params.username })
   .then(result => {
@@ -237,6 +239,9 @@ app.get('/check-status/:username', (req, res) => {
     console.log("Check Status Error: " + error);
   })
 })
+/******************************************************************/
+
+/*****************************POST*********************************/
 
 app.post('/login', (req, res) => {
   //Find the password that matches the user.
@@ -465,7 +470,8 @@ app.post('/search-criteria', (req, res) => {
 
   //Age
   if (req.body.searchAge === "Any") {
-    searchQuery["$and"].push({ age: {$regex: /^.*$/ } }); //regex searches from start to end for anything.
+    //regex searches from start to end for anything.
+    searchQuery["$and"].push({ age: {$regex: /^.*$/ } }); 
   }
   else {
     searchQuery["$and"].push({ age: req.body.searchAge });
@@ -536,6 +542,10 @@ app.post('/search-friends', (req, res) => {
     res.status(500);
   })
 })
+
+/******************************************************************/
+
+/******************************PUT*********************************/
 
 app.put('/logout', (req, res) => {
   User.findOneAndUpdate(
@@ -622,6 +632,20 @@ app.put('/add-to-friends', (req, res) => {
   })
   .catch(error => {
     console.log("Add to Friends Error: " + error);
+  })
+})
+
+app.put('/remove-friend', (req, res) => {
+  User.findOneAndUpdate(
+    { username: req.body.username },
+    { $pull: { friendlist: req.body.user }},
+    {}
+  )
+  .then(result => {
+    res.json({ result: `${req.body.user} was removed from friendlist.`})
+  })
+  .catch(error => {
+    console.log("Remove Friend Error: " + error);
   })
 })
 

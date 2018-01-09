@@ -1,8 +1,10 @@
 import {
   SET_SOCKET,
   SET_MESSAGES,
+  SET_TEMP_FRIEND_LIST,
   SET_CHATTING,
   SET_EMPTY_ROOM,
+  SET_FRIENDS_LOADING,
   SET_LOGGED_IN,
   SET_FRIEND_MODAL,
   SET_UPDATE_MODAL,
@@ -24,6 +26,13 @@ export const setMessages = (message) => {
   return {
     type: SET_MESSAGES,
     payload: message
+  }
+}
+
+export const setTempFriendList = (tempFriend) => {
+  return {
+    type: SET_TEMP_FRIEND_LIST,
+    payload: tempFriend
   }
 }
 

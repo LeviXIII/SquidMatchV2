@@ -63,7 +63,7 @@ class Results extends Component {
     })
   }
 
-  addToSquad = (isChecked, user) => {
+  addToSquad = (e, isChecked, user) => {
     if (isChecked) {
       squad.push(user);
       this.props.setShowModal(squad.length >= 3 ? true : false);
@@ -74,7 +74,6 @@ class Results extends Component {
         return value.username !== user.username;
       })
       squad = Array.from(newSquad);
-      
     }
     this.props.setSquad(Array.from(squad));
   }
@@ -139,6 +138,7 @@ class Results extends Component {
             style={cardStyle}
             titleStyle={cardHeaderText}
             title={value.username}
+            textStyle={{paddingRight: '2px'}}
             avatar={<Avatar>{value.username[0].toUpperCase()}</Avatar>}
           >
             <section style={friendIconStyle}>
@@ -159,7 +159,7 @@ class Results extends Component {
                         Playstyle: {value.playstyle}
                       </p>}
                       iconStyle={checkboxStyle}
-                      onCheck={(e, isChecked, user) => this.addToSquad(isChecked, value)}
+                      onCheck={(e, isChecked, user) => this.addToSquad(e, isChecked, value)}
             />
           </CardText>
         </Card>
@@ -174,16 +174,14 @@ class Results extends Component {
                     onClick={this.closeModal}>
         Cancel
       </RaisedButton>,
-      <Link to="/chat">
-        <RaisedButton buttonStyle={chatButton}
-                    backgroundColor='#7aff42'
-                    disabledBackgroundColor='#bcbcbc'
-                    disabled={disableButton}
-                    onClick={this.notifyMembers}
-        >
-          Chat
-        </RaisedButton>
-      </Link>
+      <RaisedButton buttonStyle={chatButton}
+                  backgroundColor='#7aff42'
+                  disabledBackgroundColor='#bcbcbc'
+                  disabled={disableButton}
+                  onClick={this.notifyMembers}
+      >
+        Chat
+      </RaisedButton>
     ]
 
     //Rendering
@@ -197,20 +195,20 @@ class Results extends Component {
           <p style={resultsSubText}>Sorry, there were no results.</p>
         )
         }
+
+        {/* Only enable a link to the chat button if active. */}
         <section className="grid">
-          <Link to="/chat">
-            <RaisedButton buttonStyle={chatButton}
-                        backgroundColor='#7aff42'
-                        disabledBackgroundColor='#bcbcbc'
-                        disabled={disableButton}
-                        onClick={this.notifyMembers}
-            >
-              Chat
-            </RaisedButton>
-          </Link>
+          {disableButton ? (
+            actionButtons[1]
+          ) : (
+            <Link to="/chat">
+              {actionButtons[1]}
+            </Link>
+          )}
         </section>
         <br />
         {results}
+
         <Dialog
           title="Member Limit Reached"
           titleStyle={subTitle}
