@@ -24,7 +24,7 @@ class App extends Component {
   componentDidMount() {
     
     //socket.io.connect();
-    socket.connect('/socket.io-client', {
+    socket.io.connect('/socket.io-client', {
       transports: ['websocket'],
       upgrade: false,
     })
