@@ -36,7 +36,7 @@ class SiteHeader extends Component {
   render() {
     return (
       <section className="header">
-        <h1 className="siteTitle"><Link to="/home">Squid Match</Link></h1>
+        <h1 className="siteTitle"><Link to="/choose-criteria">Squid Match</Link></h1>
         <p style={subTitle}>Find active players to play with in Splatoon 2</p>
         <Toolbar style={{ backgroundColor: 'rgba(0,0,0,0)'}}>
           {this.props.windowSize <= 640 ? (
