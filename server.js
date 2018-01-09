@@ -10,7 +10,7 @@ const jwt = require('jsonwebtoken');
 const User = require('./models/User');
 const Messages = require('./models/Messages');
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 const MONGO_CONNECTION_STRING = process.env.mLab || 'mongodb://localhost:27017/data/db';
 
 app.use(express.json());
