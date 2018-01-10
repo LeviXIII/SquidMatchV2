@@ -21,7 +21,7 @@ const connection = mongoose.createConnection(MONGO_CONNECTION_STRING, { useMongo
 .then(() => console.log('connected to DB'))
 .catch(err => console.log(err));
 
-//put this back in
+
 //const connection = mongoose.connection;
 const secretKey = process.env.token_secretKey;
 const rooms = [];
