@@ -33,7 +33,7 @@ const rooms = [];
 connection.on('open', () => {
   console.log('Now connected to Mongo ^_^');
   
-  const server = app.listen(PORT, () => {
+  const server = app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server now listening on port: ${PORT} =D`);
   })
 
