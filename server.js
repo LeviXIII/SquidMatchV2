@@ -12,7 +12,7 @@ const User = require('./models/User');
 const Messages = require('./models/Messages');
 
 const PORT = process.env.PORT || 8080;
-const MONGO_CONNECTION_STRING = process.env.mLab;
+const MONGO_CONNECTION_STRING = process.env.MONGO_URI;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
