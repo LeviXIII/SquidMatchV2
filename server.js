@@ -741,3 +741,9 @@ app.put('/clear-invite', (req, res) => {
   })
 })
 /******************************************************************/
+
+//This is to enuser that no matter what endpoint the user attempts to go to, they
+//receive our minified react files.
+app.get('*', (req, res) => {
+  res.sendFile(__dirname+'/public/index.html');
+})
