@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 mongoose.createConnection(MONGO_CONNECTION_STRING, { useMongoClient: true });
 //.then(() => {})
 //.catch(err => console.log(err));
-
+console.log(PORT);
 const connection = mongoose.connection
 const secretKey = process.env.token_secretKey;
 const rooms = [];
