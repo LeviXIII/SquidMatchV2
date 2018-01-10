@@ -16,7 +16,7 @@ const MONGO_CONNECTION_STRING = process.env.mLab;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-//new for latest mongoose v.
+
 mongoose.createConnection(MONGO_CONNECTION_STRING, { useMongoClient: true });
 
 const connection = mongoose.connection;
