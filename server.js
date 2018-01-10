@@ -17,12 +17,12 @@ const MONGO_CONNECTION_STRING = process.env.MONGO_URI;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const connection = mongoose.createConnection(MONGO_CONNECTION_STRING, { useMongoClient: true })
+mongoose.createConnection(MONGO_CONNECTION_STRING, { useMongoClient: true })
 .then(() => console.log('connected to DB'))
 .catch(err => console.log(err));
 
 
-//const connection = mongoose.connection;
+const connection = mongoose.connection;
 const secretKey = process.env.token_secretKey;
 const rooms = [];
 
