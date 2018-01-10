@@ -17,7 +17,7 @@ const MONGO_CONNECTION_STRING = process.env.mLab;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 //Do not use "".
-mongoose.createConnection(MONGO_CONNECTION_STRING, { useMongoClient: true });
+mongoose.createConnection(MONGO_CONNECTION_STRING.toString(), { useMongoClient: true });
 
 const connection = mongoose.connection;
 const secretKey = process.env.token_secretKey;
