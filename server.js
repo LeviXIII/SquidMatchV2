@@ -11,7 +11,7 @@ mongoose.Promise = global.Promise;
 const User = require('./models/User');
 const Messages = require('./models/Messages');
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT;
 const MONGO_CONNECTION_STRING = process.env.MONGOLAB_MAUVE_URI;
 
 app.use(express.static(__dirname + "/"));
