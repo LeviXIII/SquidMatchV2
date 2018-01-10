@@ -33,7 +33,7 @@ connection.on('open', () => {
   console.log('Now connected to Mongo ^_^');
   
   const server = app.listen(PORT, () => {
-    console.log(`Server now listening on port: ${PORT} =D`);
+    console.log("Server now listening on port: " + PORT + " =D");
   })
 
   //Import and setup socket to listen to set server above.
