@@ -11,10 +11,12 @@ mongoose.Promise = global.Promise;
 const User = require('./models/User');
 const Messages = require('./models/Messages');
 
-const port = process.env.PORT;
+//const port = process.env.PORT || 5000;
 const MONGO_CONNECTION_STRING = process.env.MONGOLAB_MAUVE_URI;
 
-app.use(express.static(__dirname + "/"));
+app.set('port', (process.env.PORT || 5000));
+
+app.use(express.static(__dirname + "/")); //maybe delete this.
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -33,8 +35,8 @@ const rooms = [];
 connection.on('open', () => {
   console.log('Now connected to Mongo ^_^');
   
-  const server = app.listen(port, () => {
-    console.log("Server now listening on port: " + port + " =D");
+  const server = app.listen(app.get('port'), () => {
+    console.log("Server now listening on port: " + app.get('port') + " =D");
   })
 
   //Import and setup socket to listen to set server above.
