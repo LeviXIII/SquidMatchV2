@@ -17,7 +17,6 @@ import Chat from './components/Chat';
 import FriendList from './components/FriendList';
 import News from './components/News';
 
-console.log('MADE IT!');
 const socket = io('https://squidmatch.herokuapp.com/', {
   transports: ['websocket']
 });

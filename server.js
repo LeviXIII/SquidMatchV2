@@ -14,7 +14,7 @@ const Messages = require('./models/Messages');
 const PORT = process.env.PORT;
 const MONGO_CONNECTION_STRING = process.env.MONGOLAB_MAUVE_URI;
 
-app.use(express.static(__dirname + "/build")); //maybe delete this.
+app.use(express.static(__dirname + "/index.html")); //maybe delete this.
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -742,8 +742,6 @@ app.put('/clear-invite', (req, res) => {
 })
 /******************************************************************/
 
-//This is to enuser that no matter what endpoint the user attempts to go to, they
-//receive our minified react files.
-app.get('*', (req, res) => {
-  res.sendFile(__dirname+'/build/index.html');
+app.get('/', (req, res) => {
+  res.sendFile('/index.html');
 })
