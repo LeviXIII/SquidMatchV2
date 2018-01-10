@@ -18,7 +18,7 @@ import FriendList from './components/FriendList';
 import News from './components/News';
 
 const socket = io(process.env.PORT);
-
+console.log(process.env.PORT);
 // const socket = io('https://squidmatch.herokuapp.com/', {
 //   transports: ['websocket']
 // });
