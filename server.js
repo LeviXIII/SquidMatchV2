@@ -18,11 +18,11 @@ const MONGO_CONNECTION_STRING = process.env.MONGOLAB_MAUVE_URI;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-mongoose.createConnection(MONGO_CONNECTION_STRING, { useMongoClient: true });
+const connection = mongoose.createConnection(MONGO_CONNECTION_STRING, { useMongoClient: true });
 //.then(() => {})
 //.catch(err => console.log(err));
-console.log(PORT);
-const connection = mongoose.connection
+
+//const connection = mongoose.connection
 const secretKey = process.env.token_secretKey;
 const rooms = [];
 
@@ -32,7 +32,7 @@ const rooms = [];
 
 connection.on('open', () => {
   console.log('Now connected to Mongo ^_^');
-  
+
   const server = app.listen(PORT, () => {
     console.log(`Server now listening on port: ${PORT} =D`);
   })
