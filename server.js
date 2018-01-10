@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 //Do not use "".
 mongoose.createConnection(MONGO_CONNECTION_STRING, { useMongoClient: true })
-then(() => console.log('connected to DB'))
+.then(() => console.log('connected to DB'))
 .catch(err => console.log(err));
 
 const connection = mongoose.connection;
