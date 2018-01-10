@@ -17,9 +17,9 @@ const MONGO_CONNECTION_STRING = process.env.MONGODB_URI;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-mongoose.createConnection(MONGO_CONNECTION_STRING);
-//.then(() => console.log('connected to DB'))
-//.catch(err => console.log(err));
+mongoose.createConnection(MONGO_CONNECTION_STRING, { useMongoClient: true})
+.then(() => console.log('connected to DB'))
+.catch(err => console.log(err));
 
 const connection = mongoose.connection;
 const secretKey = process.env.token_secretKey;
