@@ -742,5 +742,6 @@ app.put('/clear-invite', (req, res) => {
 
 //This is to ensures that the index.html file is found first.
 app.get('*', (req, res) => {
-  res.sendFile('/build/index.html');
+  console.log(__dirname + '/build/index.html');
+  res.sendFile(__dirname + '/build/index.html');
 })
