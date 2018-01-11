@@ -18,7 +18,7 @@ app.use(express.static(__dirname + "/build"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const connection = mongoose.createConnection("mongodb://heroku_d28fcrt1:6elcgrb8kfsnp7oplsctiou89d@ds151207.mlab.com:51207/heroku_d28fcrt1", { useMongoClient: true });
+const connection = mongoose.createConnection(MONGO_CONNECTION_STRING, { useMongoClient: true });
 
 //const connection = mongoose.connection
 const secretKey = process.env.token_secretKey;
