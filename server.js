@@ -18,11 +18,11 @@ app.use(express.static(__dirname + "/build"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-mongoose.createConnection(MONGO_CONNECTION_STRING, { useMongoClient: true });
+const connection = mongoose.createConnection(MONGO_CONNECTION_STRING, { useMongoClient: true });
 //.then(() => {})
 //.catch(err => console.log(err));
 
-const connection = mongoose.connection
+//const connection = mongoose.connection
 const secretKey = process.env.token_secretKey;
 const rooms = [];
 
