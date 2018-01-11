@@ -13,7 +13,7 @@
 /coverage
 
 # production
-/build
+#/build Taking out for production
 
 # misc
 .env
