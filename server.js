@@ -246,11 +246,9 @@ app.get('/check-status/:username', (req, res) => {
 /*****************************POST*********************************/
 
 app.post('/login', (req, res) => {
-  console.log('MADE IT!');
   //Find the password that matches the user.
   User.findOne({ username: req.body.username })
   .then(result => {
-    res.send('READ LOGIN!');
     //Compare the password against the hashed one.
     bcrypt.compare(req.body.password, result.password, (err, match) => {
       if (err) {
@@ -331,7 +329,7 @@ app.post('/register', (req, res) => {
       if(error) {
           return res.status(500).json(error);
       }
-
+      console.log('READ REGISTER!');
       //Create a new user and add the user's hashed password
       //as well as their information into the database.
       User({
