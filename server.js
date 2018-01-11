@@ -14,7 +14,7 @@ const Messages = require('./models/Messages');
 const PORT = process.env.PORT || 8080;
 const MONGO_CONNECTION_STRING = process.env.MONGODB_URI;
 
-app.use(express.static(__dirname + "/build"));
+app.use(express.static(__dirname + "/app/build"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -742,5 +742,5 @@ app.put('/clear-invite', (req, res) => {
 
 //This is to ensures that the index.html file is found first.
 app.get('*', (req, res) => {
-  res.sendFile(__dirname+'/build/index.html');
+  res.sendFile(__dirname+'/app/build/index.html');
 })
