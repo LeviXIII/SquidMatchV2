@@ -246,6 +246,7 @@ app.get('/check-status/:username', (req, res) => {
 /*****************************POST*********************************/
 
 app.post('/login', (req, res) => {
+  console.log('MADE IT HERE!');
   //Find the password that matches the user.
   User.findOne({ username: req.body.username })
   .then(result => {
@@ -742,7 +743,5 @@ app.put('/clear-invite', (req, res) => {
 
 //This is to ensures that the index.html file is found first.
 app.get('*', (req, res) => {
-  console.log('HERE IS YOUR PATH: ')
-  console.log(__dirname + '/build/index.html');
   res.sendFile(__dirname + '/build/index.html');
 })
