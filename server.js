@@ -14,13 +14,11 @@ const Messages = require('./models/Messages');
 const PORT = process.env.PORT || 8080;
 const MONGO_CONNECTION_STRING = process.env.MONGODB_URI;
 
-app.use(express.static(__dirname + "/"));
+app.use(express.static(__dirname + "/build"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const connection = mongoose.createConnection(MONGO_CONNECTION_STRING, { useMongoClient: true });
-//.then(() => {})
-//.catch(err => console.log(err));
 
 //const connection = mongoose.connection
 const secretKey = process.env.token_secretKey;
@@ -744,5 +742,5 @@ app.put('/clear-invite', (req, res) => {
 
 //This is to ensures that the index.html file is found first.
 app.get('*', (req, res) => {
-  res.sendFile(__dirname+'/index.html');
+  res.sendFile(__dirname+'/build/index.html');
 })
