@@ -18,8 +18,9 @@ app.use(express.static(__dirname + "/build"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const connection = mongoose.createConnection(MONGO_CONNECTION_STRING); //, { useMongoClient: true });
-
+const connection = mongoose.createConnection(process.env.MONGODB_URI, { useMongoClient: true });
+console.log("MONGO URI", process.env.MONGODB_URI);
+console.log("Mongo connection", MONGO_CONNECTION_STRING);
 //const connection = mongoose.connection
 const secretKey = process.env.token_secretKey;
 const rooms = [];
