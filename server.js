@@ -246,10 +246,11 @@ app.get('/check-status/:username', (req, res) => {
 /*****************************POST*********************************/
 
 app.post('/login', (req, res) => {
+  console.log('MADE IT!');
   //Find the password that matches the user.
   User.findOne({ username: req.body.username })
   .then(result => {
-    console.log('MADE IT!');
+    console.log('READ LOGIN!');
     //Compare the password against the hashed one.
     bcrypt.compare(req.body.password, result.password, (err, match) => {
       if (err) {
