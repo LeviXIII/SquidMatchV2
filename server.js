@@ -18,6 +18,9 @@ app.use(express.static(__dirname + "/build"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+//Import and setup socket to listen to set server above.
+const io = require('socket.io').listen(PORT);
+
 const connection = mongoose.createConnection(MONGO_CONNECTION_STRING, { useMongoClient: true });
 
 //const connection = mongoose.connection
@@ -35,8 +38,7 @@ connection.on('open', () => {
     console.log(`Server now listening on port: ${PORT} =D`);
   })
 
-  //Import and setup socket to listen to set server above.
-  const io = require('socket.io').listen(server);
+  //
 
   io.sockets.on('connection', socket => {
 
@@ -246,7 +248,6 @@ app.get('/check-status/:username', (req, res) => {
 /*****************************POST*********************************/
 
 app.post('/login', (req, res) => {
-  console.log('MADE IT HERE!');
   //Find the password that matches the user.
   User.findOne({ username: req.body.username })
   .then(result => {
