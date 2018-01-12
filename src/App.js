@@ -216,7 +216,8 @@ class App extends Component {
 
     this.props.setLoggedIn(false);
     localStorage.removeItem('token');
-    socket.disconnect();
+    //console.log('MADE IT TO DISCONNECT');
+    //socket.disconnect();
     this.props.setInitialAccountState();
     this.props.setInitialLoginState();
     this.props.setInitialSearchState();
