@@ -1,3 +1,5 @@
+Notes:
+
 1. Once logged in make sure you availability is set to "Available" to search for others.
 2. If you leave the chat room at any time, you cannot go back unless you are invited.
 3. Once you have an invite pending, you can't join another chat unless you accept or decline your invite.
