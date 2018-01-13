@@ -15,7 +15,22 @@ class News extends Component {
 
     return (
       <section className="container divBorder formSettings">
-        <h1 style={subTitle}>Under Construction!</h1>
+        <h1 style={subTitle}>Updates</h1>
+        <ul>
+          <li>
+            Fixed bug that didn't log you out if you leave the page
+            while chatting.
+          </li>
+          <li>
+            Fixed bug that allowed for duplicate emails and usernames.
+          </li>
+          <li>
+            Refreshing page fix and username/password recovery incoming.
+          </li>
+          <li>
+
+          </li>
+        </ul>
       </section>
     )
   }
