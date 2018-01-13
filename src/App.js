@@ -17,9 +17,9 @@ import Chat from './components/Chat';
 import FriendList from './components/FriendList';
 import News from './components/News';
 
-const socket = io('http://localhost:8080');//('https://squidmatch.herokuapp.com/', {
-//  transports: ['websocket']
-//});
+const socket = io('https://squidmatch.herokuapp.com/', {
+  transports: ['websocket']
+});
 
 class App extends Component {
   
@@ -254,7 +254,7 @@ class App extends Component {
         </RaisedButton>
       </Link>
     ]
-    
+
     return (
       <section className="mainBackground">
         {this.props.isLoggedIn && <SiteHeader logout={this.logout}/>}
