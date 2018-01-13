@@ -55,7 +55,7 @@ class LoginForm extends Component {
             //Do a get request to see if username is available.
             axios.get('/check-username/' + this.props.username)
             .then(result => {
-              if (result.data.found === null) {
+              if (result.data.found !== null) {
                 this.props.setVerifyMessage("You are already registered.");
               }
               else {
@@ -85,7 +85,6 @@ class LoginForm extends Component {
     //If passwords match for creating account, clear the verify message,
     //setup account state, and allow access to next page.
     if (this.props.matchingPassword && this.props.verified) {
-      this.clearFields();
       return <Redirect to="/account-info" />
     }
 
@@ -167,6 +166,10 @@ class LoginForm extends Component {
           
       </section>
     )
+  }
+
+  componentWillUnmount() {
+    this.clearFields();
   }
 
 }

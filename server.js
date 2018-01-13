@@ -244,7 +244,7 @@ app.get('/check-status/:username', (req, res) => {
 })
 
 app.get('/check-username/:username', (req, res) => {
-  User.findOne({ username: req.body.username })
+  User.findOne({ username: req.params.username })
   .then(result => {
     res.json({ found: result })
   })
