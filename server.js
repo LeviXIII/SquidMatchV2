@@ -12,7 +12,7 @@ const User = require('./models/User');
 const Messages = require('./models/Messages');
 
 const PORT = process.env.PORT || 8080;
-const MONGO_CONNECTION_STRING = ('mongodb://localhost:27017/data/db' || process.env.MONGODB_URI);
+const MONGO_CONNECTION_STRING = (process.env.MONGODB_URI);
 
 app.use(express.static(__dirname + "/build"));
 app.use(express.json());
