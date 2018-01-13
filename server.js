@@ -371,14 +371,12 @@ app.post('/register', (req, res) => {
 
         res.status(200).json({
           token: token,
-          //id: result._id
         });
       })
       .catch(error => {
-        console.log(error)
         res.status(500).json({
           error: error,
-          signedUp: false
+          //signedUp: false
         });
       })
     })

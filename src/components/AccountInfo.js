@@ -33,7 +33,7 @@ class AccountInfo extends Component {
         this.props.getLoginInput({ name: 'verified', value: false });
       })
       .catch(error => {
-        console.log(error);
+        this.props.setVerifyMessage('That email address is taken.');
       })
     }
     else {
@@ -48,7 +48,6 @@ class AccountInfo extends Component {
     }
 
     if (this.props.isLoggedIn) {
-      //this.props.getLoginInput({ name: 'verified', value: false });
       return <Redirect to='/choose-criteria' />
     }
 
