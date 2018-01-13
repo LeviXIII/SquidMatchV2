@@ -51,9 +51,21 @@ class LoginForm extends Component {
     e.preventDefault();
     if (this.props.username !== '') {
       if (this.props.password === this.props.verifyPassword &&
-        this.props.password.length >= 8) {
-        this.props.setMatchingPassword(true);
-        this.props.getLoginInput({name: 'verified', value: true})
+          this.props.password.length >= 8) {
+            //Do a get request to see if username is available.
+            axios.get('/check-username/' + this.props.username)
+            .then(result => {
+              if (result.data.found === null) {
+                this.props.setVerifyMessage("You are already registered.");
+              }
+              else {
+                this.props.setMatchingPassword(true);
+                this.props.getLoginInput({name: 'verified', value: true})
+              }
+            })
+            .catch(error => {
+              console.log(error);
+            })
       }
       else {
         this.props.setVerifyMessage("Your password doesn't match or is too short.");

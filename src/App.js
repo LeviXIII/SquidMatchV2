@@ -254,7 +254,7 @@ class App extends Component {
         </RaisedButton>
       </Link>
     ]
-    console.log(this.props.isLoggedIn);
+    
     return (
       <section className="mainBackground">
         {this.props.isLoggedIn && <SiteHeader logout={this.logout}/>}

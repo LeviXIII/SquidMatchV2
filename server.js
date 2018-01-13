@@ -242,6 +242,17 @@ app.get('/check-status/:username', (req, res) => {
     console.log("Check Status Error: " + error);
   })
 })
+
+app.get('/check-username/:username', (req, res) => {
+  User.findOne({ username: req.body.username })
+  .then(result => {
+    res.json({ found: result })
+  })
+  .catch(error => {
+    res.json({ error: error });
+  })
+})
+
 /******************************************************************/
 
 /*****************************POST*********************************/
