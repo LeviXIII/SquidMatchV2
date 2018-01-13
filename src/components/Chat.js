@@ -50,6 +50,7 @@ class Chat extends Component {
     
     axios.put('/leave-chat', {
       username: this.props.username,
+      unmounting: this.props.unmounting,
     })
     .then(result => {
       this.props.getAccountInput({ name: 'status', value: 'Available' });
@@ -59,7 +60,7 @@ class Chat extends Component {
     })
     .catch(error => {
       console.log(error);
-    }) 
+    })
   }
 
   render() {
@@ -104,7 +105,7 @@ class Chat extends Component {
       <section>
         <section className="container divBorder chatFormSettings">
           <h1 style={subTitle}>Chat</h1>
-          <p style={NSIDstyle}>NSID: {this.props.NSID}</p>
+          <p style={NSIDstyle}>NSID: SW-{this.props.NSID}</p>
           {chat}
         </section>  
         <section className="container divBorder chatFormSettings">
@@ -235,6 +236,7 @@ const mapStateToProps = (state) => {
     isLoggedIn: state.generalReducer.isLoggedIn,
     messages: state.generalReducer.messages,
     emptyRoom: state.generalReducer.emptyRoom,
+    unmounting: state.generalReducer.unmounting,
   };
 }
 

@@ -12,7 +12,7 @@ const User = require('./models/User');
 const Messages = require('./models/Messages');
 
 const PORT = process.env.PORT || 8080;
-const MONGO_CONNECTION_STRING = (process.env.MONGODB_URI);
+const MONGO_CONNECTION_STRING = process.env.MONGODB_URI;
 
 app.use(express.static(__dirname + "/build"));
 app.use(express.json());
@@ -715,20 +715,24 @@ app.put('/save-chat', (req, res) => {
 })
 
 app.put('/leave-chat', (req, res) => {
-  User.findOneAndUpdate(
-    { username: req.body.username },
-    {
-      notification: { notify: false, from: '' },
-      status: 'Available'
-    },
-    {}
-  )
-  .then(oldData => {
-    res.json({ result: oldData })
-  })
-  .catch(error => {
-    console.log("Leave Chat Error: " + error);
-  })
+  //Only update if the user has navigated away from the page
+  //causing a logout
+  if (!req.body.unmounting) {
+    User.findOneAndUpdate(
+      { username: req.body.username },
+      {
+        notification: { notify: false, from: '' },
+        status: 'Available'
+      },
+      {}
+    )
+    .then(oldData => {
+      res.json({ result: oldData })
+    })
+    .catch(error => {
+      console.log("Leave Chat Error: " + error);
+    })
+  }
 })
 
 app.put('/clear-invite', (req, res) => {

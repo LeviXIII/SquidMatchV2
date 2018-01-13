@@ -10,6 +10,10 @@ import passwordIcon from '../images/passwordIcon.png';
 
 class LoginForm extends Component {
 
+  componentDidMount() {
+    window.addEventListener("beforeunload", async () => await this.props.logout);
+  }
+
   showCreateButton = (e) => {
     e.preventDefault();
     this.props.showCreateButton(true);
@@ -78,7 +82,7 @@ class LoginForm extends Component {
 
   clearFields = () => {
     this.props.setVerifyMessage("");
-    this.props.setInitialAccountState();
+    //this.props.setInitialAccountState();
   }
 
   render() {
@@ -170,6 +174,7 @@ class LoginForm extends Component {
 
   componentWillUnmount() {
     this.clearFields();
+    window.removeEventListener("beforeunload", async () => await this.props.logout);
   }
 
 }

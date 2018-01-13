@@ -8,6 +8,7 @@ export const SET_SOCKET = 'set_socket';
 export const SET_MESSAGES = 'set_messages';
 export const SET_TEMP_FRIEND_LIST = 'set_temp_friend_list';
 export const SET_CHATTING = 'set_chatting';
+export const SET_UNMOUNTING = 'set_unmounting';
 export const SET_LOGGED_IN = 'set_logged_in';
 export const SET_EMPTY_ROOM = 'set_empty_room';
 export const SET_FRIEND_MODAL = 'set_friend_modal';

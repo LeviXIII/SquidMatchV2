@@ -216,7 +216,6 @@ class App extends Component {
 
     this.props.setLoggedIn(false);
     localStorage.removeItem('token');
-    //console.log('MADE IT TO DISCONNECT');
     //socket.disconnect();
     this.props.setInitialAccountState();
     this.props.setInitialLoginState();
@@ -260,7 +259,7 @@ class App extends Component {
         {this.props.isLoggedIn && <SiteHeader logout={this.logout}/>}
         <Switch>
           <Route path="/" exact render={() => 
-            <LoginForm />} />
+            <LoginForm logout={this.logout}/>} />
           <Route path="/account-info" exact render={() => 
             <AccountInfo />} />
           <Route path="/update-info" exact render={() => 

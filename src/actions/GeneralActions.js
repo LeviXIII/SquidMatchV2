@@ -3,6 +3,7 @@ import {
   SET_MESSAGES,
   SET_TEMP_FRIEND_LIST,
   SET_CHATTING,
+  SET_UNMOUNTING,
   SET_EMPTY_ROOM,
   SET_LOGGED_IN,
   SET_FRIEND_MODAL,
@@ -39,6 +40,13 @@ export const setLoggedIn = (loggedIn) => {
   return {
     type: SET_LOGGED_IN,
     payload: loggedIn
+  }
+}
+
+export const setUnmounting = (unmount) => {
+  return {
+    type: SET_UNMOUNTING,
+    payload: unmount
   }
 }
 

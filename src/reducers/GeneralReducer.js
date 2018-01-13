@@ -3,6 +3,7 @@ import {
   SET_MESSAGES,
   SET_TEMP_FRIEND_LIST,
   SET_CHATTING,
+  SET_UNMOUNTING,
   SET_LOGGED_IN,
   SET_EMPTY_ROOM,
   SET_FRIEND_MODAL,
@@ -26,6 +27,7 @@ const initialState = {
   isChatting: false,
   isLoggedIn: false,
   emptyRoom: false,
+  unmounting: false,
   windowSize: window.innerWidth,
 };
 
@@ -39,6 +41,8 @@ export default (state = initialState, action) => {
       return { ...state, isChatting: action.payload };
     case SET_EMPTY_ROOM:
       return { ...state, emptyRoom: action.payload };
+    case SET_UNMOUNTING:
+      return { ...state, unmounting: action.payload };
     case SET_MESSAGES:
       return { ...state, messages: Array.from(action.payload) };
     case SET_TEMP_FRIEND_LIST:
