@@ -105,7 +105,7 @@ class SiteHeader extends Component {
                 <MenuItem primaryText="Check Invite" onClick={this.showInviteModal} />  
               }
               <Link style={miniMenu} to="/update-info">
-                <MenuItem primaryText="Update Profile" />
+                <MenuItem primaryText="Update Profile" disabled={this.props.isChatting}/>
               </Link>
               <MenuItem primaryText="Logout" onClick={this.props.logout}/>
             </IconMenu>

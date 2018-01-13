@@ -30,7 +30,7 @@ class ChooseCriteria extends Component {
 
   render() {
 
-    this.props.verifyToken()
+    this.props.verifyToken();
 
     if (!this.props.isLoggedIn) {
       return <Redirect to='/' />
