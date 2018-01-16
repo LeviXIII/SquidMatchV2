@@ -8,7 +8,6 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
-
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 import Invite from 'material-ui/svg-icons/social/notifications';
 
@@ -21,6 +20,15 @@ class SiteHeader extends Component {
       this.props.setUnmounting(true);
       await this.props.logout();
     });
+
+    //Gets info about current stages.
+    axios.get('/get-news')
+    .then(result => {
+
+    })
+    .catch(error => {
+      console.log("Get News Error: " + error);
+    })
   }
 
   showInviteModal = () => {

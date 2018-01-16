@@ -4,6 +4,8 @@ const app = express();
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const request = require('request');
+const cheerio = require('cheerio');
 
 mongoose.Promise = global.Promise;
 const config = require('./config.js');
@@ -199,6 +201,25 @@ connection.on('open', () => {
 /**************************END POINTS******************************/
 
 /******************************GET*********************************/
+
+app.get('/get-news', (req, res) => {
+  const url = 'http://squidkids.ink/';
+
+    request(url, function(error, response, body) {
+        if (!error) {
+            let $ = cheerio.load(body);
+            //console.log(body);
+            //Searches through the "r" class of Google page to print each item inside.
+            $('#Splatoon2TurfWarRightP1').each(function(i, elem) {
+              console.log($(this).text());
+            })
+        }
+        else {
+          console.log("Oops, something went wrong: " + error);
+        }
+      });
+  res.status(200);
+})
 
 app.get('/get-invite/:username', (req, res) => {
   User.findOne({ username: req.params.username })

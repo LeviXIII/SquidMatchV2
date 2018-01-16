@@ -14,8 +14,14 @@ class News extends Component {
     }
 
     return (
-      <section className="container divBorder formSettings">
-        <h1 style={subTitle}>Updates</h1>
+      <section>
+        <section className="container divBorder formSettings">
+          <h1 style={subTitle}>Stages</h1>
+          <p></p>
+        </section>
+
+        <section className="container divBorder formSettings">
+        <h1 style={subTitle}>Site Updates</h1>
         <ul>
           <li>
             Fixed bug that didn't log you out if you leave the page
@@ -28,6 +34,7 @@ class News extends Component {
             Refreshing page fix and username/password recovery incoming.
           </li>
         </ul>
+        </section>
       </section>
     )
   }
