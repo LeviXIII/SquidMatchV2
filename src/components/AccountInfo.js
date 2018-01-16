@@ -6,14 +6,25 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
+let colorArray = ['green', 'pink', 'purple', 'orange', 'teal',
+                  'brown', 'aqua', 'cornflowerblue', 'gold', 
+                  'firebrick'];
+
 class AccountInfo extends Component {
   
+  componentDidMount() {
+    this.props.setInitialAccountState();
+  }
+
   createAccount = (e) => {
     e.preventDefault();
 
     //Check email and NSID for validity
     if (/^\d{4}-\d{4}-\d{4}$/g.test(this.props.NSID) && /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.props.email))
     {
+      //Sets the color for the avatar.
+      let avatarColor = colorArray[Math.floor(Math.random() * 10)];
+
       axios.post('/register', {
         username: this.props.username,
         password: this.props.password,
@@ -26,11 +37,13 @@ class AccountInfo extends Component {
         weapon: this.props.weapon,
         playstyle: this.props.playstyle,
         status: "Available",
+        avatar: avatarColor,
       })
       .then(result => {
         localStorage.setItem('token', result.data.token);
         this.props.setLoggedIn(true);
         this.props.getLoginInput({ name: 'verified', value: false });
+        this.props.getAccountInput({ name: 'avatar', value: avatarColor });
       })
       .catch(error => {
         this.props.setVerifyMessage('That email address is taken.');
@@ -75,7 +88,7 @@ class AccountInfo extends Component {
         
         <section className="gridSelector">
           <SelectField
-            value={this.props.age} style={customWidth}
+            name="age" value={this.props.age} style={customWidth}
             onChange={(e, index, value) => this.props.getAccountInput({ name: "age", value: value })}
             floatingLabelFixed floatingLabelText="Age"
           >

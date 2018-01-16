@@ -27,9 +27,6 @@ class News extends Component {
           <li>
             Refreshing page fix and username/password recovery incoming.
           </li>
-          <li>
-
-          </li>
         </ul>
       </section>
     )

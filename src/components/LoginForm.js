@@ -28,20 +28,23 @@ class LoginForm extends Component {
       password: this.props.password
     })
     .then(result => {
-      localStorage.setItem('token', result.data.token);
-      this.props.getLoginInput({ name: "username", value: this.props.username});
-      this.props.getLoginInput({ name: "password", value: this.props.password});
-      this.props.getAccountInput({ name: "NSID", value: result.data.NSID });
-      this.props.getAccountInput({ name: "age", value: result.data.age });
-      this.props.getAccountInput({ name: "location", value: result.data.location });
-      this.props.getAccountInput({ name: "rank", value: result.data.rank });
-      this.props.getAccountInput({ name: "mode", value: result.data.mode });
-      this.props.getAccountInput({ name: "weapon", value: result.data.weapon });
-      this.props.getAccountInput({ name: "playstyle", value: result.data.playstyle });
-      this.props.getAccountInput({ name: "status", value: result.data.status });
-      this.props.getAccountInput({ name: "notify", value: result.data.notify });
-      this.props.getAccountInput({ name: "from", value: result.data.from });
-      this.props.getAccountInput({ name: "friendlist", value: result.data.friendlist });
+      if (result.data.setLogin) {
+        localStorage.setItem('token', result.data.token);
+        this.props.getLoginInput({ name: "username", value: this.props.username});
+        this.props.getLoginInput({ name: "password", value: this.props.password});
+        this.props.getAccountInput({ name: "NSID", value: result.data.NSID });
+        this.props.getAccountInput({ name: "age", value: result.data.age });
+        this.props.getAccountInput({ name: "location", value: result.data.location });
+        this.props.getAccountInput({ name: "rank", value: result.data.rank });
+        this.props.getAccountInput({ name: "mode", value: result.data.mode });
+        this.props.getAccountInput({ name: "weapon", value: result.data.weapon });
+        this.props.getAccountInput({ name: "playstyle", value: result.data.playstyle });
+        this.props.getAccountInput({ name: "status", value: result.data.status });
+        this.props.getAccountInput({ name: "notify", value: result.data.notify });
+        this.props.getAccountInput({ name: "from", value: result.data.from });
+        this.props.getAccountInput({ name: "friendlist", value: result.data.friendlist });
+        this.props.getAccountInput({ name: "avatar", value: result.data.avatar });
+      }
       this.props.setVerifyMessage(result.data.message);
       this.props.setLoggedIn(result.data.setLogin);
     })
@@ -78,11 +81,6 @@ class LoginForm extends Component {
     else {
       this.props.setVerifyMessage("Please enter a username.") 
     }
-  }
-
-  clearFields = () => {
-    this.props.setVerifyMessage("");
-    //this.props.setInitialAccountState();
   }
 
   render() {
@@ -173,7 +171,7 @@ class LoginForm extends Component {
   }
 
   componentWillUnmount() {
-    this.clearFields();
+    this.props.setVerifyMessage("");
     window.removeEventListener("beforeunload", async () => await this.props.logout);
   }
 

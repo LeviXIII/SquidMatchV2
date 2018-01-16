@@ -138,7 +138,9 @@ class Results extends Component {
             titleStyle={cardHeaderText}
             title={value.username}
             textStyle={{paddingRight: '2px'}}
-            avatar={<Avatar>{value.username[0].toUpperCase()}</Avatar>}
+            avatar={<Avatar backgroundColor={value.avatar}>
+                      {value.username[0].toUpperCase()}
+                    </Avatar>}
           >
             <section style={friendIconStyle}>
               <IconButton tooltip="Add to Friendlist"
@@ -173,14 +175,16 @@ class Results extends Component {
                     onClick={this.closeModal}>
         Cancel
       </RaisedButton>,
-      <RaisedButton buttonStyle={chatButton}
+      <Link to="/chat">
+        <RaisedButton buttonStyle={chatButton}
                   backgroundColor='#7aff42'
                   disabledBackgroundColor='#bcbcbc'
                   disabled={disableButton}
                   onClick={this.notifyMembers}
       >
-        Chat
-      </RaisedButton>
+          Chat
+        </RaisedButton>
+      </Link>
     ]
 
     //Rendering

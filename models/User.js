@@ -20,6 +20,7 @@ const UserSchema = new Schema({
       from: { type: String, required: false }
   },
   friendlist: [{ type: String, required: false }],
+  avatar: { type: String, required: false },
 })
 
 //Create the model

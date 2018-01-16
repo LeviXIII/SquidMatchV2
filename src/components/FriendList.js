@@ -113,8 +113,6 @@ class FriendList extends Component {
     let friendArray = Array.from(this.props.friendlist.sort());
     let tempList = Array.from(this.props.tempFriendList);
 
-    console.log('FriendArray', friendArray);
-    console.log('TempList', tempList);
     for (let i=0; i < friendArray.length; i++) {
       if (user === friendArray[i]) {
         friendArray.splice(i, 1);
@@ -154,7 +152,9 @@ class FriendList extends Component {
             titleStyle={cardHeaderText}
             title={value.username}
             textStyle={{paddingRight: '2px'}}
-            avatar={<Avatar>{value.username[0].toUpperCase()}</Avatar>}
+            avatar={<Avatar backgroundColor={value.avatar}>
+                      {value.username[0].toUpperCase()}
+                    </Avatar>}
           >
             <section style={friendIconStyle}>
               <IconButton tooltip="Remove from Friendlist"
@@ -191,14 +191,16 @@ class FriendList extends Component {
                     onClick={this.closeModal}>
         Cancel
       </RaisedButton>,
-      <RaisedButton buttonStyle={chatButton}
+      <Link to="/chat">
+        <RaisedButton buttonStyle={chatButton}
                   backgroundColor='#7aff42'
                   disabledBackgroundColor='#bcbcbc'
                   disabled={disableButton}
                   onClick={this.notifyMembers}
       >
-        Chat
-      </RaisedButton>
+          Chat
+        </RaisedButton>
+      </Link>
     ]               
 
     return (

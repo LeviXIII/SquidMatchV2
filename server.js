@@ -6,24 +6,24 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 mongoose.Promise = global.Promise;
-//const config = require('./config.js');
+const config = require('./config.js');
 
 const User = require('./models/User');
 const Messages = require('./models/Messages');
 
 const PORT = process.env.PORT || 8080;
-const MONGO_CONNECTION_STRING = process.env.MONGODB_URI;
+const MONGO_CONNECTION_STRING = 'mongodb://localhost:27017/data/db'; //process.env.MONGODB_URI;
 
 app.use(express.static(__dirname + "/build"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const connection = mongoose.connect(MONGO_CONNECTION_STRING, { useMongoClient: true });
-//mongoose.connect(MONGO_CONNECTION_STRING);
+//const connection = mongoose.connect(MONGO_CONNECTION_STRING, { useMongoClient: true });
+mongoose.connect(MONGO_CONNECTION_STRING);
 
-//const connection = mongoose.connection
-const secretKey = process.env.token_secretKey;
-//const secretKey = config.token_secretKey;
+const connection = mongoose.connection
+//const secretKey = process.env.token_secretKey;
+const secretKey = config.token_secretKey;
 const rooms = [];
 
 /******************************************************************/
@@ -304,6 +304,7 @@ app.post('/login', (req, res) => {
             notify: result.notification.notify,
             from: result.notification.from,
             friendlist: result.friendlist,
+            avatar: result.avatar,
             message: "",
             setLogin: true
           });    
@@ -357,7 +358,8 @@ app.post('/register', (req, res) => {
         status: req.body.status,
         time: Date.now(),
         notification: { notify: false, from: '' },
-        friendlist: []
+        friendlist: [],
+        avatar: req.body.avatar
       })
       .save()
       .then(result => {

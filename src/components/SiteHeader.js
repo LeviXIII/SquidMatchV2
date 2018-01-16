@@ -87,12 +87,12 @@ class SiteHeader extends Component {
                       <Invite color="black" />
                     </IconButton>}
                 >
-                  <Avatar style={avatarLetterBadge}>
+                  <Avatar style={avatarLetterBadge} backgroundColor={this.props.avatar}>
                     {this.props.username[0].toUpperCase()}
                   </Avatar>
                 </Badge>
                 ) : (
-                  <Avatar style={avatarLetter}>
+                  <Avatar style={avatarLetter} backgroundColor={this.props.avatar}>
                     {this.props.username[0].toUpperCase()}
                   </Avatar>
                 )
@@ -182,6 +182,7 @@ const mapStateToProps = (state) => {
   return { 
     username: state.loginReducer.username,
 
+    avatar: state.accountReducer.avatar,
     status: state.accountReducer.status,
     notify: state.accountReducer.notify,
 

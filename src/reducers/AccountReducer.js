@@ -16,6 +16,7 @@ const initialState = {
   notify: false,
   from: '',
   friendlist: [],
+  avatar: '',
 };
 
 export default (state = initialState, action) => {
