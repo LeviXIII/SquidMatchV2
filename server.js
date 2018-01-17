@@ -203,22 +203,37 @@ connection.on('open', () => {
 /******************************GET*********************************/
 
 app.get('/get-news', (req, res) => {
-  const url = 'http://squidkids.ink/';
+  const url = 'http://squidkidsfeed.azurewebsites.net/Schedule.json';
 
     request(url, function(error, response, body) {
-        if (!error) {
-            let $ = cheerio.load(body);
-            //console.log(body);
-            //Searches through the "r" class of Google page to print each item inside.
-            $('#Splatoon2TurfWarRightP1').each(function(i, elem) {
-              console.log($(this).text());
-            })
-        }
-        else {
-          console.log("Oops, something went wrong: " + error);
-        }
+        let bodyObj = JSON.parse(body);
+        let league = [];
+        let regular = [];
+        let ranked = [];
+
+        league[0] = bodyObj.league[0].stage_a.name;
+        league[1] = bodyObj.league[0].stage_b.name;
+        league[2] = bodyObj.league[0].game_mode.name;
+        league[3] = bodyObj.league[0].start_time;
+        league[4] = bodyObj.league[0].end_time;
+
+        regular[0] = bodyObj.regular[0].stage_a.name;
+        regular[1] = bodyObj.regular[0].stage_b.name;
+        regular[2] = bodyObj.regular[0].game_mode.name;
+        regular[3] = bodyObj.regular[0].start_time;
+        regular[4] = bodyObj.regular[0].end_time;
+
+        ranked[0] = bodyObj.gachi[0].stage_a.name;
+        ranked[1] = bodyObj.gachi[0].stage_b.name;
+        ranked[2] = bodyObj.gachi[0].game_mode.name;
+        ranked[3] = bodyObj.gachi[0].start_time;
+        ranked[4] = bodyObj.gachi[0].end_time;
       });
-  res.status(200);
+  res.json({
+    league: league,
+    regular: regular,
+    ranked: ranked,
+  });
 })
 
 app.get('/get-invite/:username', (req, res) => {

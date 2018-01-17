@@ -20,15 +20,6 @@ class SiteHeader extends Component {
       this.props.setUnmounting(true);
       await this.props.logout();
     });
-
-    //Gets info about current stages.
-    axios.get('/get-news')
-    .then(result => {
-
-    })
-    .catch(error => {
-      console.log("Get News Error: " + error);
-    })
   }
 
   showInviteModal = () => {
