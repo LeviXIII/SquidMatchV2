@@ -8,24 +8,24 @@ const request = require('request');
 const cheerio = require('cheerio');
 
 mongoose.Promise = global.Promise;
-const config = require('./config.js');
+//const config = require('./config.js');
 
 const User = require('./models/User');
 const Messages = require('./models/Messages');
 
 const PORT = process.env.PORT || 8080;
-const MONGO_CONNECTION_STRING = 'mongodb://localhost:27017/data/db'; //process.env.MONGODB_URI;
+const MONGO_CONNECTION_STRING = process.env.MONGODB_URI; //'mongodb://localhost:27017/data/db';
 
 app.use(express.static(__dirname + "/build"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-//const connection = mongoose.connect(MONGO_CONNECTION_STRING, { useMongoClient: true });
-mongoose.connect(MONGO_CONNECTION_STRING);
+const connection = mongoose.connect(MONGO_CONNECTION_STRING, { useMongoClient: true });
+//mongoose.connect(MONGO_CONNECTION_STRING);
 
-const connection = mongoose.connection
-//const secretKey = process.env.token_secretKey;
-const secretKey = config.token_secretKey;
+//const connection = mongoose.connection
+const secretKey = process.env.token_secretKey;
+//const secretKey = config.token_secretKey;
 const rooms = [];
 
 /******************************************************************/
