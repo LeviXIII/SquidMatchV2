@@ -203,7 +203,7 @@ connection.on('open', () => {
 /******************************GET*********************************/
 
 app.get('/get-news', (req, res) => {
-  const url = 'http://squidkidsfeed.azurewebsites.net/Schedule.json';
+  const url = 'https://squidkidsfeed.azurewebsites.net/Schedule.json';
 
     request(url, function(error, response, body) {
         let bodyObj = JSON.parse(body);
