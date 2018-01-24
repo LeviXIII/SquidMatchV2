@@ -178,7 +178,7 @@ const NSIDstyle = {
 }
 
 const leaveButton = {
-  width: '15vh',
+  width: '18vh',
   backgroundColor: '#ff43b7',
   fontFamily: 'paintball',
   color: 'black',
@@ -199,7 +199,7 @@ const searchModalStyle = {
 }
 
 const sendButton = {
-  width: '15vh',
+  width: '18vh',
   backgroundColor: '#7aff42',
   fontFamily: 'paintball',
   color: 'black',
