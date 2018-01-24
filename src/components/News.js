@@ -13,15 +13,15 @@ class News extends Component {
 
   componentDidMount() {
     //Gets info about current stages.
-    // axios.get('/get-news')
-    // .then(result => {
-    //   league = result.data.league;
-    //   regular = result.data.regular;
-    //   ranked = result.data.ranked;
-    // })
-    // .catch(error => {
-    //   console.log("Get News Error: " + error);
-    // })
+    axios.get('/get-news')
+    .then(result => {
+      league = result.data.league;
+      regular = result.data.regular;
+      ranked = result.data.ranked;
+    })
+    .catch(error => {
+      console.log("Get News Error: " + error);
+    })
   }
 
   render() {
@@ -36,13 +36,30 @@ class News extends Component {
       <section>
         <section className="container divBorder formSettings">
           <h1 style={subTitle}>Stages</h1>
+          <p style={timeFont}>{moment.unix(regular[3]).format('LT')} - {moment.unix(regular[4]).format('LT')}</p>
           <h3 style={stageFont}>Turf War</h3>
-          <p style={modeFont}><span>{regular[0]} </span><span>{regular[1]} </span></p>
+          <section className="gridSelector">
+            <p style={modeFont}>{regular[0]}</p>
+            <p style={modeFont}>{regular[1]}</p>
+          </section>
+
+          <h3 style={stageFont}>Ranked Battle</h3>
+          <section className="gridSelector">
+            <p style={modeFont}>{ranked[0]}</p>
+            <p style={modeFont}>{ranked[1]}</p>
+          </section>
+
+          <h3 style={stageFont}>League Battle</h3>
+          <section className="gridSelector">
+            <p style={modeFont}>{league[0]}</p>
+            <p style={modeFont}>{league[1]}</p>
+          </section>
+
         </section>
 
         <section className="container divBorder formSettings">
         <h1 style={subTitle}>Site Updates</h1>
-        <ul style={stageFont}>
+        <ul style={updateFont}>
           <li>
             Fixed bug that didn't log you out if you leave the page
             while chatting.
@@ -65,12 +82,13 @@ class News extends Component {
 //Styles//
 //////////
 
-const stageFont = {
-  fontFamily: 'overpass',
-}
-
 const modeFont = {
   fontFamily: 'paintball',
+  textAlign: 'center',
+}
+
+const stageFont = {
+  fontFamily: 'overpass',
   textAlign: 'center',
 }
 
@@ -81,6 +99,17 @@ const subTitle = {
   color: '#464547',
   marginTop: '1%',
   marginBottom: '1%',
+}
+
+const timeFont = {
+  fontFamily: 'overpass',
+  textAlign: 'center',
+  marginTop: '1%',
+  marginBottom: '1%',
+}
+
+const updateFont = {
+  fontFamily: 'overpass',
 }
 
 const mapStateToProps = (state) => {
