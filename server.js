@@ -212,22 +212,22 @@ app.get('/get-news', (req, res) => {
 
         league[0] = bodyObj.league[0].stage_a.name;
         league[1] = bodyObj.league[0].stage_b.name;
-        league[2] = bodyObj.league[0].game_mode.name;
+        league[2] = bodyObj.league[0].rule.name;
         league[3] = bodyObj.league[0].start_time;
         league[4] = bodyObj.league[0].end_time;
 
         regular[0] = bodyObj.regular[0].stage_a.name;
         regular[1] = bodyObj.regular[0].stage_b.name;
-        regular[2] = bodyObj.regular[0].game_mode.name;
+        regular[2] = bodyObj.regular[0].rule.name;
         regular[3] = bodyObj.regular[0].start_time;
         regular[4] = bodyObj.regular[0].end_time;
 
         ranked[0] = bodyObj.gachi[0].stage_a.name;
         ranked[1] = bodyObj.gachi[0].stage_b.name;
-        ranked[2] = bodyObj.gachi[0].game_mode.name;
+        ranked[2] = bodyObj.gachi[0].rule.name;
         ranked[3] = bodyObj.gachi[0].start_time;
         ranked[4] = bodyObj.gachi[0].end_time;
-        
+
         res.json({
           league: league,
           regular: regular,

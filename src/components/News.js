@@ -44,12 +44,14 @@ class News extends Component {
           </section>
 
           <h3 style={stageFont}>Ranked Battle</h3>
+          <h4 style={gameMode}>{ranked[2]}</h4>
           <section className="gridSelector">
             <p style={modeFont}>{ranked[0]}</p>
             <p style={modeFont}>{ranked[1]}</p>
           </section>
 
           <h3 style={stageFont}>League Battle</h3>
+          <h4 style={gameMode}>{league[2]}</h4>
           <section className="gridSelector">
             <p style={modeFont}>{league[0]}</p>
             <p style={modeFont}>{league[1]}</p>
@@ -90,6 +92,14 @@ const modeFont = {
 const stageFont = {
   fontFamily: 'overpass',
   textAlign: 'center',
+  marginBottom: '1%',
+}
+
+const gameMode = {
+  fontFamily: 'overpass',
+  textAlign: 'center',
+  marginTop: '1%',
+  marginBottom: '1%',
 }
 
 const subTitle = {
