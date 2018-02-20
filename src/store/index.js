@@ -6,6 +6,7 @@ import reducers from '../reducers';
 const persistConfig = {
   key: 'root',
   storage,
+  blacklist: ['loginReducer'] // navigation will not be persisted
 }
 
 const persistedReducer = persistReducer(persistConfig, reducers)
