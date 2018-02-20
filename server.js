@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 //const connection = mongoose.connect(MONGO_CONNECTION_STRING, { useMongoClient: true });
 mongoose.connect(MONGO_CONNECTION_STRING);
 
-const connection = mongoose.connection
+const connection = mongoose.connection;
 //const secretKey = process.env.token_secretKey;
 const secretKey = config.token_secretKey;
 const rooms = [];

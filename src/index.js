@@ -7,12 +7,15 @@ import { PersistGate } from 'redux-persist/integration/react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import './index.css';
+import { store, persistor } from './store';
 import App from './App';
-import reducers from './reducers';
+//import reducers from './reducers';
 import registerServiceWorker from './registerServiceWorker';
 
 ReactDOM.render(
-  <Provider store={createStore(reducers)}>
+  
+  //<Provider store={createStore(reducers)}>
+  <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <MuiThemeProvider>
         <Router>

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { RaisedButton, Dialog, Snackbar } from 'material-ui';
 import axios from 'axios';
 import io from 'socket.io-client';
-import * as actions from './actions'
+import * as actions from './actions';
 
 import LoginForm from './components/LoginForm';
 import AccountInfo from './components/AccountInfo';
