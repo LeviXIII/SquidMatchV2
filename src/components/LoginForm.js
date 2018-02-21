@@ -29,9 +29,11 @@ class LoginForm extends Component {
     })
     .then(result => {
       if (result.data.setLogin) {
-        localStorage.setItem('token', result.data.token);
+        //localStorage.setItem('token', result.data.token);
+        this.props.setToken(result.data.token);
         this.props.getLoginInput({ name: "username", value: this.props.username});
         this.props.getLoginInput({ name: "password", value: this.props.password});
+        this.props.getAccountInput({ name: "username", value: this.props.username });
         this.props.getAccountInput({ name: "NSID", value: result.data.NSID });
         this.props.getAccountInput({ name: "age", value: result.data.age });
         this.props.getAccountInput({ name: "location", value: result.data.location });
@@ -186,6 +188,7 @@ const mapStateToProps = (state) => {
     matchingPassword: state.loginReducer.matchingPassword,
     verified: state.loginReducer.verified,
 
+    token: state.generalReducer.token,
     isLoggedIn: state.generalReducer.isLoggedIn,
     verifyMessage: state.generalReducer.verifyMessage,
   }

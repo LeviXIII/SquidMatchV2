@@ -15,11 +15,11 @@ class SiteHeader extends Component {
   
   componentDidMount() {
     window.addEventListener("resize", () => this.props.setWindowSize(window.innerWidth));
-    window.addEventListener("beforeunload", async () => {
-      //Causes a db query within "leave-room" to not be invoked.
-      this.props.setUnmounting(true);
-      await this.props.logout();
-    });
+    // window.addEventListener("beforeunload", async () => {
+    //   //Causes a db query within "leave-room" to not be invoked.
+    //   this.props.setUnmounting(true);
+    //   await this.props.logout();
+    // });
   }
 
   showInviteModal = () => {
@@ -121,10 +121,10 @@ class SiteHeader extends Component {
 
   componentWillUnmount() {
     window.removeEventListener("resize", () => this.props.setWindowSize(window.innerWidth));
-    window.removeEventListener("beforeunload", async () => {
-      return this.props.setUnmounting(true);
-      await this.props.logout();
-    });
+    // window.removeEventListener("beforeunload", async () => {
+    //   return this.props.setUnmounting(true);
+    //   await this.props.logout();
+    // });
   }
 
 }
@@ -179,7 +179,8 @@ const style = Object.assign({}, miniMenu);
 
 const mapStateToProps = (state) => {
   return { 
-    username: state.loginReducer.username,
+    username: state.accountReducer.username,
+    //username: state.loginReducer.username,
 
     avatar: state.accountReducer.avatar,
     status: state.accountReducer.status,

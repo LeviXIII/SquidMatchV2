@@ -40,9 +40,12 @@ class AccountInfo extends Component {
         avatar: avatarColor,
       })
       .then(result => {
-        localStorage.setItem('token', result.data.token);
+        //localStorage.setItem('token', result.data.token);
+        
+        this.props.setToken(result.data.token);
         this.props.setLoggedIn(true);
         this.props.getLoginInput({ name: 'verified', value: false });
+        this.props.getAccountInput({ name: "username", value: this.props.username });
         this.props.getAccountInput({ name: 'avatar', value: avatarColor });
       })
       .catch(error => {

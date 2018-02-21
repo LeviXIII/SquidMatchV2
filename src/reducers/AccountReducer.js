@@ -4,6 +4,7 @@ import {
 } from '../actions/types';
 
 const initialState = {
+  username: '', //Create another username var to persist in case of refresh.
   email: '',
   NSID: '',
   age: '< 19',

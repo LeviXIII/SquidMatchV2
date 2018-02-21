@@ -1,5 +1,6 @@
 import {
   SET_SOCKET,
+  SET_TOKEN,
   SET_MESSAGES,
   SET_TEMP_FRIEND_LIST,
   SET_CHATTING,
@@ -19,6 +20,7 @@ const initialState = {
   messages: [],
   tempFriendList: [],
   socket: {},
+  token: '',
   verifyMessage: '',
   friendMessage: '',
   friendModal: false,
@@ -35,6 +37,8 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case SET_SOCKET:
       return { ...state, socket: action.payload };
+    case SET_TOKEN:
+      return { ...state, token: action.payload };
     case SET_LOGGED_IN:
       return { ...state, isLoggedIn: action.payload };
     case SET_CHATTING:

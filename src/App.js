@@ -227,7 +227,7 @@ class App extends Component {
   //Check if the token is still valid.
   verifyToken = () => {
     axios.post('/verify-token', {
-      currentToken: localStorage.getItem('token')
+      currentToken: this.props.token //localStorage.getItem('token')
     })
     .then(result => {
       if (result.data.token === false) {
@@ -361,6 +361,7 @@ const mapStateToProps = (state) => {
     notify: state.accountReducer.notify,
     status: state.accountReducer.status,
 
+    token: state.generalReducer.token,
     isLoggedIn: state.generalReducer.isLoggedIn,
     updateModal: state.generalReducer.updateModal,
     inviteModal: state.generalReducer.inviteModal,

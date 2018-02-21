@@ -5,6 +5,7 @@ export const SET_MATCHING_PASSWORD = 'set_matching_password';
 export const SET_VERIFY_MESSAGE = 'set_verify_message';
 export const SET_FRIEND_MESSAGE = 'set_friend_message';
 export const SET_SOCKET = 'set_socket';
+export const SET_TOKEN = 'set_token';
 export const SET_MESSAGES = 'set_messages';
 export const SET_TEMP_FRIEND_LIST = 'set_temp_friend_list';
 export const SET_CHATTING = 'set_chatting';

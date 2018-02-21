@@ -1,5 +1,6 @@
 import {
   SET_SOCKET,
+  SET_TOKEN,
   SET_MESSAGES,
   SET_TEMP_FRIEND_LIST,
   SET_CHATTING,
@@ -19,6 +20,13 @@ export const setSocket = (socket) => {
   return {
     type: SET_SOCKET,
     payload: socket
+  }
+}
+
+export const setToken = (token) => {
+  return {
+    type: SET_TOKEN,
+    payload: token
   }
 }
 
