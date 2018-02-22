@@ -29,7 +29,10 @@ class App extends Component {
     socket.connect();
     
     socket.on('connect', () => {
-      this.props.setSocket(socket);
+      //Didn't save this socket due to circular json error from
+      //redux-persist. May change back if problems with chat occur.
+      //this.props.setSocket(socket);
+      
     })
 
     socket.on('invited', () => {
