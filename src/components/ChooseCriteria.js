@@ -182,7 +182,8 @@ const mapStateToProps = (state) => {
 
     status: state.accountReducer.status,
 
-    username: state.loginReducer.username,
+    //username: state.loginReducer.username,
+    username: state.accountReducer.username,
   }
 }
 

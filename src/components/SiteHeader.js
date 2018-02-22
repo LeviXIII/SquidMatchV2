@@ -14,6 +14,7 @@ import Invite from 'material-ui/svg-icons/social/notifications';
 class SiteHeader extends Component {
   
   componentDidMount() {
+    //Gets the windows size to determine whether or not to compact menu.
     window.addEventListener("resize", () => this.props.setWindowSize(window.innerWidth));
     // window.addEventListener("beforeunload", async () => {
     //   //Causes a db query within "leave-room" to not be invoked.
